@@ -6,125 +6,36 @@
 @source "../node_modules/flowbite-svelte-icons/dist";
 
 @font-face {
-  font-family: 'Satoshi-Light';
-  src: url('/fonts/Satoshi-Light.woff2') format('woff2'),
-    url('/fonts/Satoshi-Light.woff') format('woff'),
-    url('/fonts/Satoshi-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Satoshi-LightItalic';
-  src: url('/fonts/Satoshi-LightItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-LightItalic.woff') format('woff'),
-    url('/fonts/Satoshi-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-display: swap;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Satoshi-Regular';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2'),
-    url('/fonts/Satoshi-Regular.woff') format('woff'),
-    url('/fonts/Satoshi-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Satoshi-Italic';
-  src: url('/fonts/Satoshi-Italic.woff2') format('woff2'),
-    url('/fonts/Satoshi-Italic.woff') format('woff'),
-    url('/fonts/Satoshi-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-display: swap;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Satoshi-Medium';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2'),
-    url('/fonts/Satoshi-Medium.woff') format('woff'),
-    url('/fonts/Satoshi-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Satoshi-MediumItalic';
-  src: url('/fonts/Satoshi-MediumItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-MediumItalic.woff') format('woff'),
-    url('/fonts/Satoshi-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-display: swap;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Satoshi-Bold';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
-    url('/fonts/Satoshi-Bold.woff') format('woff'),
-    url('/fonts/Satoshi-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Satoshi-BoldItalic';
-  src: url('/fonts/Satoshi-BoldItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-BoldItalic.woff') format('woff'),
-    url('/fonts/Satoshi-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-display: swap;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Satoshi-Black';
-  src: url('/fonts/Satoshi-Black.woff2') format('woff2'),
-    url('/fonts/Satoshi-Black.woff') format('woff'),
-    url('/fonts/Satoshi-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Satoshi-BlackItalic';
-  src: url('/fonts/Satoshi-BlackItalic.woff2') format('woff2'),
-    url('/fonts/Satoshi-BlackItalic.woff') format('woff'),
-    url('/fonts/Satoshi-BlackItalic.ttf') format('truetype');
-  font-weight: 900;
-  font-display: swap;
-  font-style: italic;
+  font-family: "JetBrains-Mono";
+  src: url('/fonts/ttf/JetBrainsMono-Regular.ttf') format('truetype'),
+    url('/fonts/webfonts/JetBrainsMono-Regular.woff2') format('woff2')
 }
 
 /**
-* Default colors for fonts, buttons, etc...
+ * Catpuccin inspired color palette
 */
 @theme {
-  --color-bg-default: #1c1f1e;
-  --color-bg-dark: #0a0a0a;
-  --color-bg-card: #282b2a;
-  --color-default: #CFCFCF;
-  --color-bright: #FFFFFF;
-  --color-light: #E0E0E0;
-  --color-border-default: #535554;
-  --color-border-medium: #404040;
-  --color-border-light: #525252;
-  --color-button-default: #282b2a;
-  --color-button-border: #535554;
-  --color-secondary-button: #336e41;
-  --color-secondary-button-border: #699276;
-  --color-sidebar-menu: #191a1b;
-  --font-satoshi: "Satoshi", sans-serif;
-  --font-satoshi-bold: "Satoshi-Bold", sans-serif;
+  --color-background: #11111b;
+  --color-surface: #1e1e2e;
+  --color-surface1: #45475a;
+  --color-border: #313244;
+  --color-border-hover: #45475a;
+  --color-body: #cdd6f4;
+  --color-sub: #bac2de;
+  --color-secondary: #a6adc8;
+  --color-title: #cdd6f4;
+  --color-section: #b4befe;
+  --color-subheading: #89b4fa;
+  --color-link: #89b4fa;
+  --color-link-hover: #89dceb;
+  --color-highlight: #cba6f7;
+  --color-success: #a6e3a1;
+  --color-warning: #f9e2af;
+  --color-error: #f38ba8;
+  --color-snippet: #fab387;
+  --color-mantle: #181825;
+
+  --font-jetbrains-mono: "JetBrains-Mono", sans-serif;
 }
 
 /**
@@ -135,7 +46,31 @@
 
   html,
   body {
-    @apply p-0 m-0 flex flex-col min-h-screen text-default bg-bg-default;
+    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono;
+  }
+
+  h1 {
+    @apply text-title
+  }
+
+  h2 {
+    @apply text-section
+  }
+
+  h3, h4 {
+    @apply text-subheading
+  }
+
+  p {
+    @apply text-body
+  }
+
+  a {
+    @apply text-link
+  }
+
+  a:hover {
+    @apply text-link-hover
   }
 }
 
@@ -148,19 +83,19 @@
  */
 .prose {
   h1>a {
-    @apply text-4xl sm:text-5xl font-semibold text-bright no-underline
+    @apply text-4xl sm:text-5xl font-semibold no-underline
   }
 
   h2>a {
-    @apply text-3xl sm:text-4xl font-semibold text-bright no-underline
+    @apply text-3xl sm:text-4xl font-semibold no-underline
   }
 
   h3>a {
-    @apply text-2xl sm:text-3xl font-semibold text-bright no-underline
+    @apply text-2xl sm:text-3xl font-semibold no-underline
   }
 
   h4>a {
-    @apply text-xl sm:text-2xl font-semibold text-bright no-underline
+    @apply text-xl sm:text-2xl font-semibold no-underline
   }
 
   h1, h2, h3, h4, h5, p {
@@ -171,7 +106,7 @@
    * Code blocks with single back ticks
    */
   code:not(pre code) {
-    @apply font-mono text-bright/75 px-1 bg-bg-card text-sm
+    @apply font-mono px-1 text-sm
   }
 
   /*
@@ -190,27 +125,27 @@
   }
 
   blockquote p {
-    @apply not-italic text-default/75
+    @apply not-italic
   }
 
   pre {
-    @apply bg-bg-default
+    @apply bg-surface
   }
 
   p, li, ol {
-    @apply text-base text-default
+    @apply text-base
   }
 
   li::marker {
-    @apply text-base text-bright
+    @apply text-base
   }
 
   strong {
-    @apply text-base text-bright font-semibold
+    @apply text-base font-semibold
   }
 
   a:not(.heading-anchor) {
-    @apply text-base font-normal text-default cursor-pointer
+    @apply text-base font-normal cursor-pointer
   }
 
   a:hover:not(.heading-anchor) {
@@ -218,6 +153,6 @@
   }
 
   hr {
-    @apply border-[0.5px] border-bright/42
+    @apply border-[0.5px] border-border/42
   }
 }

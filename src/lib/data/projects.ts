@@ -1,6 +1,6 @@
 import type { Project, RepoMetadata, RepoMetadataResponse, } from "$lib/types/Project";
 
-export const data: Project[] = [
+export const projectData: Project[] = [
 	{
 		title: "Go Schema Migration Tool (Gsmt)",
 		repoName: "gsmt",

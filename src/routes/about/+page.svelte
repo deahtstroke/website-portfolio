@@ -10,14 +10,7 @@
 		Sparkles,
 		Target,
 	} from "lucide-svelte";
-	import { fadeFly } from "$lib/transitions/transitions";
 	import Metadata from "$lib/components/Metadata.svelte";
-
-	let count: number = 0;
-
-	let fadeCount = (): number => {
-		return count++ * 25;
-	};
 
 	const milestones: Milestone[] = [
 		{
@@ -90,17 +83,11 @@
 
 <main class="flex flex-col max-w-3xl mx-auto px-8 gap-8 sm:gap-12 items-center">
 	<section class="flex flex-col py-12 gap-6">
-		<h1
-			in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-			class="text-bright text-5xl md:text-7xl font-bold text-center"
-		>
-			About Me
+		<h1 class="text-bright text-5xl md:text-7xl font-bold text-center">
+			About Me =)
 		</h1>
 
-		<p
-			in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-			class="sm text-center"
-		>
+		<p class="sm text-center">
 			I'm a software engineer passionate about building scalable systems and
 			elegant solutions. I specialize in backend development, distributed
 			systems, and turning complex problems into simple, maintainable, and
@@ -109,24 +96,17 @@
 	</section>
 	<!-- Philosophy -->
 	<section class="flex flex-col items-center gap-6">
-		<h2
-			in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-			class="text-2xl font-semibold text-bright text-center"
-		>
-			Philosophy
-		</h2>
+		<h2 class="text-2xl font-semibold text-bright text-center">Philosophy</h2>
 		<div class="flex flex-col items-center gap-2 space-y-2">
-			<p in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}>
-				I believe great software is built on four pillars:
-			</p>
+			<p>I believe great software is built on four pillars:</p>
 			<!-- Core Principles -->
 			<div class="grid md:grid-cols-2 gap-6 p-5">
 				<div
-					in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
+					class="space-y-3 bg-surface border border-border rounded-lg p-6 group group-hover:bg-background group-hover:border-border-default transition-colors"
 				>
 					<div
-						class="w-12 h-12 rounded-lg bg-bg-card border border-neutral flex items-center justify-center"
+						class="w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center
+						group-hover:border-border-hover group-hover:bg-surface transition-colors"
 					>
 						<Sparkles class="w-6 h-6 text-cyan-400/80" />
 					</div>
@@ -137,8 +117,7 @@
 					</p>
 				</div>
 				<div
-					in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
+					class="space-y-3 bg-surface border border-border rounded-lg p-6 hover:border-border-default transition-colors"
 				>
 					<div
 						class="w-12 h-12 rounded-lg bg-bg-card border border-neutral flex items-center justify-center"
@@ -152,7 +131,6 @@
 					</p>
 				</div>
 				<div
-					in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
 					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
 				>
 					<div
@@ -167,7 +145,6 @@
 					</p>
 				</div>
 				<div
-					in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
 					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
 				>
 					<div
@@ -182,10 +159,7 @@
 					</p>
 				</div>
 			</div>
-			<p
-				class="text-center"
-				in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-			>
+			<p class="text-center">
 				I approach problems with curiosity and practicality, seeking the
 				simplest effective solution. I emphasize clean architecture, deliberate
 				design, robust testing, and a mindset of continuous improvement.
@@ -194,14 +168,9 @@
 	</section>
 	<!-- Biography -->
 	<section class="flex flex-col items-center gap-6">
-		<h2
-			in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-			class="text-2xl font-semibold text-bright text-center"
-		>
-			Background
-		</h2>
+		<h2 class="text-2xl font-semibold text-bright text-center">Background</h2>
 		<div class="flex flex-col items-start gap-4">
-			<p in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}>
+			<p>
 				My journey began in June 2017 when I started community college at Sierra
 				College. I declared Computer Science as my major without realizing how
 				much I would come to love it. Having spent most of my life around
@@ -211,7 +180,7 @@
 				subtle but clear sign that my blind-choice was the correct one (thank
 				God).
 			</p>
-			<p in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}>
+			<p>
 				After transferring to California State University, Sacramento, I dove
 				deeper in my coursework with advanced topics like Database Management
 				Systems and Operating Systems, which sparked my interest even further.
@@ -221,7 +190,7 @@
 				for sure, but in December 2022, I proudly graduated with honors with a
 				Bachelor of Science in Computer Science.
 			</p>
-			<p in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}>
+			<p>
 				After graduation, I continued working at UNFI learning as much as I
 				could from my coworkers and mentors, until post-COVID layoffs affected
 				my position and those of several colleagues. Although it was a setback,
@@ -233,7 +202,7 @@
 				I learned in school and building projects that are fun, challenging, and
 				meaningful to me.
 			</p>
-			<p in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}>
+			<p>
 				Fueled by passion, curiosity, and caffeine, I strive to grow into an
 				even better software engineer, collaborate with teams that care deeply
 				about what they build, and continue connecting with others who share the
@@ -244,12 +213,7 @@
 
 	<!-- Milestones -->
 	<section class="flex flex-col gap-6 items-center w-full">
-		<h2
-			in:fadeFly|global={{ delay: fadeCount(), duration: 300, y: 20 }}
-			class="text-2xl font-semibold text-bright"
-		>
-			Career Milestones
-		</h2>
+		<h2 class="text-2xl font-semibold text-bright">Career Milestones</h2>
 		<div class="relative space-y-4 w-full">
 			<!-- Vertical line -->
 			<div class="absolute left-2 top-2 bottom-2 w-px bg-white/20"></div>
@@ -260,10 +224,7 @@
 						class="absolute left-0 top-2 w-4 h-4 rounded-full bg-bg-default border-2 border-white/20"
 					></div>
 
-					<div
-						in:fadeFly={{ delay: fadeCount(), duration: 300, y: 20 }}
-						class="space-y-2"
-					>
+					<div class="space-y-2">
 						<div
 							class="flex flex-col md:flex-row md:justify-between gap-1 md:gap-4"
 						>

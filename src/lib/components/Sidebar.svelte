@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { fadeFly } from "$lib/transitions/transitions";
 	import { X } from "lucide-svelte";
 	import type { MenuOption } from "$lib/types/MenuOption";
 	import { page } from "$app/state";
-
-	let count: number = 1;
-	let staggerFunc = (reset: boolean) => {
-		if (reset) {
-			count = 1;
-		}
-		return count++ * 50;
-	};
 
 	let {
 		open = false,
@@ -29,11 +20,6 @@
 		role="dialog"
 		aria-modal="true"
 		aria-label="Navigation menu"
-		transition:fadeFly={{
-			x: 25,
-			duration: 150,
-			delay: 25,
-		}}
 	>
 		<!-- Side bar header -->
 		<div
@@ -46,24 +32,15 @@
 				focus:outline group hover:cursor-pointer"
 				aria-label="Close menu"
 			>
-				<X
-					class="w-4 h-4 group-hover:rotate-90 transition-transform duration-200"
-				/>
+				<X class="w-4 h-4 text-body" />
 			</button>
-			<span class="text-default">Where to? </span>
+			<p class="text-default">Where to?</p>
 		</div>
 
 		<!-- Side bar items -->
 		<ul class="flex flex-1 px-4 py-8 flex-col gap-4 items-end justify-start">
 			{#each options as option}
-				<li
-					class="px-4 py-2"
-					in:fadeFly|global={{
-						delay: staggerFunc(false),
-						duration: 150,
-						y: -20,
-					}}
-				>
+				<li class="px-4 py-2">
 					<a
 						href={option.ref}
 						{onclick}
@@ -82,7 +59,7 @@
 									>{option.desc}</span
 								>
 							</div>
-							<option.icon class="w-4 h-4 flex-shrink-0" />
+							<option.icon class="w-4 h-4 shrink-0" />
 						</div>
 					</a>
 				</li>
@@ -90,15 +67,10 @@
 		</ul>
 
 		<!-- Sidebar footer -->
-		<div
-			in:fadeFly|global={{ delay: staggerFunc(true), duration: 300, y: -20 }}
-			class="px-6 py-5 border-t border-white/5"
-		>
-			<div
-				class="text-[10px] text-center tracking-[0.2em] uppercase font-[Satoshi-Light]"
-			>
+		<div class="px-6 py-5 border-t border-white/5">
+			<p class="text-[10px] text-center tracking-[0.2em] uppercase">
 				© {new Date().getFullYear()} Daniel Villavicencio
-			</div>
+			</p>
 		</div>
 	</div>
 {/if}

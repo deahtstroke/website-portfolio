@@ -12,7 +12,6 @@
 		Timer,
 	} from "lucide-svelte";
 	import { onMount } from "svelte";
-	import { fadeFly } from "$lib/transitions/transitions";
 	import type { ContactRequest, InquiryType } from "$lib/types/ContactRequest";
 	import Metadata from "$lib/components/Metadata.svelte";
 
@@ -24,14 +23,6 @@
 		"Bug Report",
 		"Other",
 	];
-
-	let count: number = 0;
-	let staggeredCount: (reset: boolean) => number = (reset) => {
-		if (reset) {
-			count = 0;
-		}
-		return count++ * 25;
-	};
 
 	type SubmissionStatus = "idle" | "submitting" | "success" | "error";
 
@@ -198,16 +189,10 @@
 		<section
 			class="relative flex flex-col gap-6 py-12 border-b border-neutral-800"
 		>
-			<h1
-				in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-				class="font-bold text-center text-bright text-5xl md:text-7xl"
-			>
+			<h1 class="font-bold text-center text-bright text-5xl md:text-7xl">
 				Get In Touch
 			</h1>
-			<p
-				in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-				class="text-lg text-default text-center"
-			>
+			<p class="text-lg text-default text-center">
 				Have a project in mind or want to collaborate? Send me an email and I'll
 				get back to you as soon as possible
 			</p>
@@ -219,16 +204,10 @@
 			<!-- Form Submission -->
 			<section class="flex flex-col gap-6">
 				<div class="flex flex-col gap-2">
-					<h1
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="text-lg text-bright text-center font-semibold"
-					>
+					<h1 class="text-lg text-bright text-center font-semibold">
 						Send Me a Quick Message
 					</h1>
-					<p
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="text-sm text-center"
-					>
+					<p class="text-sm text-center">
 						If you have a quick inquiry to talk about, please fill the form
 						below.
 					</p>
@@ -242,10 +221,7 @@
 						data-callback="onTurnstileSuccess"
 					></div>
 					<!-- Name -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<label for="name" class="block text-sm text-default">
 							Name <span class="text-red-500">*</span>
 						</label>
@@ -266,10 +242,7 @@
 						{/if}
 					</div>
 					<!-- Email -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<label for="email" class="block text-sm text-default">
 							Email <span class="text-red-500">*</span>
 						</label>
@@ -290,10 +263,7 @@
 						{/if}
 					</div>
 					<!-- Inquiry Type -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<label for="inquiryType" class="block text-sm text-default">
 							Inquiry Type <span class="text-red-500">*</span>
 						</label>
@@ -318,10 +288,7 @@
 						{/if}
 					</div>
 					<!-- Subject -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<label for="subject" class="block text-sm text-default">
 							Subject <span class="text-red-500">*</span>
 						</label>
@@ -341,10 +308,7 @@
 						{/if}
 					</div>
 					<!-- Message body -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<label for="message" class="block text-sm text-default">
 							Message <span class="text-red-500">*</span>
 						</label>
@@ -365,10 +329,7 @@
 					</div>
 
 					<!-- Submission -->
-					<div
-						in:fadeFly={{ delay: staggeredCount(true), duration: 300, y: 20 }}
-						class="flex flex-col gap-2"
-					>
+					<div class="flex flex-col gap-2">
 						<button
 							aria-label="Message submission button"
 							type="submit"
@@ -410,10 +371,7 @@
 			<!-- Sidebar -->
 			<div class="flex flex-col items-center gap-6">
 				<!-- Contact Information -->
-				<section
-					in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-					class="border border-border-default rounded w-full p-4"
-				>
+				<section class="border border-border-default rounded w-full p-4">
 					<h3 class="text-lg font-semibold text-bright pb-2 text-center">
 						Contact Information
 					</h3>
@@ -447,10 +405,7 @@
 				</section>
 
 				<!-- Socials -->
-				<section
-					in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-					class="border border-border-default w-full rounded p-4"
-				>
+				<section class="border border-border-default w-full rounded p-4">
 					<h3 class="text-lg font-semibold text-bright pb-2 text-center">
 						Socials
 					</h3>
@@ -482,7 +437,6 @@
 
 				<!-- Download Resume -->
 				<section
-					in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
 					class="group flex items-center w-full px-6 py-3 border border-border-default rounded
 					hover:border-cyan-600 transition-colors"
 				>
@@ -502,10 +456,7 @@
 				</section>
 
 				<!-- Project Interests -->
-				<section
-					in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-					class="border border-border-default p-4 w-full rounded"
-				>
+				<section class="border border-border-default p-4 w-full rounded">
 					<h3 class="text-lg text-bright font-semibold text-center pb-2">
 						Project Interests
 					</h3>
@@ -526,10 +477,7 @@
 				</section>
 
 				<!-- Availability Status -->
-				<section
-					in:fadeFly={{ delay: staggeredCount(false), duration: 300, y: 20 }}
-					class="border border-border-default rounded w-full p-4"
-				>
+				<section class="border border-border-default rounded w-full p-4">
 					<h3 class="text-lg font-semibold text-center text-bright pb-2">
 						Availability
 					</h3>

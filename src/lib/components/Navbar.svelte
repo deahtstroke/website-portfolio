@@ -75,11 +75,11 @@
 			class="font-bold mr-auto tracking-wide text-bright text-md hover:cursor-pointer"
 			href="/"
 		>
-			<h1>Daniel Villavicencio</h1>
+			<h1 class="text-base">Daniel Villavicencio</h1>
 		</a>
 
 		<!-- NavBar options desktop -->
-		<ul class="flex flex-row gap-4 mx-2 justify-center content-center">
+		<ul class="flex flex-row gap-3 mx-2 justify-center content-center">
 			{#each menuOptions as option}
 				<li>
 					<a

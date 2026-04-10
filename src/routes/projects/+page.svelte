@@ -3,10 +3,9 @@
 	import ProjectCard from "$lib/components/ProjectCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
 
-	import { data as projects, getRepoMetadata } from "$lib/data/projects";
-	import { fadeFly } from "$lib/transitions/transitions";
-	import { stagger } from "$lib/utils/staggeredCount";
+	import { projectData as projects, getRepoMetadata } from "$lib/data/projects";
 	import { onMount } from "svelte";
+	import type { Project } from "$lib/types/Project";
 
 	let searchQuery = $state<string>("");
 	let sortBy = $state<"name" | "techCount" | "updateDate" | "creationDate">(
@@ -17,7 +16,7 @@
 
 	let filteredProjects = $derived(
 		baseProjects
-			.filter((p) => {
+			.filter((p: Project) => {
 				if (!searchQuery.trim()) {
 					return true;
 				}
@@ -29,7 +28,7 @@
 					p.technologies.some((t) => t.toLowerCase().includes(query))
 				);
 			})
-			.sort((a, b) => {
+			.sort((a: Project, b: Project) => {
 				switch (sortBy) {
 					case "name":
 						return sortOrder === "asc"
@@ -94,16 +93,10 @@
 	<div class="max-w-4xl mx-auto flex flex-col items-center gap-8 sm:gap-12">
 		<!-- Hero section -->
 		<section class="relative py-12 flex flex-col gap-6 items-center">
-			<h1
-				in:fadeFly={{ delay: stagger(false), duration: 300, y: 20 }}
-				class="font-bold text-center text-bright text-5xl md:text-7xl"
-			>
+			<h1 class="font-bold text-center text-bright text-5xl md:text-7xl">
 				Projects
 			</h1>
-			<p
-				in:fadeFly={{ delay: stagger(false), duration: 300, y: 20 }}
-				class="text-lg text-default text-center"
-			>
+			<p class="text-lg text-default text-center">
 				Explore my work across various technologies and domains
 			</p>
 		</section>
@@ -114,10 +107,7 @@
 			class="flex flex-col w-full md:flex-row gap-4 items-start md:items-center justify-between"
 		>
 			<!-- Search bar -->
-			<div
-				class="relative flex-1 w-full"
-				in:fadeFly={{ delay: stagger(false), duration: 300, y: 20 }}
-			>
+			<div class="relative flex-1 w-full">
 				{#if hasActiveFilters}
 					<X
 						onclick={() => (searchQuery = "")}
@@ -137,10 +127,7 @@
 			</div>
 
 			<!-- Sorting Options -->
-			<div
-				in:fadeFly|global={{ delay: stagger(false), duration: 300, y: 20 }}
-				class="flex flex-row gap-2"
-			>
+			<div class="flex flex-row gap-2">
 				<div class="flex items-center gap-2">
 					<select
 						bind:value={sortBy}
@@ -170,10 +157,7 @@
 		</div>
 
 		<!-- Project Results -->
-		<section
-			class="flex flex-col items-center gap-6"
-			in:fadeFly={{ delay: stagger(true), duration: 300, y: 20 }}
-		>
+		<section class="flex flex-col items-center gap-6">
 			{#if filteredProjects.length > 0}
 				<h3 class="text-default font-light">
 					Showing {filteredProjects.length} of {projects.length} projects

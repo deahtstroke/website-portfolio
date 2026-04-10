@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Mail, NotebookPen } from "lucide-svelte";
-	import { formatDate } from "$lib/utils/date";
+	import { formatDate } from "$lib/utils/DateUtils";
 	import { type Snippet } from "svelte";
 	import { type LayoutData } from "./$types";
 	import { ArrowLeft } from "lucide-svelte";

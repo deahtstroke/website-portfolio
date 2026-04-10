@@ -1,27 +1,9 @@
 <script lang="ts">
+	import BlogPostCard from "$lib/components/BlogPostCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
-	import { fadeFly } from "$lib/transitions/transitions";
-	import { formatDate } from "$lib/utils/date";
 	import type { PageProps } from "./$types";
-	import { stagger } from "$lib/utils/staggeredCount";
 
 	let { data }: PageProps = $props();
-
-	const DESC_LIMIT: number = 100;
-
-	function trimDescription(description: string): string {
-		if (description.length > DESC_LIMIT) {
-			let shortened: string = description.slice(0, DESC_LIMIT);
-			for (let i = shortened.length - 1; i > 0; i--) {
-				if (shortened.charAt(i) == " ") {
-					shortened = shortened.slice(0, i).concat("...");
-					break;
-				}
-			}
-			return shortened;
-		}
-		return description;
-	}
 </script>
 
 <Metadata
@@ -38,57 +20,16 @@
 	class="bg-bg-default flex flex-col items-center px-8 pb-8 gap-8 sm:gap-12"
 >
 	<section class="flex flex-col gap-6 items-center py-12">
-		<h1
-			in:fadeFly={{ delay: stagger(false, 1), duration: 300, y: 20 }}
-			class="text-5xl md:text-7xl text-bright font-semibold"
-		>
-			Blog
-		</h1>
-		<p
-			in:fadeFly={{ delay: stagger(false, 1), duration: 300, y: 20 }}
-			class="text-lg text-default text-center"
-		>
+		<h1 class="text-5xl md:text-7xl text-bright font-semibold">Blog</h1>
+		<p class="text-lg text-default text-center">
 			Technical writing and development insights on projects I'm currently
 			working on
 		</p>
 	</section>
 	<section class="max-w-6xl relative flex flex-col gap-6 items-center">
-		<div class="grid gap-6">
+		<div class="grid gap-12">
 			{#each data.posts as post}
-				<a href="/blog/{post.slug}">
-					<article
-						class="flex flex-col sm:flex-row gap-6 sm:items-center hover:scale-102 transition-transform"
-						in:fadeFly|global={{
-							delay: stagger(true, 1),
-							duration: 300,
-							y: 20,
-						}}
-					>
-						<!-- Thumbnail -->
-						<div class="sm:w-48 sm:h-36 shrink-0">
-							<div
-								class="w-full h-36 rounded-lg overflow-hidden bg-linear-to-br
-								from-primary/20 to-accent/20 flex items-center justify-center
-								border border-border transition-colors font-mono text-bright"
-								style="background: linear-gradient(135deg, hsl({post.colorStart}), hsl({post.colorEnd}))"
-							>
-								{post.thumbnailText}
-							</div>
-						</div>
-						<div class="flex-1 flex flex-col gap-2">
-							<h2 class="text-2xl font-semibold text-bright">{post.title}</h2>
-							<p class="text-sm text-default/60">
-								Published {formatDate(post.date)}
-							</p>
-							<p class="text-default">{trimDescription(post.description)}</p>
-							<span
-								class="sm:hidden mt-2 text-sm text-defaul inline-flex items-center gap-1"
-							>
-								Read more <span>→</span>
-							</span>
-						</div>
-					</article>
-				</a>
+				<BlogPostCard {post} />
 			{/each}
 		</div>
 	</section>
