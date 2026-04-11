@@ -26,7 +26,7 @@
 
 	async function getGithubActivity(): Promise<GithubEvent[]> {
 		const res = await fetch(
-			"https://api.github.com/users/deahtstroke/events?per_page=10&page=1",
+			"https://api.github.com/users/deahtstroke/events?per_page=15&page=2",
 		);
 
 		if (!res.ok) {

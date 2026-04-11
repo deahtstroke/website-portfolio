@@ -1,4 +1,4 @@
-import { GitBranchMinusIcon, GitBranchPlusIcon, GitCommitHorizontalIcon, GitForkIcon, GitPullRequest, Package, SquareSlash, Tag, type LucideIcon } from "@lucide/svelte";
+import { GitBranchMinusIcon, GitBranchPlusIcon, GitCommitHorizontalIcon, GitForkIcon, GitPullRequest, Glasses, Package, SquareSlash, Tag, type LucideIcon } from "@lucide/svelte";
 
 type GithubEventType =
 	'CommitCommentEvent' |
@@ -33,30 +33,31 @@ export interface EventMeta {
 }
 
 export function getEventMetadata(event: GithubEvent): EventMeta {
+	console.log(event);
 	switch (event.type) {
 		case 'PushEvent':
 			return {
 				icon: GitCommitHorizontalIcon,
-				description: `Pushed commit ${event.payload.head.slice(0, 10)} to ${event.repo.name}`,
-				color: 'text-success'
+				description: `pushed commit ${event.payload.head.slice(0, 10)} to`,
+				color: 'text-success',
 			};
 		case 'CreateEvent':
 			if (event.payload.ref_type == 'branch') {
 				return {
 					icon: GitBranchPlusIcon,
-					description: `Created a branch named ${event.payload.ref} in repository ${event.repo.name}`,
+					description: `created branch ${event.payload.ref} in`,
 					color: 'text-success'
 				};
 			} else if (event.payload.ref_type == 'tag') {
 				return {
 					icon: Tag,
-					description: `Created tag ${event.payload.ref} in repository ${event.repo.name}`,
+					description: `created tag ${event.payload.ref} in`,
 					color: 'text-section'
 				};
 			} else {
 				return {
 					icon: Package,
-					description: `Created a repository named ${event.payload.ref}`,
+					description: `created a repository named `,
 					color: 'text-section'
 				};
 			}
@@ -83,19 +84,49 @@ export function getEventMetadata(event: GithubEvent): EventMeta {
 		case 'IssueCommentEvent':
 			return {
 				icon: GitPullRequest,
-				description: `Commented on issue #${event.payload.issue.number} in ${event.repo.name}`,
+				description: `commented on issue #${event.payload.issue.number} in`,
 				color: 'text-title',
 			};
 		case "PullRequestReviewCommentEvent":
 			return {
 				icon: GitPullRequest,
-				description: `Commented on a code review on PR #${event.payload.pull_request.number} in ${event.repo.name}`,
+				description: `Commented on a code review on PR #${event.payload.pull_request.number} in`,
 				color: 'text-title',
 			}
-		default:
-			return {
-				icon: SquareSlash, description: "Unknown action but! He did something today :)",
-				color: 'text-body'
+		case "PullRequestEvent":
+			const prColor = (): string => {
+				switch (event.payload.action) {
+					case 'opened':
+						return 'text-green';
+					case 'closed':
+						return 'text-red';
+					case 'merged':
+						return 'text-mauve';
+					case 'reopened':
+						return 'text-yellow';
+					case 'assigned':
+						return 'text-blue';
+					case 'unassigned':
+						return 'text-subtext0';
+					case 'labeled':
+						return 'text-lavender';
+					case 'unlabeled':
+						return 'text-subtext1';
+					default:
+						return 'text-body';
+				}
 			}
+			return {
+				icon: GitPullRequest,
+				description: `${event.payload.action} PR #${event.payload.pull_request.number} in`,
+				color: prColor()
+			}
+		case "WatchEvent": {
+			return {
+				icon: Glasses,
+				description: `started watching`,
+				color: `text-title`
+			}
+		}
 	}
 }

@@ -1,10 +1,31 @@
 <script lang="ts">
 	import type { GithubEvent } from "$lib/types/dto/GithubEvent";
+	import EmptyEventExpanded from "./expanded/EmptyEventExpanded.svelte";
+	import IssueCommentExpanded from "./expanded/IssueCommentExpanded.svelte";
 	import PushEventExpanded from "./expanded/PushEventExpanded.svelte";
 
+	const GH_URL = "https://www.github.com/";
 	let { ghEvent }: { ghEvent: GithubEvent } = $props();
 </script>
 
-{#if ghEvent.type == "PushEvent"}
-	<PushEventExpanded {ghEvent} />
-{/if}
+<div class="mb-3">
+	<div
+		class="px-3 py-1.5 flex items-center gap-2 border-b border-surface bg-background"
+	>
+		<p class="text-xs text-body/50">details</p>
+		<a
+			href={GH_URL + ghEvent.repo.name}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="text-xs ml-auto">open ↗</a
+		>
+	</div>
+
+	{#if ghEvent.type == "PushEvent"}
+		<PushEventExpanded {ghEvent} />
+	{:else if ghEvent.type == "IssueCommentEvent"}
+		<IssueCommentExpanded {ghEvent} />
+	{:else}
+		<EmptyEventExpanded />
+	{/if}
+</div>

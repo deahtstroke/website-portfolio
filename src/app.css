@@ -35,6 +35,42 @@
   --color-snippet: #fab387;
   --color-mantle: #181825;
 
+  /* Base */
+  --color-crust: #11111b;
+  --color-mantle: #181825;
+  --color-base: #1e1e2e;
+
+  /* Surface */
+  --color-surface0: #313244;
+  --color-surface1: #45475a;
+  --color-surface2: #585b70;
+
+  /* Overlay */
+  --color-overlay0: #6c7086;
+  --color-overlay1: #7f849c;
+  --color-overlay2: #9399b2;
+
+  /* Text */
+  --color-subtext0: #a6adc8;
+  --color-subtext1: #bac2de;
+  --color-text: #cdd6f4;
+
+  /* Accent colors */
+  --color-lavender: #b4befe;
+  --color-blue: #89b4fa;
+  --color-sapphire: #74c7ec;
+  --color-sky: #89dceb;
+  --color-teal: #94e2d5;
+  --color-green: #a6e3a1;
+  --color-yellow: #f9e2af;
+  --color-peach: #fab387;
+  --color-maroon: #eba0ac;
+  --color-red: #f38ba8;
+  --color-mauve: #cba6f7;
+  --color-pink: #f5c2e7;
+  --color-flamingo: #f2cdcd;
+  --color-rosewater: #f5e0dc;
+
   --font-jetbrains-mono: "JetBrains-Mono", sans-serif;
 }
 
@@ -50,27 +86,27 @@
   }
 
   h1 {
-    @apply text-title
+    @apply text-rosewater
   }
 
   h2 {
-    @apply text-section
+    @apply text-lavender
   }
 
   h3, h4 {
-    @apply text-subheading
+    @apply text-flamingo
   }
 
   p {
-    @apply text-body
+    @apply text-text
   }
 
   a {
-    @apply text-link
+    @apply text-blue
   }
 
   a:hover {
-    @apply text-link-hover
+    @apply text-sky
   }
 }
 
