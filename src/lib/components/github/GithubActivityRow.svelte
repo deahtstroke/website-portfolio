@@ -1,19 +1,14 @@
 <script lang="ts">
-	import {
-		getEventMetadata,
-		type EventMeta,
-		type GithubEvent,
-	} from "$lib/types/dto/GithubEvent";
+	import { getEventIcon, type GithubEvent } from "$lib/types/dto/GithubEvent";
 	import GithubActivityExpanded from "./GithubActivityExpanded.svelte";
+	import GithubActivityDescription from "./GithubActivityDescription.svelte";
+	import type { LucideIcon } from "@lucide/svelte";
 
 	let { event, index }: { event: GithubEvent; index: number } = $props();
 
 	let isExpanded: boolean = $state(false);
 
-	let Meta: EventMeta = $derived(getEventMetadata(event));
-	$effect(() => {
-		console.log(`${Meta.description} ${Meta.color}`);
-	});
+	const Icon: LucideIcon = $derived(getEventIcon(event.type));
 
 	function getRelativeTime(time: string): string {
 		const now: Date = new Date();
@@ -52,8 +47,8 @@
 		<div class="flex flex-1 flex-col items-start">
 			<div class="flex items-center gap-2">
 				<div class="flex items-center gap-1">
-					<Meta.icon class={Meta.color} size="10" />
-					<p class="text-[0.60rem] sm:text-xs {Meta.color}">
+					<Icon class="text-teal" size="12" />
+					<p class="text-[0.60rem] sm:text-xs text-teal">
 						{event.type}
 					</p>
 				</div>
@@ -63,15 +58,7 @@
 					>{getRelativeTime(event.created_at)}</time
 				>
 			</div>
-			<p class="text-xs sm:text-sm text-left">
-				<span class="text-link-hover">Daniel</span>{" "}
-				<span class="text-body">{Meta.description}</span>
-				<a
-					href={`https://www.github.com/${event.repo.name}`}
-					rel="noopener norefeerrer"
-					target="_blank">{event.repo.name}</a
-				>
-			</p>
+			<GithubActivityDescription ghEvent={event} />
 		</div>
 		<span class="text-secondary text-xs">
 			{isExpanded ? "[-]" : "[+]"}

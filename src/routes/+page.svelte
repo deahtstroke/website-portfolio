@@ -9,7 +9,7 @@
 	import type { PageProps } from "./$types";
 	import BlogPostSmall from "$lib/components/BlogPostSmall.svelte";
 	import { Github } from "lucide-svelte";
-	import GithubFeed from "$lib/components/GithubFeed.svelte";
+	import GithubFeed from "$lib/components/github/GithubFeed.svelte";
 
 	let { data }: PageProps = $props();
 
@@ -77,7 +77,7 @@
 		class="relative w-full max-w-5xl px-8 py-4 flex flex-col items-start gap-6"
 	>
 		<h2 class="text-xl">Blog Posts</h2>
-		<p class="text-base">
+		<p class="text-text">
 			Technical writing regarding development and projects I'm currently
 			working/researching.
 		</p>

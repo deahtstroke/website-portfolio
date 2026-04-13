@@ -114,6 +114,16 @@
   @apply max-w-none w-full
 }
 
+.cursor-blink::after {
+  content: '|';
+  animation: blink 1.2s step-end infinite;
+  color: var(--ctp-mauve);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
 /*
  * Blog post styles for the markdown
  */

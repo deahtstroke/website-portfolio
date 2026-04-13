@@ -72,10 +72,10 @@
 		class="max-w-6xl m-auto h-full px-8 py-4 flex flex-row align-middle items-center"
 	>
 		<a
-			class="font-bold mr-auto tracking-wide text-bright text-md hover:cursor-pointer"
+			class="font-bold mr-auto tracking-wide text-text text-md hover:cursor-pointer"
 			href="/"
 		>
-			<h1 class="text-base">Daniel Villavicencio</h1>
+			<h1>Daniel Villavicencio</h1>
 		</a>
 
 		<!-- NavBar options desktop -->
