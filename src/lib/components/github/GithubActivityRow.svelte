@@ -36,34 +36,33 @@
 </script>
 
 <button
-	class="w-full gap-x-4 flex items-center cursor-pointer transition-all duration-150 border border-l-2
+	class="w-full grid grid-cols-[2rem_1fr_2rem] gap-x-4 px-3 items-center cursor-pointer transition-all duration-150 border border-l-2
 	{isExpanded
 		? 'border-l-highlight bg-surface'
 		: 'border-l-transparent hover:border-l-highlight hover:bg-surface'}"
 	onclick={() => (isExpanded = !isExpanded)}
 >
-	<p class="text-xs select-none pl-4">{String(index + 1).padStart(2, " ")}</p>
-	<div class="flex flex-1 items-center py-4 pr-3">
+	<p class="text-xs select-none">{index + 1}</p>
+	<div class="flex flex-1 items-center py-3">
 		<div class="flex flex-1 flex-col items-start">
 			<div class="flex items-center gap-2">
-				<div class="flex items-center gap-1">
-					<Icon class="text-teal" size="12" />
-					<p class="text-[0.60rem] sm:text-xs text-teal">
-						{event.type}
-					</p>
-				</div>
+				<Icon class="text-teal" size="12" />
+				<p class="text-[0.60rem] sm:text-xs text-teal">
+					{event.type}
+				</p>
 				<time
 					datetime={event.created_at}
-					class="text-[0.60rem] text-xs text-secondary ml-auto"
+					class="text-[0.60rem] sm:text-xs text-secondary ml-auto"
 					>{getRelativeTime(event.created_at)}</time
 				>
 			</div>
 			<GithubActivityDescription ghEvent={event} />
 		</div>
-		<span class="text-secondary text-xs">
-			{isExpanded ? "[-]" : "[+]"}
-		</span>
 	</div>
+
+	<span class="text-secondary text-xs">
+		{isExpanded ? "[-]" : "[+]"}
+	</span>
 </button>
 {#if isExpanded}
 	<GithubActivityExpanded ghEvent={event} />

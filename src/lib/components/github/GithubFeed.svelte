@@ -9,6 +9,9 @@
 	let events: GithubEvent[] = $state([]);
 	let isLoading: boolean = $state(true);
 
+	let { pageNumber = 0, count = 5 }: { pageNumber?: number; count?: number } =
+		$props();
+
 	onMount(async () => {
 		let data: GithubEvent[] = await getGithubActivity();
 		isLoading = false;
@@ -25,7 +28,7 @@
 
 	async function getGithubActivity(): Promise<GithubEvent[]> {
 		const res = await fetch(
-			"https://api.github.com/users/deahtstroke/events?per_page=10&page=0",
+			"https://api.github.com/users/deahtstroke/events?per_page=5&page=0",
 		);
 
 		if (!res.ok) {
@@ -69,12 +72,16 @@
 	</div>
 
 	<!-- Command line -->
-	<p class="px-4 py-2 text-xs border-b border-border bg-surface">
-		<span class="text-body/25">$</span>
+	<p
+		class="px-4 py-2 text-xs border-b border-border bg-surface overflow-hidden"
+	>
+		<span class="text-overlay0">$</span>
 		<span class="text-success">gh</span>
 		<span>api</span>
 		<span class="text-warning">users/{GITHUB_USERNAME}/events/public</span>
-		<span class="inline-block text-body/25">--page 0 --limit 10</span>
+		<span class="inline-block text-body/25"
+			>--page={pageNumber} --limit={count}</span
+		>
 	</p>
 
 	<!-- Main content from GH API -->
@@ -92,10 +99,10 @@
 
 	<!-- Status bar -->
 	<div
-		class="px-4 py-2 text-xs flex items-center gap-4 bg-ctp-crust border-t border-ctp-surface0 text-overlay0"
+		class="px-4 py-2 text-xs flex items-center gap-4 bg-crust border-b border-surface0 text-overlay0"
 	>
 		<span><span class="text-mauve">NORMAL</span></span>
-		<span>10 events loaded</span>
-		<span class="ml-auto">click the '[+]' to expand ;)</span>
+		<span>5 events loaded</span>
+		<span class="ml-auto">click the '[+]' to expand</span>
 	</div>
 </article>

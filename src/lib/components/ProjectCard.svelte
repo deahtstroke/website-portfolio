@@ -10,7 +10,7 @@
 			githubUrl: "",
 			pinned: false,
 		},
-	}: { project: Project } = $props();
+	}: { project?: Project } = $props();
 </script>
 
 <article class="group flex flex-col border border-border">
