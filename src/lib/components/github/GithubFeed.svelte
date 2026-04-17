@@ -79,7 +79,7 @@
 		<span class="text-success">gh</span>
 		<span>api</span>
 		<span class="text-warning">users/{GITHUB_USERNAME}/events/public</span>
-		<span class="inline-block text-body/25"
+		<span class="inline-block text-text/25"
 			>--page={pageNumber} --limit={count}</span
 		>
 	</p>

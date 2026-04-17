@@ -42,7 +42,7 @@
 		: 'border-l-transparent hover:border-l-highlight hover:bg-surface'}"
 	onclick={() => (isExpanded = !isExpanded)}
 >
-	<p class="text-xs select-none">{index + 1}</p>
+	<p class="text-xs text-surface2 select-none">{index + 1}</p>
 	<div class="flex flex-1 items-center py-3">
 		<div class="flex flex-1 flex-col items-start">
 			<div class="flex items-center gap-2">
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<span class="text-secondary text-xs">
+	<span class="text-surface2 text-xs">
 		{isExpanded ? "[-]" : "[+]"}
 	</span>
 </button>

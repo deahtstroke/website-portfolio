@@ -6,11 +6,18 @@ export interface Project {
 	image?: string;
 	technologies: string[];
 	githubUrl: string;
+	status: ProjectStatus;
 	createdAt?: Date;
 	lastUpdatedAt?: Date;
 	websiteUrl?: string;
+	primaryLanguage: string;
+	projectType: ProjectType;
 	pinned: boolean;
 }
+
+export type ProjectStatus = 'active' | 'maintained' | 'wip' | 'archived';
+
+export type ProjectType = 'contribution' | 'project';
 
 export interface RepoMetadata {
 	repos: RepoDetails[];

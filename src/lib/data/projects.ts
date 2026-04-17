@@ -2,13 +2,16 @@ import type { Project, RepoMetadata, RepoMetadataResponse, } from "$lib/types/Pr
 
 export const projectData: Project[] = [
 	{
-		title: "Go Schema Migration Tool (Gsmt)",
+		title: "Go Schema Migration Tool",
 		repoName: "gsmt",
 		repoOwner: "deahtstroke",
 		description:
 			"Lightweight embedded-schema and data migration library for Go. It helps you apply, track and validate schema and data changes in your database at runtime.",
 		technologies: ["Go", "PostgreSQL", "RDBMS"],
 		githubUrl: "http://www.github.com/deahtstroke/gsmt",
+		status: "maintained",
+		primaryLanguage: "Go",
+		projectType: 'project',
 		pinned: false,
 	},
 	{
@@ -21,16 +24,22 @@ export const projectData: Project[] = [
 		technologies: ["Typescript", "Svelte", "html", "css", "vercel"],
 		githubUrl: "https://www.github.com/deahtstroke/verity-inside-helper",
 		websiteUrl: "https://verity-inside-helper.vercel.app/",
+		status: "active",
+		primaryLanguage: "Svelte",
+		projectType: 'project',
 		pinned: false,
 	},
 	{
-		title: "Protheon, Modular Mind",
+		title: "Protheon ETL",
 		repoName: "protheon",
 		repoOwner: "deahtstroke",
 		description:
-			"Distributed job orchestration system built in Go that coordinates workers across multiple machines to process large-scale data pipelines efficiently.",
-		technologies: ["Go", "PostgreSQL", "RabbitMQ", "Docker"],
+			"CLI-based ETL application that focuses on ease of use through the terminal",
+		technologies: ["Go", "Toml", "Lua", "SQL"],
 		githubUrl: "http://www.github.com/deahtstroke/Protheon",
+		status: "wip",
+		primaryLanguage: "Go",
+		projectType: 'project',
 		pinned: true,
 	},
 	{
@@ -38,9 +47,12 @@ export const projectData: Project[] = [
 		repoName: "dap-profiler.nvim",
 		repoOwner: "deahtstroke",
 		description:
-			"Dap-Profiler.nvim is a lightweight Neovim plugin that enhances the nvim-dap (Debug Adapter Protocol) experience by allowing developers to create, organize and switch between debugging profiles effortlessly.",
+			"Lightweight Neovim plugin that enhances the nvim-dap experience by allowing developers to create, organize and switch between debugging profiles effortlessly.",
 		technologies: ["Lua", "Neovim"],
 		githubUrl: "http://www.github.com/deahtstroke/dap-profiler.nvim",
+		status: "wip",
+		projectType: 'project',
+		primaryLanguage: "Lua",
 		pinned: true,
 	},
 	{
@@ -50,6 +62,9 @@ export const projectData: Project[] = [
 		description: "Legacy monolithic version of Riven Bot Discord Bot using Java, Spring Webflux and MongoDB.",
 		technologies: ["Java", "spring boot", "Mongodb", "Redis", "Gradle", "Docker", "Github Actions", "JUnit5", "Mockito"],
 		githubUrl: "https://github.com/Riven-of-a-Thousand-Servers/rivenbot-legacy",
+		status: "archived",
+		primaryLanguage: "Java",
+		projectType: 'project',
 		pinned: false,
 	},
 	{
@@ -59,6 +74,9 @@ export const projectData: Project[] = [
 		description: "Small experimental mocking library to study Testify's mocking capabilities in Go.",
 		technologies: ["Go", "Testing"],
 		githubUrl: "https://github.com/deahtstroke/duck-assert",
+		status: "maintained",
+		projectType: 'project',
+		primaryLanguage: "Go",
 		pinned: false,
 	},
 	{
@@ -68,6 +86,9 @@ export const projectData: Project[] = [
 		description: "Backend application that efficiently processes Post Game Carnage Reports using Spring Batch's processing architecture and parallelism.",
 		technologies: ["Java", "Spring Boot", "PostgreSQL", "Grafana", "Loki", "Redis", "Docker", "Prometheus"],
 		githubUrl: "https://github.com/deahtstroke/pgcr-batch-processor",
+		status: "archived",
+		primaryLanguage: "Java",
+		projectType: 'project',
 		pinned: false,
 	},
 	{
@@ -77,36 +98,60 @@ export const projectData: Project[] = [
 		description: "Scheduling web-application using Vendia's GraphQL event-based technology.",
 		technologies: ["Java", "Typescript", "Spring Boot", "Angular", "Groovy", "Azure", "Spring Security", "Test Containers", "Wiremock"],
 		githubUrl: "https://github.com/deahtstroke/chameleon-business-studio",
+		status: "archived",
+		primaryLanguage: "Java",
+		projectType: 'project',
 		pinned: false,
 	},
 	{
-		title: "RoTS - Proxy Service",
+		title: "RivenBot Proxy Service",
 		repoName: "proxy-service",
 		repoOwner: "Riven-of-a-Thousand-Servers",
 		description: "Microservice-based Discord bot that fetches analytics and statistics for Destiny 2 players through Discord",
 		technologies: ["Go", "PostgreSQL", "RabbitMQ", "Discord", "Digital Ocean"],
 		githubUrl: "https://github.com/Riven-of-a-Thousand-Servers/proxy-service",
+		status: "active",
+		projectType: 'project',
+		primaryLanguage: "Go",
 		pinned: false,
 	},
 	{
-		title: "RoTS - API Service",
+		title: "RivenBot API Service",
 		repoName: "rivenbot-api-service",
 		repoOwner: "Riven-of-a-Thousand-Servers",
-		description: "RivenBot API service in charge of serving HTTP endpoints for the rest of the application to consume database operations",
+		description: "RivenBot API service in charge of serving HTTP endpoints for the rest of the application to consume database operations.",
 		technologies: ["Go", "PostgreSQL", "Discord", "Redis"],
 		githubUrl: "https://github.com/Riven-of-a-Thousand-Servers/rivenbot-api-service",
+		projectType: 'project',
+		status: "active",
+		primaryLanguage: "Go",
 		pinned: true,
 	},
 	{
-		title: "RoTS - Crawler Serivce",
+		title: "RivenBot Crawler Serivce",
 		repoName: "pgcr-crawler-service",
 		repoOwner: "Riven-of-a-Thousand-Servers",
-		description: "RivenBot crawler that linearly crawls Bungie's web API for Post Game Carnage Reports (PGCRs)",
+		description: "RivenBot crawler that linearly crawls Bungie's web API for Post Game Carnage Reports (PGCRs).",
 		technologies: ["Go", "PostgreSQL", "IPv6", "Docker"],
 		githubUrl: "https://github.com/Riven-of-a-Thousand-Servers/rivenbot-api-service",
+		status: "active",
+		projectType: 'project',
+		primaryLanguage: "Go",
 		pinned: false,
+	},
+	{
+		title: "Moby Contributions",
+		repoOwner: "deahstroke",
+		repoName: "moby",
+		description: "Upstream contributions to the Moby container engine that powers Docker.",
+		technologies: ["Go", "Docker", "Linux"],
+		githubUrl: "https://github.com/deahtstroke/moby",
+		status: "active",
+		primaryLanguage: "Go",
+		projectType: 'contribution',
+		pinned: true,
 	}
-]
+];
 
 export async function getRepoMetadata(projects: Project[]): Promise<Project[]> {
 	const request: RepoMetadata = {
@@ -162,6 +207,6 @@ export function getMostRecentProjects(data: Project[], limit: number): Project[]
 	).slice(0, limit ? limit : 5)
 }
 
-export function getPinnedProjects(data: Project[]): Project[] {
-	return data.filter(p => p.pinned)
+export function getPinnedProjects(): Project[] {
+	return projectData.filter(p => p.pinned)
 }

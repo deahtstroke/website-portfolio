@@ -2,7 +2,6 @@
 	import { ArrowDown, ArrowUp, Search, X } from "lucide-svelte";
 	import ProjectCard from "$lib/components/ProjectCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
-
 	import { projectData as projects, getRepoMetadata } from "$lib/data/projects";
 	import { onMount } from "svelte";
 	import type { Project } from "$lib/types/Project";

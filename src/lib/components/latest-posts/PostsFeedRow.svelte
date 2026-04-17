@@ -17,7 +17,7 @@
 		: 'border-l-transparent hover:border-l-mauve hover:bg-surface'}"
 	onclick={() => (isExpanded = !isExpanded)}
 >
-	<p class="text-xs select-none">{index + 1}</p>
+	<p class="text-xs text-surface2 select-none">{index + 1}</p>
 	<div class="flex flex-col flex-wrap gap-2 justify-start">
 		<h3 class="text-sm text-text text-left font-light">{post.title}</h3>
 		<time
@@ -34,7 +34,7 @@
 		</div>
 	</div>
 
-	<span class="text-secondary text-xs">
+	<span class="text-surface2 text-xs">
 		{isExpanded ? "[-]" : "[+]"}
 	</span>
 </button>

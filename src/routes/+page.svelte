@@ -3,7 +3,9 @@
 	import type { PageProps } from "./$types";
 	import { Github } from "lucide-svelte";
 	import GithubFeed from "$lib/components/github/GithubFeed.svelte";
+	import ProjectsFeed from "$lib/components/projects/ProjectsFeed.svelte";
 	import LatestPostsFeed from "$lib/components/latest-posts/LatestPostsFeed.svelte";
+	import { getPinnedProjects } from "$lib/data/projects";
 
 	let { data }: PageProps = $props();
 
@@ -12,7 +14,7 @@
 
 <Metadata
 	title="DanielVM – Software Projects, Blog & Insights"
-	description="Explore Daniel Villavicencio's portfolio of software projects, blog posts, and development insights. Learn more about his insights in full-stack technologies."
+	description="Explore Daniel Villavicencio's portfolio of software projects, blog posts, and development insights. Learn more about his insights technology."
 	ogTitle="DanielVM – Software Projects, Blog & Insights"
 	ogDescription="Explore Daniel Villavicencio's portfolio of software projects, blog posts, and development insights. Learn more about his insights in full-stack technologies."
 	ogUrl="https://www.danielvm.dev"
@@ -94,5 +96,26 @@
 			>
 		</div>
 		<LatestPostsFeed posts={data.posts} />
+	</section>
+
+	<!-- Projects -->
+	<section class="mt-10 mb-3">
+		<div class="w-full mb-2 flex items-center gap-2">
+			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+				Projects
+			</h2>
+			<div class="flex-1 bg-surface0 h-px"></div>
+			<a
+				href="/projects"
+				class="group text-xs text-mauve sm:text-overlay0 hover:text-mauve transition-all"
+			>
+				<span
+					class="inline-block transition-transform group-hover:translate-x-1"
+					>→</span
+				>
+				/projects
+			</a>
+		</div>
+		<ProjectsFeed projects={getPinnedProjects()} />
 	</section>
 </main>
