@@ -47,6 +47,7 @@
 	);
 
 	const closeTelescope = () => {
+		query = "";
 		telescopeOpen = false;
 		document.body.style.overflow = "";
 	};
@@ -64,8 +65,7 @@
 	type Match = { href: string; label: string; indices: number[] };
 
 	const filteredResults = $derived.by<Match[]>(() => {
-		const q = query.toLowerCase().trim();
-		console.log(query);
+		const q = query.trim();
 		if (q === "") {
 			return menuOptions.map((l) => ({
 				href: l.ref,
@@ -77,7 +77,7 @@
 			.map((l) => ({
 				href: l.ref,
 				label: l.name,
-				indices: fuzzyIndices(query, l.name),
+				indices: fuzzyIndices(q, l.name),
 			}))
 			.filter((l): l is Match => l.indices !== null)
 			.sort((a, b) => fuzzyScore(b.indices) - fuzzyScore(a.indices));
@@ -96,7 +96,39 @@
 			inputEl?.focus();
 		}
 	});
+
+	function globalInputKeyCaptures(event: KeyboardEvent): void {
+		if (!telescopeOpen) return;
+
+		if (event.key === "Escape") {
+			if (document.activeElement === inputEl) {
+			}
+			closeTelescope();
+			return;
+		} else if (
+			event.key === "ArrowDown" ||
+			(event.key === "j" && document.activeElement !== inputEl)
+		) {
+			event.preventDefault();
+			selectedIndex = Math.min(selectedIndex + 1, filteredResults.length);
+			return;
+		} else if (
+			event.key === "ArrowUp" ||
+			(event.key === "k" && document.activeElement !== inputEl)
+		) {
+			event.preventDefault();
+			selectedIndex = Math.max(selectedIndex - 1, 0);
+			return;
+		} else if (event.key === "Enter" && filteredResults[selectedIndex]) {
+			event.preventDefault();
+			window.location.href = filteredResults[selectedIndex].href;
+			closeTelescope();
+			return;
+		}
+	}
 </script>
+
+<svelte:window onkeydown={globalInputKeyCaptures} />
 
 <nav
 	class="sticky top-0 bg-mantle border-b border-surface0 backdrop-blur-md z-40"
@@ -123,7 +155,7 @@
 				<li>
 					<a
 						href={option.ref}
-						class="group text-xs relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
+						class="group text-xs sm:text-sm relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
 						page.url.pathname
 							? 'text-sky'
 							: 'text-blue hover:text-sky '}"
@@ -171,7 +203,8 @@
 					bind:this={inputEl}
 					onkeydown={inputKeycaptures}
 					bind:value={query}
-					class="bg-crust border-none text-text text-xs active:border-none"
+					style="caret-shape: underscore;"
+					class="caret-mauve bg-crust border-none text-text text-xs focus:outline-none focus:ring-0"
 				/>
 			</div>
 		</div>
@@ -189,10 +222,19 @@
 					<span class={active ? "text-crust" : "text-subtext1"}>
 						~/deahtstroke/<span
 							class={active ? "font-semibold text-crust" : "text-mauve"}
-							>{result.label}</span
 						>
+							{#each result.label.split("") as char, charI}
+								{#if result.indices.includes(charI)}
+									<span class="text-crust bg-yellow font-extrabold"
+										>{char}
+									</span>
+								{:else}
+									{char}
+								{/if}
+							{/each}
+						</span>
 					</span>
-					<span class="text-surface0 group-hover:text-surface2">page</span>
+					<span class="text-surface1 group-hover:text-surface2">page</span>
 				</a>
 			{/each}
 		</div>
@@ -201,7 +243,8 @@
 		<div class="px-4 py-3 flex gap-2 bg-crust border-t border-surface0">
 			<p class="text-xs text-overlay0">{filteredResults.length} results</p>
 			<div class="flex gap-2 ml-auto text-xs">
-				<p class="text-overlay0">↑↓ navigate</p>
+				<p class="text-overlay0">↑|k Up</p>
+				<p class="text-overlay0">↓|j Down</p>
 				<p class="text-overlay0">↵ open</p>
 				<p class="text-overlay0">esc close</p>
 			</div>

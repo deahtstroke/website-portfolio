@@ -10,14 +10,16 @@ export function fuzzyScore(indices: number[]): number {
 
 export function fuzzyIndices(query: string, target: string): number[] | null {
 	if (query === '') return [];
+	let normalizedQuery = query.toLowerCase();
+	let normalizedTarget = target.toLowerCase();
 	const indices: number[] = [];
 	let qi = 0;
 
-	for (let i = 0; i < target.length && qi < query.length; i++) {
-		if (target[i] === query[qi]) {
+	for (let i = 0; i < normalizedTarget.length && qi < normalizedQuery.length; i++) {
+		if (normalizedTarget[i] === normalizedQuery[qi]) {
 			indices.push(i);
 			qi++;
 		}
-		return qi == query.length ? indices : null;
 	}
+	return qi == query.length ? indices : null;
 }
