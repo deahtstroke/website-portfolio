@@ -10,6 +10,7 @@ export interface Project {
 	createdAt?: Date;
 	lastUpdatedAt?: Date;
 	websiteUrl?: string;
+	areas?: string[];
 	primaryLanguage: string;
 	projectType: ProjectType;
 	pinned: boolean;

@@ -19,16 +19,19 @@
 >
 	<p class="text-xs text-surface2 select-none">{index + 1}</p>
 	<div class="flex flex-col flex-wrap gap-2 justify-start">
-		<h3 class="text-sm text-text text-left font-light">{post.title}</h3>
 		<time
 			datetime={post.date}
 			class="text-[0.60rem] sm:text-xs text-overlay0 text-left"
 			>{formatDate(post.date)}</time
 		>
+		<h3 class="text-sm text-text text-left font-light">
+			{post.title}
+		</h3>
 		<div class="flex flex-wrap items-center gap-2">
 			{#each post.categories as tag}
-				<span class="text-mauve text-[0.65rem] font-mono"
-					>@{formatTag(tag)}</span
+				<span
+					class="border rounded border-mauve bg-surface px-1.5 py-px text-mauve text-[0.65rem] font-mono"
+					>{formatTag(tag)}</span
 				>
 			{/each}
 		</div>
@@ -39,18 +42,22 @@
 	</span>
 </button>
 {#if isExpanded}
-	<div class="mx-4 mb-3 rounded bg-crust border border-surface0">
+	<div class="bg-mantle border-b border-border">
 		<div
-			class="px-3 py-1.5 flex items-center gap-2 border-b border-surface0 bg-mantle"
+			class="px-3 py-1.5 flex items-center gap-2 border-b border-surface0 bg-crust"
 		>
-			<span class="text-xs text-overlay1"> excerpt </span>
+			<span class="text-xs text-overlay1">excerpt</span>
+			<a href={`/blog`} class="text-xs ml-auto hover:underline">all posts ↗</a>
+		</div>
+		<div class="flex flex-col items-center px-4 py-3">
+			<p class="text-xs text-subtext1 leading-relaxed">
+				{post.description}.
+			</p>
 			<a
 				href={`/blog/${post.slug}`}
-				class="text-xs ml-auto hover:underline text-sapphire">Read more ↗</a
+				class="pt-2 text-xs hover:underline text-sapphire self-end"
+				>Read full post↗</a
 			>
 		</div>
-		<p class="px-4 py-3 text-xs text-subtext1 leading-relaxed">
-			{post.description}.
-		</p>
 	</div>
 {/if}
