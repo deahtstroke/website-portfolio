@@ -56,11 +56,9 @@
 
 <article class="border border-surface1 bg-mantle">
 	<!-- Tab bar -->
-	<div
-		class="bg-background border-b border-border flex items-center px-3 text-xs"
-	>
+	<div class="bg-crust border-b border-border flex items-center px-3 text-xs">
 		<h3
-			class="px-4 py-2 text-text border-b-2 border-highlight bg-surface cursor-default whitespace-nowrap"
+			class="px-4 py-2 text-text border-b-2 border-mauve bg-surface cursor-default whitespace-nowrap"
 		>
 			activity.log
 		</h3>

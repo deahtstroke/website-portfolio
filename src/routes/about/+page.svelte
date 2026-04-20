@@ -1,70 +1,60 @@
 <script lang="ts">
-	import type { Milestone } from "$lib/types/Milestone";
-	import type { Education } from "$lib/types/Education";
-
-	import {
-		BookOpen,
-		Mail,
-		Github,
-		Shield,
-		Sparkles,
-		Target,
-	} from "lucide-svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
 
-	const milestones: Milestone[] = [
-		{
-			year: "June 2017",
-			title: "Started Community College",
-			description:
-				"Began studies at Sierra College in Rocklin, CA. \nGraduated with an overall 3.74 GPA on a 4.00 scale.",
-		},
-		{
-			year: "January 2020",
-			title: "Transferred to Sacramento State University",
-			description:
-				"Transfered from Sierra College to Sacramento State University. \nTook upper-division classes for Computer Science.",
-		},
-		{
-			year: "June 2022",
-			title: "First Software Development Role",
-			description:
-				"Joined UNFI as a Software Engineer I while completing my final semester of studies.",
-		},
-		{
-			year: "Dec 2022",
-			title: "Graduated from Sacramento State",
-			description:
-				"Earned a Bachelor of Science in Computer Science with Cum Laude honors and a 3.77 GPA.",
-		},
-		{
-			year: "Oct 2023 - Present",
-			title: "Career Growth & Exploration",
-			description:
-				"Following post-COVID layoffs, focused on expanding technical dpeth through project-based learning, open-source contributions, and professional certifications, while preparing for the next major career opportunity.",
-		},
+	const languages: Record<string, string> = {
+		java: "peach",
+		go: "sky",
+		lua: "blue",
+		bash: "green",
+		python: "red",
+		c: "teal",
+		typescript: "mauve",
+	};
+
+	const libraries: Record<string, string> = {
+		svelte: "peach",
+		"spring boot": "green",
+		react: "sapphire",
+		"node.js": "teal",
+		"cobra/viper": "yellow",
+		containerd: "lavender",
+		bubbletea: "mauve",
+	};
+
+	const tools: Record<string, string> = {
+		git: "subtext0",
+		docker: "sapphire",
+		linux: "yellow",
+		containerd: "lavender",
+		postgresql: "blue",
+		redis: "red",
+		"gh-actions": "text",
+	};
+
+	const systems: string[] = [
+		"Distributed Systems",
+		"Linux Kernel",
+		"Container runtimes",
 	];
 
-	const educationsAndCerts: Education[] = [
-		{
-			degree: "B.S. Computer Science",
-			institution: "California State University, Sacramento",
-			year: "2020 - 2022",
-			details: "GPA: 3.77/4.00, Cum Laude honors.",
-		},
-		{
-			degree: "A.S. Computer Science",
-			institution: "Sierra College",
-			year: "2017-2019",
-			details: "GPA: 3.74/4.00",
-		},
-		{
-			degree: "AWS Certified Cloud Practitioner",
-			institution: "Amazon Web Services",
-			year: "2025",
-			details: "Foundational cloud certification for AWS",
-		},
+	const theory: string[] = [
+		"Programming Languages",
+		"Compiler Design",
+		"Interpreters",
+		"Abstract Syntax Trees",
+		"Parsers",
 	];
+
+	const infra: string[] = [
+		"Observability",
+		"Networking",
+		"Kubernetes",
+		"Deployment Pipelines",
+		"CI/CD",
+		"DevOps",
+	];
+
+	let current: string = $state("languages");
 </script>
 
 <Metadata
@@ -81,222 +71,125 @@
 	ogType="website"
 />
 
-<main class="flex flex-col max-w-3xl mx-auto px-8 gap-8 sm:gap-12 items-center">
-	<section class="flex flex-col py-12 gap-6">
-		<h1 class="text-bright text-5xl md:text-7xl font-bold text-center">
-			About Me =)
-		</h1>
+<!-- Interest block of markup -->
+{#snippet interest(title: string, interests: string[], color: string = "mauve")}
+	<div class="flex flex-col gap-2 items-start text-xs">
+		<h3 class="tracking-widest uppercase text-{color}">{title}</h3>
+		<div class="flex gap-2 items-center flex-wrap">
+			{#each interests as i}
+				<span
+					class="px-1.5 py-0.5 border rounded border-{color} text-{color} text-xs"
+					>{i}</span
+				>
+			{/each}
+		</div>
+	</div>
+{/snippet}
 
-		<p class="sm text-center">
-			I'm a software engineer passionate about building scalable systems and
-			elegant solutions. I specialize in backend development, distributed
-			systems, and turning complex problems into simple, maintainable, and
-			testable code.
+<!-- Button for switching between programming languages, tools, and frameworks -->
+{#snippet skillsButton(label: string, state: string, fn: () => void)}
+	<button
+		onclick={fn}
+		class="px-4 py-2 text-text cursor-pointer whitespace-nowrap border-b-2 {current ===
+		state
+			? 'border-b-2 border-mauve bg-surface'
+			: 'border-transparent hover:bg-surface hover:border-mauve'}"
+	>
+		{label}
+	</button>
+{/snippet}
+
+<main
+	class="flex flex-col items-center gap-10 min-w-0 max-w-3xl mx-auto px-4 py-8 sm:py-10"
+>
+	<section class="flex flex-col gap-4 items-start mb-3">
+		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-tight">About Me</h1>
+		<p class="text-sm text-text">
+			My name is Daniel and I build the stuff underneath the stuff. I am into
+			container runtimes, low-level computer science stuff and recently I've
+			been contributing to open-source projects. A quote from a very good friend
+			that really highlights why I like to deep-dive into topics I don't know
+			about is: Rome wasn't built in a day. I am a very curious individual on
+			how and why systems work, naturally this is what drew me to make many of
+			my own personal projects and contribute to high-profile projects such as
+			Docker: I want to understand how they work.
+		</p>
+		<p class="text-sm text-text">
+			Also, I really like <span class="text-sky">manatees</span>.
 		</p>
 	</section>
-	<!-- Philosophy -->
-	<section class="flex flex-col items-center gap-6">
-		<h2 class="text-2xl font-semibold text-bright text-center">Philosophy</h2>
-		<div class="flex flex-col items-center gap-2 space-y-2">
-			<p>I believe great software is built on four pillars:</p>
-			<!-- Core Principles -->
-			<div class="grid md:grid-cols-2 gap-6 p-5">
-				<div
-					class="space-y-3 bg-surface border border-border rounded-lg p-6 group group-hover:bg-background group-hover:border-border-default transition-colors"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center
-						group-hover:border-border-hover group-hover:bg-surface transition-colors"
-					>
-						<Sparkles class="w-6 h-6 text-cyan-400/80" />
-					</div>
-					<h3 class="text-lg font-semibold text-bright">Simplicity</h3>
-					<p class="text-sm text-default">
-						Code should be easy to understand and maintain. The best solutions
-						are often the simplest ones.
-					</p>
-				</div>
-				<div
-					class="space-y-3 bg-surface border border-border rounded-lg p-6 hover:border-border-default transition-colors"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-bg-card border border-neutral flex items-center justify-center"
-					>
-						<Shield class="w-6 h-6 text-emerald-400/80" />
-					</div>
-					<h3 class="text-lg font-semibold text-bright">Reliability</h3>
-					<p class="text-sm text-default">
-						Systems should be resilient and handle failures gracefully. Trust is
-						built through consistency.
-					</p>
-				</div>
-				<div
-					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-bg-card border border-neutral flex items-center justify-center"
-					>
-						<Target class="w-6 h-6 text-orange-400/80" />
-					</div>
-					<h3 class="text-lg font-semibold text-bright">Practicality</h3>
-					<p class="text-sm text-default">
-						Solutions should solve real problems effectively. Pragmatism over
-						perfection.
-					</p>
-				</div>
-				<div
-					class="space-y-3 bg-bg-dark border border-border-default rounded-lg p-6 hover:border-border-default transition-colors"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-bg-card border border-neutral flex items-center justify-center"
-					>
-						<BookOpen class="w-6 h-6 text-blue-400/80" />
-					</div>
-					<h3 class="text-lg font-semibold text-bright">Comprehensiveness</h3>
-					<p class="text-sm text-default">
-						Good documentation and testing make code accessible and maintainable
-						for everyone.
-					</p>
-				</div>
+
+	<!-- Skills, tools, and frameworks -->
+	<article class="w-full">
+		<div class="w-full mb-2 flex items-center gap-2">
+			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+				Skills
+			</h3>
+			<div class="flex-1 bg-surface0 h-px"></div>
+			<p class="text-xs text-overlay0">stuff I use</p>
+		</div>
+		<section class="w-full border border-surface1 bg-mantle">
+			<div
+				class="flex flex-nowrap w-0 min-w-full px-3 text-xs bg-crust border-b border-border overflow-x-auto"
+			>
+				{@render skillsButton(
+					"languages.md",
+					"languages",
+					() => (current = "languages"),
+				)}
+				{@render skillsButton(
+					"frameworks.md",
+					"libraries",
+					() => (current = "libraries"),
+				)}
+				{@render skillsButton("tools.md", "tools", () => (current = "tools"))}
 			</div>
-			<p class="text-center">
-				I approach problems with curiosity and practicality, seeking the
-				simplest effective solution. I emphasize clean architecture, deliberate
-				design, robust testing, and a mindset of continuous improvement.
-			</p>
-		</div>
-	</section>
-	<!-- Biography -->
-	<section class="flex flex-col items-center gap-6">
-		<h2 class="text-2xl font-semibold text-bright text-center">Background</h2>
-		<div class="flex flex-col items-start gap-4">
-			<p>
-				My journey began in June 2017 when I started community college at Sierra
-				College. I declared Computer Science as my major without realizing how
-				much I would come to love it. Having spent most of my life around
-				computers, I’d always been curious about what was happening “under the
-				hood.” As the months went by and I took more classes, I found that
-				everything outside of Computer Science felt a bit dull in comparison, a
-				subtle but clear sign that my blind-choice was the correct one (thank
-				God).
-			</p>
-			<p>
-				After transferring to California State University, Sacramento, I dove
-				deeper in my coursework with advanced topics like Database Management
-				Systems and Operating Systems, which sparked my interest even further.
-				During the summer of my senior year, I landed a full-time offer at UNFI
-				as a Software Engineer I. My final semester was a balancing act, working
-				full-time while completing my remaining coursework. It was challenging
-				for sure, but in December 2022, I proudly graduated with honors with a
-				Bachelor of Science in Computer Science.
-			</p>
-			<p>
-				After graduation, I continued working at UNFI learning as much as I
-				could from my coworkers and mentors, until post-COVID layoffs affected
-				my position and those of several colleagues. Although it was a setback,
-				the experience had already ignited my curiosity for new technologies and
-				concepts that I hadn’t explored in college. I became fascinated by
-				distributed systems and cluster workloads. Even the word “cluster” felt
-				like a glimpse into something powerful and complex that I had to
-				explore. Since then, I’ve focused on deepening my knowledge beyond what
-				I learned in school and building projects that are fun, challenging, and
-				meaningful to me.
-			</p>
-			<p>
-				Fueled by passion, curiosity, and caffeine, I strive to grow into an
-				even better software engineer, collaborate with teams that care deeply
-				about what they build, and continue connecting with others who share the
-				same drive and enthusiasm for technology.
-			</p>
-		</div>
-	</section>
-
-	<!-- Milestones -->
-	<section class="flex flex-col gap-6 items-center w-full">
-		<h2 class="text-2xl font-semibold text-bright">Career Milestones</h2>
-		<div class="relative space-y-4 w-full">
-			<!-- Vertical line -->
-			<div class="absolute left-2 top-2 bottom-2 w-px bg-white/20"></div>
-			{#each milestones as milestone}
-				<div class="relative pl-10">
-					<!-- Dot -->
-					<div
-						class="absolute left-0 top-2 w-4 h-4 rounded-full bg-bg-default border-2 border-white/20"
-					></div>
-
-					<div class="space-y-2">
-						<div
-							class="flex flex-col md:flex-row md:justify-between gap-1 md:gap-4"
+			<div class="px-3 py-2 bg-mantle text-white flex flex-wrap gap-2">
+				{#if current === "languages"}
+					{#each Object.entries(languages) as [language, color]}
+						<span
+							class="px-1.5 py-px border rounded border-{color} text-sm text-{color}"
 						>
-							<h3 class="text-lg font-medium text-bright">
-								{milestone.title}
-							</h3>
-							<span class="text-sm font-medium text-white/40"
-								>{milestone.year}</span
-							>
-						</div>
-						<div class="flex flex-col gap-1">
-							{#each milestone.description.split("\n") as desc}
-								<p class="text-sm text-default leading-relaxed max-w-2xl">
-									{desc}
-								</p>
-							{/each}
-						</div>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</section>
-
-	<!-- Education + Certifications -->
-	<section class="flex flex-col gap-6 w-full">
-		<h2 class="text-2xl font-semibold text-bright text-center">
-			Education & Certifications
-		</h2>
-		<div class="space-y-2">
-			{#each educationsAndCerts as education}
-				<div class="space-y-2 pb-6 border-b border-neutral-800 last:border-0">
-					<div
-						class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2"
-					>
-						<h3 class="text-lg font-medium text-bright">{education.degree}</h3>
-						<span class="text-sm text-bright/40">{education.year}</span>
-					</div>
-					<p class="text-sm text-bright/50">{education.institution}</p>
-					<p class="text-sm text-bright/60">{education.details}</p>
-				</div>
-			{/each}
-		</div>
-	</section>
-
-	<!-- CTA -->
-	<section class="flex flex-col gap-6">
-		<div class="p-8 space-y-2">
-			<h2 class="text-xl font-semibold text-bright text-center">
-				Let's Connect
-			</h2>
-			<p class="text-bright/60 text-sm leading-relaxed text-center">
-				Interested in working together or just want to chat about tech? I'm
-				always open to interesting conversations and new opportunities.
-			</p>
-			<div class="flex flex-col sm:flex-row sm:justify-center gap-2 pt-2">
-				<a
-					href="/contact"
-					class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-bg-default border border-border-default rounded text-bright hover:bg-bg-dark transition-colors"
-				>
-					<Mail class="h-4 w-4" />
-					Contact Me
-				</a>
-				<a
-					href="https://github.com/deahtstroke"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-bg-default border border-border-default rounded text-bright hover:bg-bg-dark transition-colors"
-				>
-					<Github class="w-4 h-4" />
-					View my work
-				</a>
+							{language}
+						</span>
+					{/each}
+				{:else if current === "libraries"}
+					{#each Object.entries(libraries) as [library, color]}
+						<span
+							class="px-1.5 py-px border rounded border-{color} text-sm text-{color}"
+						>
+							{library}
+						</span>
+					{/each}
+				{:else}
+					{#each Object.entries(tools) as [tool, color]}
+						<span
+							class="px-1.5 py-px border rounded border-{color} text-sm text-{color}"
+						>
+							{tool}
+						</span>
+					{/each}
+				{/if}
 			</div>
+		</section>
+	</article>
+
+	<!-- Topics of interest -->
+	<article class="w-full">
+		<div class="w-full mb-5 flex items-center gap-2">
+			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+				Interests
+			</h3>
+			<div class="flex-1 bg-surface0 h-px"></div>
+			<p class="text-xs text-overlay0">stuff i like</p>
 		</div>
-	</section>
+		<section class="w-full flex flex-col gap-4">
+			<!-- Systems Programming -->
+			{@render interest("systems programming", systems, "teal")}
+			<!-- CompSci Theory -->
+			{@render interest("theory", theory, "mauve")}
+			<!-- Infrastructure -->
+			{@render interest("infra", infra, "peach")}
+		</section>
+	</article>
 </main>

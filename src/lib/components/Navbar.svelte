@@ -3,6 +3,7 @@
 	import { Search } from "@lucide/svelte";
 	import { fade, fly } from "svelte/transition";
 	import { fuzzyIndices, fuzzyScore } from "$lib/utils/FuzzyFinding";
+	import { goto } from "$app/navigation";
 
 	let menuOptions = [
 		{
@@ -87,6 +88,7 @@
 		if (event.key === "Escape") {
 			closeTelescope();
 		} else if (event.key === "Enter") {
+			goto(filteredResults[selectedIndex].href);
 			closeTelescope();
 		}
 	}

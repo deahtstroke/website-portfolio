@@ -22,11 +22,15 @@
 	ogType="website"
 />
 
-<main class="max-w-3xl mx-auto px-4 py-8 sm:py-10">
-	<header class="mb-10">
-		<section class="flex items-end w-full justify-between gap-4 flex-wrap">
+<main
+	class="flex flex-col gap-10 items-center max-w-3xl w-full mx-auto px-4 py-8 sm:py-10"
+>
+	<section class="w-full">
+		<div class="flex items-end w-full justify-between gap-4 flex-wrap">
 			<div class="flex flex-col gap-4">
-				<h1 class="text-3xl text-mauve font-bold tracking-tight cursor-blink">
+				<h1
+					class="text-3xl sm:text-4xl text-mauve font-bold tracking-tight cursor-blink"
+				>
 					Daniel
 				</h1>
 				<p class="text-sm">
@@ -42,9 +46,9 @@
 				<Github size="16" />
 				My Github
 			</a>
-		</section>
+		</div>
 
-		<section class="mt-5 pt-5 border-t border-surface0">
+		<div class="pt-5">
 			<p class="text-sm text-ctp-subtext1 leading-relaxed max-w-3xl">
 				Systems software engineer focused on container runtimes, low-level
 				networking, and open-source infrastructure. Contributor to
@@ -62,11 +66,11 @@
 			>
 				Read more →
 			</a>
-		</section>
-	</header>
+		</div>
+	</section>
 
 	<!-- Github Activity -->
-	<section class="mb-3">
+	<section class="w-full">
 		<div class="w-full mb-2 flex items-center gap-2">
 			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
 				Recent Activity
@@ -78,8 +82,8 @@
 	</section>
 
 	<!-- Blog Posts -->
-	<section class="mt-10 mb-3">
-		<div class="w-full mb-2 flex items-center gap-2">
+	<section class="w-full">
+		<div class="mb-2 flex items-center gap-2">
 			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
 				Latest posts
 			</h2>
@@ -99,8 +103,8 @@
 	</section>
 
 	<!-- Projects -->
-	<section class="mt-10 mb-3">
-		<div class="w-full mb-2 flex items-center gap-2">
+	<section class="w-full">
+		<div class="mb-2 flex items-center gap-2">
 			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
 				Projects
 			</h2>
