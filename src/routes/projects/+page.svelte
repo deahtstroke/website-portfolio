@@ -67,7 +67,7 @@
 		sortBy = "name";
 	}
 
-	// Enrich data on component being mounted
+	// enrich data on component being mounted
 	onMount(async () => {
 		try {
 			const response = await getRepoMetadata(projects);

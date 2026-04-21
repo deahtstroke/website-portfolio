@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Metadata from "$lib/components/Metadata.svelte";
+	import { siGithub } from "simple-icons";
 
 	const languages: Record<string, string> = {
 		java: "peach",
@@ -130,7 +131,7 @@
 		</div>
 		<section class="w-full border border-surface1 bg-mantle">
 			<div
-				class="flex flex-nowrap w-0 min-w-full px-3 text-xs bg-crust border-b border-border overflow-x-auto"
+				class="flex flex-nowrap gap-1 w-0 min-w-full px-3 text-xs bg-crust border-b border-border overflow-x-auto"
 			>
 				{@render skillsButton(
 					"languages.md",
@@ -190,6 +191,30 @@
 			{@render interest("theory", theory, "mauve")}
 			<!-- Infrastructure -->
 			{@render interest("infra", infra, "peach")}
+		</section>
+	</article>
+
+	<!-- Where to find me -->
+	<article class="w-full">
+		<div class="w-full mb-5 flex items-center gap-2">
+			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+				Find me
+			</h3>
+			<div class="flex-1 bg-surface0 h-px"></div>
+			<p class="text-xs text-overlay0">my socials</p>
+		</div>
+		<section class="w-full flex gap-4">
+			<a
+				href="https://www.github.com/deahtstroke"
+				rel="noopener noreferrer"
+				target="_blank"
+				class="group px-3 py-1.5 rounded bg-surface1 text-sm text-text border border-border flex items-center gap-2 hover:text-mauve hover:border-mauve"
+			>
+				<span class="h-4 w-4 fill-text group-hover:fill-mauve"
+					>{@html siGithub.svg}</span
+				>
+				Github</a
+			>
 		</section>
 	</article>
 </main>
