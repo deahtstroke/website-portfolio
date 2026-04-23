@@ -8,4 +8,5 @@ export type Post = {
 	published: boolean
 	colorStart: string
 	colorEnd: string
+	timeToRead: string
 }

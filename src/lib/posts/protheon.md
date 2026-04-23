@@ -7,6 +7,7 @@ categories: ['Go', 'RabbitMQ', 'gRPC', 'PostgreSQL', 'Journal']
 published: true
 colorStart: "300 100% 50%"
 colorEnd: "180 100% 50%"
+timeToRead: "12 mins"
 ---
 
 ## What is Protheon?

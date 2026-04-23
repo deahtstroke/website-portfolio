@@ -7,6 +7,7 @@ categories: ["Svelte", "Markdown", "Shiki", "Mermaid", "Mdsvex"]
 published: true
 colorStart: "45 100% 50%"
 colorEnd: "345 100% 50%"
+timeToRead: "9 mins"
 ---
 
 ## Overview

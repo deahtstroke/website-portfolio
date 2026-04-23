@@ -7,6 +7,7 @@ categories: ["Svelte", "Markdown", "Shiki", "Mermaid", "Mdsvex", "CloudFlare"]
 published: true
 colorStart: "190 100% 50%"
 colorEnd: "130 100% 50%"
+timeToRead: "10 mins"
 ---
 
 ## The Persisting Issue

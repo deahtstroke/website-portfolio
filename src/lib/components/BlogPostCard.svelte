@@ -1,33 +1,43 @@
 <script lang="ts">
-	import { formatDate } from "$lib/utils/DateUtils";
 	import type { Post } from "$lib/types/Post";
-	import { trimDescription } from "$lib/utils/StringUtils";
 
-	let { post } = $props<{
-		post: Post;
-	}>();
+	let { post }: { post: Post } = $props();
 </script>
 
-<article class="flex flex-col sm:flex-row gap-6 sm:items-center">
-	<!-- Thumbnail -->
-	<a href="/blog/{post.slug}" class="sm:w-48 sm:h-36 shrink-0">
-		<div
-			class="w-full h-36 text-white rounded-lg overflow-hidden bg-linear-to-br
-				from-primary/20 to-accent/20 flex items-center justify-center
-				border border-border transition-colors font-mono text-bright"
-			style="background: linear-gradient(135deg, hsl({post.colorStart}), hsl({post.colorEnd}))"
+<article class="grid grid-cols-[auto_6rem_1fr_auto] gap-x-2">
+	<div
+		class="shrink-0 self-stretch w-2"
+		style="background: linear-gradient(180deg, hsl({post.colorStart}), hsl({post.colorEnd}))"
+	></div>
+	<div class="flex flex-col items-end gap-1 px-2 py-2 text-text">
+		<span class="text-xs text-text"
+			>{new Date(post.date).toLocaleString("default", { month: "long" })}</span
 		>
-			{post.thumbnailText}
+		<span class="text-xs text-overlay2"
+			>{new Date(post.date).getUTCFullYear()}</span
+		>
+	</div>
+	<div class="flex flex-col gap-3 px-2 py-2">
+		<h2 class="text-text text-sm">
+			<a href="/blog/{post.slug}">{post.title}</a>
+		</h2>
+		<p class="text-subtext0 text-xs">{post.description}</p>
+		<div class="flex gap-4 flex-wrap">
+			{#each post.categories.slice(0, 4) as category}
+				<span class="text-[0.65rem] sm:text-xs text-mauve"
+					>{category.toLowerCase()}</span
+				>
+			{/each}
 		</div>
-	</a>
-	<div class="flex-1 flex flex-col gap-2">
-		<h2 class="text-2xl font-semibold text-bright">{post.title}</h2>
-		<h3 class="text-sm text-default/60">
-			Published {formatDate(post.date)}
-		</h3>
-		<p class="text-default">{trimDescription(post.description)}</p>
-		<a href="/blog/{post.slug}" class="text-sm inline-flex items-center gap-2">
-			Read more <span>→</span>
-		</a>
+
+		<div class="text-[0.65rem] sm:text-xs text-surface2 flex gap-4 flex-nowrap">
+			{post.timeToRead} read
+			<a
+				href="/blog/{post.slug}"
+				class="text-[0.65rem] sm:text-xs sm:self-end inline-flex items-center gap-2"
+			>
+				read<span>→</span>
+			</a>
+		</div>
 	</div>
 </article>

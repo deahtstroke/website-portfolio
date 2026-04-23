@@ -5,8 +5,9 @@ date: '2026-03-27'
 thumbnailText: "Words"
 categories: ["Go", "TOML", "AST", "Programming Languages", "Syntax Trees"]
 published: true
-colorStart: "1 100% 50%"
-colorEnd: "270 100% 25%"
+colorStart: "1, 100%, 50%"
+colorEnd: "270, 100%, 25%"
+timeToRead: "10 mins"
 ---
 
 > _"The frustrating part about rabbit holes is that you only recognize

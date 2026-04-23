@@ -1,9 +1,60 @@
 <script lang="ts">
 	import BlogPostCard from "$lib/components/BlogPostCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
+	import type { Post } from "$lib/types/Post";
 	import type { PageProps } from "./$types";
 
+	const InitialTagAmount: number = 5;
+
+	type BlogSorting = "newest" | "oldest";
+
 	let { data }: PageProps = $props();
+
+	let results: Post[] = $derived.by(() => {
+		return data.posts
+			.filter((p) => {
+				if (selectedTag === "all") {
+					return true;
+				} else {
+					console.log("here!");
+					let allLower = p.categories.map((c) => c.toLowerCase());
+					return allLower.includes(selectedTag);
+				}
+			})
+			.filter((p) => {
+				if (query === "") {
+					return true;
+				} else {
+					return p.title.includes(query) || p.description.includes(query);
+				}
+			})
+			.sort((a, b) => {
+				return sorting === "oldest"
+					? new Date(a.date).getTime() - new Date(b.date).getTime()
+					: new Date(b.date).getTime() - new Date(a.date).getTime();
+			});
+	});
+
+	let tagFrequencies: string[] = $derived(
+		Object.entries(
+			data.posts
+				.flatMap((post) => post.categories)
+				.reduce(
+					(acc, tag) => {
+						acc[tag] = (acc[tag] ?? 0) + 1;
+						return acc;
+					},
+					{} as Record<string, number>,
+				),
+		)
+			.sort((a, b) => b[1] - a[1])
+			.map(([tag]) => tag),
+	);
+
+	let showAllTags: boolean = $state(false);
+	let selectedTag: string = $state("all");
+	let query: string = $state("");
+	let sorting: BlogSorting = $state("newest");
 </script>
 
 <Metadata
@@ -16,21 +67,107 @@
 	ogType="website"
 />
 
+{#snippet tag(
+	name: string,
+	value: string,
+	fn: () => void,
+	defaultColor: string = "surface2",
+	activeColor: string = "mauve",
+)}
+	<button
+		onclick={fn}
+		class="px-3 py-1.5 text-[0.65rem] border rounded cursor-pointer
+		{selectedTag === value
+			? `text-${activeColor} border-${activeColor}`
+			: `text-${defaultColor} border-${defaultColor}`}"
+		>{name}
+	</button>
+{/snippet}
+
+{#snippet tags(start: number, end: number)}
+	{#each tagFrequencies.slice(start, end) as tagName}
+		{@render tag(
+			tagName,
+			tagName.toLowerCase(),
+			() => (selectedTag = tagName.toLowerCase()),
+		)}
+	{/each}
+{/snippet}
+
 <main
-	class="bg-bg-default flex flex-col items-center px-8 pb-8 gap-8 sm:gap-12"
+	class="flex flex-col items-center gap-10 max-w-3xl mx-auto px-4 py-8 sm:gap-10"
 >
-	<section class="flex flex-col gap-6 items-center py-12">
-		<h1 class="text-5xl md:text-7xl text-bright font-semibold">Blog</h1>
-		<p class="text-lg text-default text-center">
-			Technical writing and development insights on projects I'm currently
-			working on
+	<!-- Hero section -->
+	<section class="flex flex-col gap-4 items-start">
+		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-tight">Blog</h1>
+		<p class="text-sm text-text">
+			My own writing on systems programming, containers, programming languages
+			and whatever I'm obsessing over this month. You'll also find some rambles
+			here and there.
 		</p>
 	</section>
-	<section class="max-w-6xl relative flex flex-col gap-6 items-center">
-		<div class="grid gap-12">
-			{#each data.posts as post}
-				<BlogPostCard {post} />
-			{/each}
+
+	<!-- Search bar and filters -->
+	<section class="w-full">
+		<div
+			class="flex items-center px-3 py-2 mb-3 gap-2 border border-surface0 rounded bg-mantle"
+		>
+			<span class="text-mauve text-sm select-none">/</span>
+			<input
+				class="flex-1 bg-transparent border-0 text-sm text-text placeholder:text-overlay0 focus:outline-none"
+				placeholder="search posts..."
+				bind:value={query}
+			/>
+			<span class="text-overlay0 text-xs select-none tabular-nums"
+				>{results.length} / {data.posts.filter((p) => p.published).length}</span
+			>
+		</div>
+		<div class="flex items-center gap-2 flex-wrap mb-3">
+			{@render tag("All", "all", () => (selectedTag = "all"))}
+			{#if showAllTags}
+				{@render tags(0, tagFrequencies.length - 1)}
+				{@render tag(
+					"- Show less",
+					"less",
+					() => (showAllTags = false),
+					"subtext0",
+				)}
+			{:else}
+				{@render tags(0, InitialTagAmount)}
+				{@render tag(
+					"+ Show more",
+					"more",
+					() => (showAllTags = true),
+					"subtext0",
+				)}
+			{/if}
+		</div>
+
+		<!-- Sorting oldest and newest -->
+		{#snippet sortingButton(val: BlogSorting)}
+			<button
+				onclick={() => {
+					if (val === "newest") {
+						sorting = "newest";
+					} else {
+						sorting = "oldest";
+					}
+				}}
+				class="rounded px-3 py-1.5 cursor-pointer {sorting === val
+					? 'text-text bg-surface0'
+					: 'text-surface2 bg-transparent'}"
+				>{val === "newest" ? "Newest" : "Oldest"}</button
+			>
+		{/snippet}
+
+		<div class="flex gap-2 text-xs">
+			{@render sortingButton("newest")}
+			{@render sortingButton("oldest")}
 		</div>
 	</section>
+	<div class="flex flex-col gap-2 items-start">
+		{#each results as post}
+			<BlogPostCard {post} />
+		{/each}
+	</div>
 </main>
