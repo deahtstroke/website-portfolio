@@ -7,6 +7,7 @@ declare module '*.md' {
 		date: string;
 		categories: string[];
 		published: boolean;
+		timeToRead: string;
 	}
 
 	export const metadata: Metadata;

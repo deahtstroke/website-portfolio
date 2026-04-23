@@ -3,7 +3,6 @@
 	import { formatDate } from "$lib/utils/DateUtils";
 	import { type Snippet } from "svelte";
 	import { type LayoutData } from "./$types";
-	import { ArrowLeft } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 
@@ -24,44 +23,40 @@
 	let { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
-<article class="max-w-3xl gap-4 mx-auto px-8 py-4 flex flex-col items-center">
-	<header class="flex flex-col gap-4 border-b border-neutral-800 pb-8">
+<article class="max-w-3xl gap-4 mx-auto px-4 py-3 flex flex-col items-center">
+	<header class="w-full flex flex-col gap-4 border-b border-neutral-800 pb-8">
 		<a
 			href="/blog"
-			aria-label="Go back"
-			class="flex flex-row gap-2 hover:text-cyan-600 transition-colors"
+			aria-label="Go back to blog posts"
+			class="flex items-center flex-row gap-2 text-sm"
 		>
-			<ArrowLeft width="4" height="4" />
-			Go Back
+			← Blog
 		</a>
-		<h1 class="text-4xl sm:text-5xl text-bright font-semibold">
+		<h1 class="text-2xl font-bold text-text">
 			{data.metadata.title}
 		</h1>
-		<div class="flex flex-row flex-wrap gap-2">
+		<div class="flex flex-wrap gap-2">
 			{#each data.metadata.categories as category}
 				<span
-					class="px-2 py-1 text-[10px] tracking-wider bg-bg-dark uppercase border border-border-default"
+					class="px-2 py-1 text-mauve text-[0.65rem] border rounded border-mauve"
 					>{category}</span
 				>
 			{/each}
 		</div>
-		<p class="text-xl text-default">{data.metadata.description}</p>
-		<p class="text-default/60">
-			Published on {formatDate(data.metadata.date)}
-		</p>
-		<p class="text-sm text-default/60">
-			Written by <a
-				referrerpolicy="no-referrer"
-				class="underline"
-				target="_blank"
-				href="https://www.linkedin.com/in/danielvillamena"
-				>Daniel Villavicencio</a
-			>
-		</p>
+		<p class="text-sm text-default">{data.metadata.description}</p>
+		<div class="flex gap-5 items-center text-overlay1">
+			<p class="text-xs text-overlay1">
+				{data.metadata.timeToRead}
+			</p>
+			~
+			<p class="text-xs text-overlay1">
+				{formatDate(data.metadata.date)}
+			</p>
+		</div>
 	</header>
 
 	<!-- Content goes here -->
-	<div class="prose">
+	<div class="prose w-full">
 		{@render children()}
 	</div>
 

@@ -11,6 +11,14 @@
     url('/fonts/webfonts/JetBrainsMono-Regular.woff2') format('woff2')
 }
 
+@font-face {
+  font-family: "JetBrains-Mono";
+  src: url('/fonts/ttf/JetBrainsMono-Bold.ttf') format('truetype'),
+    url('/fonts/webfonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 /**
  * Catpuccin inspired color palette
 */
@@ -82,7 +90,7 @@
 
   html,
   body {
-    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono;
+    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono overflow-x-hidden;
   }
 
   h1 {
@@ -128,31 +136,19 @@
  * Blog post styles for the markdown
  */
 .prose {
-  h1>a {
-    @apply text-4xl sm:text-5xl font-semibold no-underline
-  }
-
-  h2>a {
-    @apply text-3xl sm:text-4xl font-semibold no-underline
-  }
-
-  h3>a {
-    @apply text-2xl sm:text-3xl font-semibold no-underline
-  }
-
-  h4>a {
-    @apply text-xl sm:text-2xl font-semibold no-underline
-  }
+  h1>a, h2>a, h3>a, h4>a, h5>a, h6>a {
+  @apply text-text font-bold no-underline;
+}
 
   h1, h2, h3, h4, h5, p {
-    @apply mt-0 mb-6
+    @apply mt-0 mb-5 text-text
   }
 
   /*
    * Code blocks with single back ticks
    */
   code:not(pre code) {
-    @apply font-mono px-1 text-sm
+    @apply font-normal text-mauve px-1.5 py-px bg-mantle rounded 
   }
 
   /*
@@ -170,20 +166,20 @@
     display: none;
   }
 
+  blockquote {
+    @apply bg-mantle
+  }
+
   blockquote p {
     @apply not-italic
   }
 
-  pre {
-    @apply bg-surface
-  }
-
   p, li, ol {
-    @apply text-base
+    @apply text-text text-sm
   }
 
   li::marker {
-    @apply text-base
+    @apply text-sm
   }
 
   strong {
@@ -199,6 +195,6 @@
   }
 
   hr {
-    @apply border-[0.5px] border-border/42
+    @apply border-[0.5px] border-surface0
   }
 }
