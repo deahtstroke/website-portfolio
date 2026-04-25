@@ -35,7 +35,7 @@
 	const systems: string[] = [
 		"Distributed Systems",
 		"Linux Kernel",
-		"Container runtimes",
+		"Container Runtimes",
 	];
 
 	const theory: string[] = [

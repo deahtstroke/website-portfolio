@@ -16,7 +16,6 @@
 				if (selectedTag === "all") {
 					return true;
 				} else {
-					console.log("here!");
 					let allLower = p.categories.map((c) => c.toLowerCase());
 					return allLower.includes(selectedTag);
 				}
@@ -25,7 +24,10 @@
 				if (query === "") {
 					return true;
 				} else {
-					return p.title.includes(query) || p.description.includes(query);
+					return (
+						p.title.toLowerCase().includes(query.toLowerCase()) ||
+						p.description.toLowerCase().includes(query.toLowerCase())
+					);
 				}
 			})
 			.sort((a, b) => {
@@ -94,9 +96,7 @@
 	{/each}
 {/snippet}
 
-<main
-	class="flex flex-col items-center gap-10 max-w-3xl mx-auto px-4 py-8 sm:gap-10"
->
+<main class="flex flex-col items-center gap-10 max-w-3xl mx-auto px-4 py-8">
 	<!-- Hero section -->
 	<section class="flex flex-col gap-4 items-start">
 		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-tight">Blog</h1>

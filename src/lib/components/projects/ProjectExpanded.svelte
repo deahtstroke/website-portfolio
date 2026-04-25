@@ -21,7 +21,9 @@
 	</div>
 </div>
 {#if project.projectType === "contribution"}
-	<div class="bg-mantle px-4 py-3 grid grid-cols-[auto_1fr] gap-x-4 text-xs">
+	<div
+		class="bg-mantle px-4 py-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs"
+	>
 		<span class="col-span-2 text-xs text-text/50">[Project]</span>
 		<span class="text-text/50">name:</span>
 		<span class="text-text"
@@ -52,7 +54,9 @@
 		{/if}
 	</div>
 {:else if project.projectType === "project"}
-	<div class="bg-mantle px-4 py-3 grid grid-cols-[auto_1fr] gap-x-4 text-xs">
+	<div
+		class="bg-mantle px-4 py-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs"
+	>
 		<span class="col-span-2 text-xs text-text/50">[Project]</span>
 		<span class="text-text/50">name:</span>
 		<span class="text-text">{project.repoOwner}/{project.repoName}</span>

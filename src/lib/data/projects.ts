@@ -25,7 +25,7 @@ export const projectData: Project[] = [
 		githubUrl: "https://www.github.com/deahtstroke/verity-inside-helper",
 		websiteUrl: "https://verity-inside-helper.vercel.app/",
 		status: "active",
-		primaryLanguage: "Svelte",
+		primaryLanguage: "Typescript",
 		projectType: 'project',
 		pinned: false,
 	},

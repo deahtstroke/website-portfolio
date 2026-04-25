@@ -1,17 +1,49 @@
 <script lang="ts">
-	import { ArrowDown, ArrowUp, Search, X } from "lucide-svelte";
+	import { Search } from "lucide-svelte";
 	import ProjectCard from "$lib/components/ProjectCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
 	import { projectData as projects, getRepoMetadata } from "$lib/data/projects";
 	import { onMount } from "svelte";
-	import type { Project } from "$lib/types/Project";
+	import type {
+		PrimaryLanguage,
+		Project,
+		ProjectStatus,
+	} from "$lib/types/Project";
 
+	type SortDir = "asc" | "desc";
+
+	interface SortOption {
+		label: string;
+		value?: keyof Project;
+		defaultDir: SortDir;
+		toggleDir?: boolean;
+	}
+
+	const sortOptions: SortOption[] = [
+		{ label: "last updated", value: "lastUpdatedAt", defaultDir: "asc" },
+		{ label: "creation date", value: "createdAt", defaultDir: "asc" },
+		{ label: "name", value: "title", defaultDir: "asc" },
+		{ label: "status", value: "status", defaultDir: "asc" },
+		{ label: "stack depth", defaultDir: "asc" },
+	];
+
+	let baseProjects: Project[] = $state(projects);
 	let searchQuery = $state<string>("");
+	let selectedSort: keyof Project = $state("lastUpdatedAt");
+	let sortDirection: SortDir = $state("asc");
 	let sortBy = $state<"name" | "techCount" | "updateDate" | "creationDate">(
 		"name",
 	);
-	let sortOrder = $state<"asc" | "desc">("asc");
-	let baseProjects = $state(projects);
+
+	let selectedLanguage: PrimaryLanguage | null = $state(null);
+	let languageTags = $derived(
+		new Set([...projects.map((p) => p.primaryLanguage)]),
+	);
+
+	let selectedStatus: ProjectStatus | null = $state(null);
+	let statusTags: Set<ProjectStatus> = $derived(
+		new Set([...projects.map((p) => p.status)]),
+	);
 
 	let filteredProjects = $derived(
 		baseProjects
@@ -30,22 +62,22 @@
 			.sort((a: Project, b: Project) => {
 				switch (sortBy) {
 					case "name":
-						return sortOrder === "asc"
+						return sortDirection === "asc"
 							? a.title.localeCompare(b.title)
 							: b.title.localeCompare(a.title);
 					case "techCount":
-						return sortOrder === "asc"
+						return sortDirection === "asc"
 							? a.technologies.length - b.technologies.length
 							: b.technologies.length - a.technologies.length;
 					case "updateDate":
 						if (a.lastUpdatedAt && b.lastUpdatedAt) {
-							return sortOrder === "asc"
+							return sortDirection === "asc"
 								? a.lastUpdatedAt.getTime() - b.lastUpdatedAt.getTime()
 								: b.lastUpdatedAt.getTime() - a.lastUpdatedAt.getTime();
 						} else return 0;
 					case "creationDate":
 						if (a.createdAt && b.createdAt) {
-							return sortOrder === "asc"
+							return sortDirection === "asc"
 								? a.createdAt.getTime() - b.createdAt.getTime()
 								: b.createdAt.getTime() - a.createdAt.getTime();
 						} else return 0;
@@ -57,14 +89,31 @@
 
 	let hasActiveFilters = $derived(searchQuery.trim() != "");
 
-	function toggleSortOrder() {
-		sortOrder = sortOrder === "asc" ? "desc" : "asc";
-		localStorage.setItem("projectsSortOrder", sortOrder);
-	}
-
 	function clearFilters() {
 		searchQuery = "";
 		sortBy = "name";
+	}
+
+	function setStatus(s: ProjectStatus) {
+		selectedStatus = s;
+	}
+
+	function setLanguage(l: PrimaryLanguage): any {
+		selectedLanguage = l;
+	}
+
+	function setSort(s: SortOption) {
+		const opt: SortOption | undefined = sortOptions.find((o) => o === s);
+		if (!opt) {
+			return;
+		}
+
+		if (selectedSort === s.value) {
+			sortDirection = sortDirection === "asc" ? "desc" : "asc";
+		} else {
+			selectedSort = s.value!;
+			sortDirection = s.defaultDir;
+		}
 	}
 
 	// enrich data on component being mounted
@@ -76,6 +125,14 @@
 			console.log(error);
 		}
 	});
+
+	function clearStatus() {
+		selectedStatus = null;
+	}
+
+	function clearLanguage() {
+		selectedLanguage = null;
+	}
 </script>
 
 <Metadata
@@ -88,105 +145,143 @@
 	ogType="website"
 />
 
-<main class="w-full px-8">
-	<div class="max-w-4xl mx-auto flex flex-col items-center gap-8 sm:gap-12">
-		<!-- Hero section -->
-		<section class="relative py-12 flex flex-col gap-6 items-center">
-			<h1 class="font-bold text-center text-bright text-5xl md:text-7xl">
-				Projects
-			</h1>
-			<p class="text-lg text-default text-center">
-				Explore my work across various technologies and domains
-			</p>
-		</section>
+<main
+	class="flex flex-col items-center gap-10 max-w-3xl mx-auto px-4 py-8 sm:gap-10"
+>
+	<section class="flex flex-col gap-4 items-start">
+		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-light">Projects</h1>
+		<p class="text-sm text-text">
+			A collection of projects spanning multiple domains and technologies — from
+			personal experiments to meaningful contributions. Always building, always
+			exploring.
+		</p>
+	</section>
 
-		<!-- Search panel -->
-
+	<!-- Search bar, filters, and sorting -->
+	<section class="w-full">
+		<!-- Search bar -->
 		<div
-			class="flex flex-col w-full md:flex-row gap-4 items-start md:items-center justify-between"
+			class="flex items-center px-3 py-2 mb-3 gap-2 border border-surface0 rounded bg-mantle"
 		>
-			<!-- Search bar -->
-			<div class="relative flex-1 w-full">
-				{#if hasActiveFilters}
-					<X
-						onclick={() => (searchQuery = "")}
-						class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bright hover:cursor-pointer"
-					/>
-				{:else}
-					<Search
-						class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bright"
-					/>
-				{/if}
-				<input
-					type="text"
-					bind:value={searchQuery}
-					placeholder="Search Projects or Technologies..."
-					class="pl-10 w-full pr-4 py-2 bg-bg-dark border border-border-default rounded placeholder:text-bright/40 text-default focus:outline-none focus:border-cyan-500 transition-colors"
-				/>
-			</div>
-
-			<!-- Sorting Options -->
-			<div class="flex flex-row gap-2">
-				<div class="flex items-center gap-2">
-					<select
-						bind:value={sortBy}
-						class="px-4 py-2 bg-bg-dark border border-border-default rounded focus:outline-none focus:border-cyan-500 transition-colors"
-					>
-						<option value="name">Name</option>
-						<option value="techCount">Tech #</option>
-						<option value="creationDate">Creation Date</option>
-						<option value="updateDate">Update Date</option>
-					</select>
-				</div>
-				<button
-					onclick={toggleSortOrder}
-					aria-label="Sorting ascending/descending button"
-					class="text-default flex items-center gap-2 px-3 py-2 bg-bg-dark border border-border-default rounded hover:border-cyan-500 hover:text-bright"
-				>
-					{#if sortOrder === "asc"}
-						<ArrowUp class="w-4 h-4" />
-					{:else}
-						<ArrowDown class="w-4 h-4" />
-					{/if}
-					<span class="text-xs uppercase md:hidden">
-						{sortOrder === "asc" ? "A-Z" : "Z-A"}
-					</span>
-				</button>
-			</div>
+			<span class="text-mauve text-sm select-none">/</span>
+			<input
+				class="flex-1 bg-transparent border-0 text-sm text-text placeholder:text-overlay0 focus:outline-none"
+				placeholder="search projects"
+				bind:value={searchQuery}
+			/>
+			<span class="text-overlay0 text-xs select-none tabular-nums">
+				{filteredProjects.length} / {projects.length}
+			</span>
 		</div>
 
-		<!-- Project Results -->
-		<section class="flex flex-col items-center gap-6">
-			{#if filteredProjects.length > 0}
-				<h3 class="text-default font-light">
-					Showing {filteredProjects.length} of {projects.length} projects
+		<!-- Sorting Options and filters -->
+		<section
+			class="grid grid-cols-[1fr] sm:grid-cols-[auto_1fr] gap-y-4 gap-x-2"
+		>
+			<!-- Language filters -->
+			<div class="flex flex-col gap-2">
+				<h3 class="text-overlay0 text-xs font-medium tracking-widest uppercase">
+					Language
 				</h3>
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					{#each filteredProjects as project (project.title)}
-						<ProjectCard {project} />
+				<div class="flex gap-2 flex-wrap">
+					<button
+						onclick={() => clearLanguage()}
+						class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {selectedLanguage ===
+						null
+							? 'text-mauve border-mauve bg-surface0'
+							: 'text-overlay0 border-overlay0'}">All</button
+					>
+					{#each languageTags as language}
+						{@const active = selectedLanguage === language}
+						<button
+							onclick={() => setLanguage(language)}
+							class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
+								? 'text-mauve border-mauve bg-surface0'
+								: 'text-overlay0 border-overlay0'}">{language}</button
+						>
 					{/each}
 				</div>
-			{:else}
-				<div
-					class="w-16 h-16 border-2 border-neutral-800 flex items-center justify-center"
-				>
-					<Search class="w-8 h-8 text-neutral/700" />
-				</div>
-				<div class="text-center space-y-2">
-					<h3 class="text-xl font-semibold text-default">No Projects Found</h3>
-					<p class="text-default text-center max-w-md">
-						Try adjusting your search or filters to find what you're looking for
-					</p>
-					{#if hasActiveFilters}
+			</div>
+
+			<!-- Status filters -->
+			<div class="flex flex-col gap-2">
+				<h3 class="text-overlay0 text-xs font-medium tracking-widest uppercase">
+					Status
+				</h3>
+				<div class="flex gap-2 flex-wrap">
+					<button
+						onclick={() => clearStatus()}
+						class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {selectedStatus ===
+						null
+							? 'text-mauve border-mauve bg-surface0'
+							: 'text-overlay0 border-overlay0'}">Any</button
+					>
+					{#each statusTags as status}
+						{@const active = selectedStatus == status}
 						<button
-							onclick={clearFilters}
-							class="mt-4 px-6 py-2 bg-cyan-500 hover:bg-cyan-400 text-bright transition-colors"
+							onclick={() => setStatus(status)}
+							class="px-2 py-1 text-[0.65rem] border border-mauve rounded cursor-pointer {active
+								? 'text-mauve border-mauve bg-surface0'
+								: 'text-overlay0 border-overlay0'}">{status}</button
 						>
-							Clear all filters
-						</button>
-					{/if}
+					{/each}
 				</div>
-			{/if}
+			</div>
+
+			<!-- Sort by -->
+			<div class="flex flex-col gap-2">
+				<h3 class="text-overlay0 text-xs font-medium tracking-widest uppercase">
+					Sort By
+				</h3>
+				<div class="flex gap-2 flex-wrap">
+					{#each sortOptions as tag}
+						{@const active = selectedSort === tag.value}
+						<button
+							onclick={() => setSort(tag)}
+							class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
+								? 'border-mauve text-mauve bg-surface0'
+								: 'border-overlay0 text-overlay0'}"
+							>{tag.label}
+							{#if active}
+								<span class="text-[0.65rem]"
+									>{sortDirection === "asc" ? "↑" : "↓"}</span
+								>
+							{/if}
+						</button>
+					{/each}
+				</div>
+			</div>
 		</section>
-	</div>
+	</section>
+
+	<!-- Project Results -->
+	<section class="flex flex-col items-center gap-6">
+		{#if filteredProjects.length > 0}
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{#each filteredProjects as project (project.title)}
+					<ProjectCard {project} />
+				{/each}
+			</div>
+		{:else}
+			<div
+				class="w-16 h-16 border-2 border-neutral-800 flex items-center justify-center"
+			>
+				<Search class="w-8 h-8 text-neutral/700" />
+			</div>
+			<div class="text-center space-y-2">
+				<h3 class="text-xl font-semibold text-default">No Projects Found</h3>
+				<p class="text-default text-center max-w-md">
+					Try adjusting your search or filters to find what you're looking for
+				</p>
+				{#if hasActiveFilters}
+					<button
+						onclick={clearFilters}
+						class="mt-4 px-6 py-2 bg-cyan-500 hover:bg-cyan-400 text-bright transition-colors"
+					>
+						Clear all filters
+					</button>
+				{/if}
+			</div>
+		{/if}
+	</section>
 </main>

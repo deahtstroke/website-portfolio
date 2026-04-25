@@ -11,12 +11,14 @@ export interface Project {
 	lastUpdatedAt?: Date;
 	websiteUrl?: string;
 	areas?: string[];
-	primaryLanguage: string;
+	primaryLanguage: PrimaryLanguage;
 	projectType: ProjectType;
 	pinned: boolean;
 }
 
 export type ProjectStatus = 'active' | 'maintained' | 'wip' | 'archived';
+
+export type PrimaryLanguage = "Go" | "Typescript" | "Lua" | "Java";
 
 export type ProjectType = 'contribution' | 'project';
 

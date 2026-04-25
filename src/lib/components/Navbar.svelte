@@ -139,16 +139,15 @@
 		class="max-w-3xl m-auto h-full px-4 py-3 flex flex-row align-middle items-center"
 	>
 		<a
-			class="font-bold mr-auto tracking-wide text-text text-sm hover:cursor-pointer"
+			class="font-bold mr-auto text-text text-sm hover:cursor-pointer"
 			href="/"
 		>
-			<h1 class="text-blue hover:text-sky">
-				~/dvillavicencio
-				{#each segments as segment}
-					<span class="text-overlay0">/</span>
-					<span class="text-subtext1">{segment}</span>
-				{/each}
-			</h1>
+			<span class="text-blue">~/dvillavicencio</span>
+			{#each segments as segment}
+				<span class="text-overlay0">/</span>
+				<span class="text-subtext1">{segment}</span>
+				<span class="text-subtext1"> </span>
+			{/each}
 		</a>
 
 		<!-- NavBar options desktop -->

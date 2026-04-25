@@ -4,7 +4,9 @@
 	let { post }: { post: Post } = $props();
 </script>
 
-<article class="grid grid-cols-[auto_6rem_1fr_auto] gap-x-2">
+<article
+	class="group w-full grid grid-cols-[auto_6rem_1fr_auto] gap-x-2 rounded hover:bg-surface0 transition-all"
+>
 	<div
 		class="shrink-0 self-stretch w-2"
 		style="background: linear-gradient(180deg, hsl({post.colorStart}), hsl({post.colorEnd}))"

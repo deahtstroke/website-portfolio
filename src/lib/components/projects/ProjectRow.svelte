@@ -17,7 +17,7 @@
 		Java: "yellow",
 		Go: "sapphire",
 		Lua: "blue",
-		Svelte: "peach",
+		Typescript: "mauve",
 	};
 </script>
 
@@ -30,8 +30,8 @@
 	<p class="text-xs text-surface2 select-none">{index + 1}</p>
 	<div class="flex-1 flex items-center py-3">
 		<div class="flex flex-1 flex-col items-start gap-2">
-			<div class="flex items-center gap-4">
-				<p class="text-xs sm:text-sm">{project.title}</p>
+			<div class="flex w-full items-start gap-4">
+				<p class="text-xs sm:text-sm text-left flex-1">{project.title}</p>
 
 				<p
 					class="px-1.5 py-px border rounded border-{languageColor[
