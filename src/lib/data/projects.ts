@@ -1,4 +1,5 @@
 import type { Project, RepoMetadata, RepoMetadataResponse, } from "$lib/types/Project";
+import { dev } from "$app/environment";
 
 export const projectData: Project[] = [
 	{
@@ -154,7 +155,7 @@ export const projectData: Project[] = [
 	}
 ];
 
-export async function getRepoMetadata(projects: Project[]): Promise<Project[]> {
+export async function getRepoMetadata(projects: Project[]): Promise<{ projects: Project[], enriched: boolean }> {
 	const request: RepoMetadata = {
 		repos: projects.map(p => ({
 			name: p.repoName!,
@@ -162,7 +163,9 @@ export async function getRepoMetadata(projects: Project[]): Promise<Project[]> {
 		}))
 	}
 
-	const url: string = import.meta.env.DEV ? "http://localhost:3000/repos" : "https://api.danielvm.dev/repos";
+	const url: string = dev
+		? "http://localhost:3000/repos"
+		: "https://api.danielvm.dev/repos";
 
 	try {
 		const response = await fetch(url, {
@@ -179,21 +182,23 @@ export async function getRepoMetadata(projects: Project[]): Promise<Project[]> {
 
 		const data = (await response.json()) as RepoMetadataResponse;
 
-		return projects.map(p => {
-			const key = `${p.repoOwner}:${p.repoName}`
-			const meta = data.repoDetails[key];
-			return {
-				...p,
-				createdAt: meta.createdAt ? new Date(meta.createdAt) : p.createdAt ?? new Date(),
-				lastUpdatedAt: meta.updatedAt ? new Date(meta.updatedAt) : p.createdAt ?? new Date()
-			};
-		});
+		return {
+			projects: projects.map(p => {
+				const key = `${p.repoOwner}:${p.repoName}`
+				const meta = data.repoDetails[key];
+				return {
+					...p,
+					createdAt: meta.createdAt ? new Date(meta.createdAt) : p.createdAt ?? new Date(),
+					lastUpdatedAt: meta.updatedAt ? new Date(meta.updatedAt) : p.lastUpdatedAt ?? new Date()
+				};
+			}), enriched: true
+		};
 
 	} catch (error) {
 		console.error("Fetch for metadata failed: ", error)
 
 		// just return the parameters passed
-		return projects;
+		return { projects: projects, enriched: false };
 	}
 }
 

@@ -2,8 +2,6 @@
 	import { Search } from "lucide-svelte";
 	import ProjectCard from "$lib/components/ProjectCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
-	import { projectData as projects, getRepoMetadata } from "$lib/data/projects";
-	import { onMount } from "svelte";
 	import {
 		LanguagesToColors,
 		StatusToColors,
@@ -12,36 +10,54 @@
 		type ProjectStatus,
 	} from "$lib/types/Project";
 
+	let { data } = $props();
+
 	type SortDir = "asc" | "desc";
 
 	interface SortOption {
 		label: string;
 		value?: keyof Project;
+		requiresEnrich: boolean;
 		defaultDir: SortDir;
 		toggleDir?: boolean;
 	}
 
 	const sortOptions: SortOption[] = [
-		{ label: "last updated", value: "lastUpdatedAt", defaultDir: "asc" },
-		{ label: "creation date", value: "createdAt", defaultDir: "asc" },
-		{ label: "name", value: "title", defaultDir: "asc" },
-		{ label: "status", value: "status", defaultDir: "asc" },
-		{ label: "stack depth", defaultDir: "asc" },
+		{
+			label: "last updated",
+			value: "lastUpdatedAt",
+			defaultDir: "asc",
+			requiresEnrich: true,
+		},
+		{
+			label: "creation date",
+			value: "createdAt",
+			defaultDir: "asc",
+			requiresEnrich: true,
+		},
+		{ label: "name", value: "title", defaultDir: "asc", requiresEnrich: false },
+		{
+			label: "status",
+			value: "status",
+			defaultDir: "asc",
+			requiresEnrich: false,
+		},
+		{ label: "stack depth", defaultDir: "asc", requiresEnrich: false },
 	];
 
-	let baseProjects: Project[] = $state(projects);
+	let baseProjects: Project[] = $derived(data.projects);
 	let searchQuery = $state<string>("");
 	let selectedSort: keyof Project | "stackDepth" = $state("lastUpdatedAt");
 	let sortDirection: SortDir = $state("asc");
 
 	let selectedLanguage: PrimaryLanguage | null = $state(null);
 	let languageFilters = $derived(
-		new Set([...projects.map((p) => p.primaryLanguage)]),
+		new Set([...baseProjects.map((p) => p.primaryLanguage)]),
 	);
 
 	let selectedStatus: ProjectStatus | null = $state(null);
 	let statusFilters: Set<ProjectStatus> = $derived(
-		new Set([...projects.map((p) => p.status)]),
+		new Set([...baseProjects.map((p) => p.status)]),
 	);
 
 	let filteredProjects = $derived(
@@ -95,11 +111,6 @@
 
 	let hasActiveFilters = $derived(searchQuery.trim() != "");
 
-	function clearFilters() {
-		searchQuery = "";
-		selectedSort = "title";
-	}
-
 	function setStatus(s: ProjectStatus) {
 		selectedStatus = s;
 	}
@@ -122,15 +133,12 @@
 		}
 	}
 
-	// enrich data on component being mounted
-	onMount(async () => {
-		try {
-			const response = await getRepoMetadata(projects);
-			baseProjects = response;
-		} catch (error) {
-			console.log(error);
-		}
-	});
+	function clearFilters() {
+		searchQuery = "";
+		selectedSort = "title";
+		selectedStatus = null;
+		selectedLanguage = null;
+	}
 
 	function clearStatus() {
 		selectedStatus = null;
@@ -200,7 +208,7 @@
 				bind:value={searchQuery}
 			/>
 			<span class="text-overlay0 text-xs select-none tabular-nums">
-				{filteredProjects.length} / {projects.length}
+				{filteredProjects.length} / {baseProjects.length}
 			</span>
 		</div>
 
@@ -210,6 +218,7 @@
 			<div
 				class="hidden lg:w-40 lg:flex lg:flex-col gap-2 pr-2 border-r border-surface0 mr-4"
 			>
+				<!-- Lanauge filters -->
 				<div class="flex flex-col gap-2 mb-3">
 					<h3
 						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
@@ -218,7 +227,7 @@
 					</h3>
 					{@render filterButton_desktop(
 						"All",
-						projects.length,
+						baseProjects.length,
 						selectedLanguage === null,
 						() => clearLanguage(),
 						"mauve",
@@ -228,7 +237,7 @@
 					{#each languageFilters as filter}
 						{@render filterButton_desktop(
 							filter,
-							projects.filter((p) => p.primaryLanguage === filter).length,
+							baseProjects.filter((p) => p.primaryLanguage === filter).length,
 							selectedLanguage === filter,
 							() => setLanguage(filter),
 							LanguagesToColors[filter],
@@ -236,6 +245,7 @@
 					{/each}
 				</div>
 
+				<!-- Status filters -->
 				<div class="flex flex-col gap-2 mb-3">
 					<h3
 						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
@@ -244,7 +254,7 @@
 					</h3>
 					{@render filterButton_desktop(
 						"Any",
-						projects.length,
+						baseProjects.length,
 						selectedStatus === null,
 						() => clearStatus(),
 						"blue",
@@ -254,7 +264,7 @@
 					{#each statusFilters as filter}
 						{@render filterButton_desktop(
 							filter,
-							projects.filter((p) => p.status === filter).length,
+							baseProjects.filter((p) => p.status === filter).length,
 							selectedStatus === filter,
 							() => setStatus(filter),
 							StatusToColors[filter],
@@ -326,19 +336,23 @@
 					</h3>
 					<div class="flex gap-2 flex-wrap">
 						{#each sortOptions as tag}
-							{@const active = selectedSort === tag.value}
-							<button
-								onclick={() => setSort(tag)}
-								class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
-									? 'border-mauve text-mauve bg-surface0'
-									: 'border-overlay0 text-overlay0'}"
-								>{tag.label}
-								{#if active}
-									<span class="text-[0.65rem]"
-										>{sortDirection === "asc" ? "↑" : "↓"}</span
-									>
-								{/if}
-							</button>
+							<!-- Several sorting options are not available if enrichment doesn't go through -->
+							<!-- AKA fetching Github data for these repos -->
+							{#if !tag.requiresEnrich || data.enriched}
+								{@const active = selectedSort === tag.value}
+								<button
+									onclick={() => setSort(tag)}
+									class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
+										? 'border-mauve text-mauve bg-surface0'
+										: 'border-overlay0 text-overlay0'}"
+									>{tag.label}
+									{#if active}
+										<span class="text-[0.65rem]"
+											>{sortDirection === "asc" ? "↑" : "↓"}</span
+										>
+									{/if}
+								</button>
+							{/if}
 						{/each}
 					</div>
 				</div>
