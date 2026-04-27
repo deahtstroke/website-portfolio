@@ -47,7 +47,9 @@
 
 	let baseProjects: Project[] = $derived(data.projects);
 	let searchQuery = $state<string>("");
-	let selectedSort: keyof Project | "stackDepth" = $state("lastUpdatedAt");
+	let selectedSort: keyof Project | "stackDepth" = $derived(
+		data.enriched ? "lastUpdatedAt" : "title",
+	);
 	let sortDirection: SortDir = $state("asc");
 
 	let selectedLanguage: PrimaryLanguage | null = $state(null);
@@ -60,6 +62,7 @@
 		new Set([...baseProjects.map((p) => p.status)]),
 	);
 
+	// Derived projects from all filters and sorts
 	let filteredProjects = $derived(
 		baseProjects
 			.filter((p) => {
@@ -135,7 +138,9 @@
 
 	function clearFilters() {
 		searchQuery = "";
-		selectedSort = "title";
+
+		selectedSort = data.enriched ? "lastUpdatedAt" : "title";
+		sortDirection = "asc";
 		selectedStatus = null;
 		selectedLanguage = null;
 	}
@@ -165,6 +170,7 @@
 				? "text-text bg-surface border-mauve"
 				: "text-overlay0 bg-surface/50",
 			cond ? "border-" + diamondColor : "border-transparent",
+			cond ? "bg-surface0" : "hover:bg-surface0/50",
 		]}
 	>
 		<span class="w-2 shrink-0 text-[0.65rem] text-{diamondColor ?? 'mauve'}"
@@ -219,7 +225,7 @@
 				class="hidden lg:w-40 lg:flex lg:flex-col gap-2 pr-2 border-r border-surface0 mr-4"
 			>
 				<!-- Lanauge filters -->
-				<div class="flex flex-col gap-2 mb-3">
+				<div class="flex flex-col gap-1 mb-3">
 					<h3
 						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
 					>
@@ -246,7 +252,7 @@
 				</div>
 
 				<!-- Status filters -->
-				<div class="flex flex-col gap-2 mb-3">
+				<div class="flex flex-col gap-1 mb-3">
 					<h3
 						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
 					>
@@ -366,23 +372,18 @@
 							{/each}
 						</div>
 					{:else}
-						<div
-							class="w-16 h-16 border-2 border-neutral-800 flex items-center justify-center"
-						>
-							<Search class="w-8 h-8 text-neutral/700" />
-						</div>
-						<div class="text-center space-y-2">
-							<h3 class="text-xl font-semibold text-default">
-								No Projects Found
+						<div class="text-center space-y-2 py-16">
+							<h3 class="text-sm font-semibold text-surface2">
+								Huh, couldn't find anything?
 							</h3>
-							<p class="text-default text-center max-w-md">
+							<p class="text-xs text-surface1 text-center">
 								Try adjusting your search or filters to find what you're looking
 								for
 							</p>
 							{#if hasActiveFilters}
 								<button
 									onclick={clearFilters}
-									class="mt-4 px-6 py-2 bg-cyan-500 hover:bg-cyan-400 text-bright transition-colors"
+									class="hover:underline cursor-pointer text-sm mt-4 px-2 py-1 text-mauve"
 								>
 									Clear all filters
 								</button>

@@ -4,7 +4,7 @@
 	import GithubActivityRow from "./GithubActivityRow.svelte";
 
 	const GITHUB_USERNAME = "deahtstroke";
-	const INITIAL_AMOUNT = 10;
+	const INITIAL_AMOUNT = 5;
 
 	let events: GithubEvent[] = $state([]);
 	let isLoading: boolean = $state(true);
