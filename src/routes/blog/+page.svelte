@@ -79,9 +79,10 @@
 	<button
 		onclick={fn}
 		class="px-3 py-1.5 text-[0.65rem] border rounded cursor-pointer
+		transition-all
 		{selectedTag === value
 			? `text-${activeColor} border-${activeColor}`
-			: `text-${defaultColor} border-${defaultColor}`}"
+			: `text-${defaultColor} border-${defaultColor} hover:bg-mantle hover:text-subtext0`}"
 		>{name}
 	</button>
 {/snippet}

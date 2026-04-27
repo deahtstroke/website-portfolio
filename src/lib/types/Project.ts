@@ -1,3 +1,5 @@
+import { getMostRecentProjects } from "$lib/data/projects";
+
 export interface Project {
 	title: string;
 	repoName?: string;
@@ -38,4 +40,18 @@ export interface RepoMetadataResponse {
 export interface RepoMetadataDetail {
 	createdAt: string;
 	updatedAt: string;
+}
+
+export const StatusToColors: Record<ProjectStatus, string> = {
+	'active': 'green',
+	'maintained': 'blue',
+	'wip': 'yellow',
+	'archived': 'overlay2'
+}
+
+export const LanguagesToColors: Record<PrimaryLanguage, string> = {
+	'Go': 'sky',
+	'Typescript': 'blue',
+	'Java': 'peach',
+	'Lua': 'sapphire'
 }

@@ -146,17 +146,17 @@
 			{#each segments as segment}
 				<span class="text-overlay0">/</span>
 				<span class="text-subtext1">{segment}</span>
-				<span class="text-subtext1"> </span>
+				<span class="text-subtext1"></span>
 			{/each}
 		</a>
 
 		<!-- NavBar options desktop -->
-		<ul class="flex gap-3 mx-2 justify-center content-center">
+		<ul class="flex gap-4 mx-2 justify-center content-center">
 			{#each menuOptions as option}
 				<li>
 					<a
 						href={option.ref}
-						class="group text-xs sm:text-sm relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
+						class="group text-xs relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
 						page.url.pathname
 							? 'text-sky'
 							: 'text-blue hover:text-sky '}"
