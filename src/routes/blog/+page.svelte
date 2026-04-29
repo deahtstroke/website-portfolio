@@ -74,14 +74,12 @@
 	value: string,
 	fn: () => void,
 	defaultColor: string = "surface2",
-	activeColor: string = "mauve",
 )}
 	<button
 		onclick={fn}
-		class="px-3 py-1.5 text-[0.65rem] border rounded cursor-pointer
-		transition-all
+		class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer
 		{selectedTag === value
-			? `text-${activeColor} border-${activeColor}`
+			? `text-mauve bg-surface0 border-mauve`
 			: `text-${defaultColor} border-${defaultColor} hover:bg-mantle hover:text-subtext0`}"
 		>{name}
 	</button>

@@ -9,7 +9,7 @@
 		$props();
 </script>
 
-<p class="text-xs sm:text-sm text-left">
+<p class="text-xs text-left">
 	<span class="text-mauve">Daniel</span>
 	<span class="text-text">deleted {ghEvent.payload.ref_type}</span>
 	<span class="text-red">{ghEvent.payload.ref}</span>

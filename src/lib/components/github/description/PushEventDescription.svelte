@@ -9,7 +9,7 @@
 		$props();
 </script>
 
-<p class="text-xs sm:text-sm text-left">
+<p class="text-xs text-left">
 	<span class="text-mauve">Daniel</span>{" "}
 	<span class="text-text">pushed commit</span>
 	<span class="text-peach">{ghEvent.payload.head.slice(0, 10)}</span>

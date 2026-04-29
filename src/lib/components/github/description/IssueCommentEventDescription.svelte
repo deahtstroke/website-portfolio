@@ -9,7 +9,7 @@
 		$props();
 </script>
 
-<p class="text-xs sm:text-sm text-left">
+<p class="text-xs text-left">
 	<span class="text-mauve">Daniel</span>{" "}
 	<span class="text-text">commented on issue</span>
 	<a

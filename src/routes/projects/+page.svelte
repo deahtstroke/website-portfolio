@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Search } from "lucide-svelte";
 	import ProjectCard from "$lib/components/ProjectCard.svelte";
 	import Metadata from "$lib/components/Metadata.svelte";
 	import {
