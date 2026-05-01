@@ -17,22 +17,17 @@
 		: 'border-l-transparent hover:border-l-mauve hover:bg-surface'}"
 	onclick={() => (isExpanded = !isExpanded)}
 >
-	<p class="text-xs text-surface2 select-none">{index + 1}</p>
+	<p class="text-sm text-surface2 select-none">{index + 1}</p>
 	<div class="flex flex-col flex-wrap gap-2 justify-start">
-		<time
-			datetime={post.date}
-			class="text-[0.60rem] sm:text-xs text-overlay0 text-left"
+		<time datetime={post.date} class="text-xs text-overlay0 text-left"
 			>{formatDate(post.date)}</time
 		>
-		<h3 class="text-sm text-text text-left font-light">
+		<h3 class="text-base text-mauve text-left font-light">
 			{post.title}
 		</h3>
 		<div class="flex flex-wrap items-center gap-2">
-			{#each post.categories as tag}
-				<span
-					class="border rounded border-mauve bg-surface px-1.5 py-px text-mauve text-[0.65rem] font-mono"
-					>{formatTag(tag)}</span
-				>
+			{#each post.categories.slice(0, 5) as tag}
+				<span class="text-subtext0 text-xs">#{formatTag(tag)}</span>
 			{/each}
 		</div>
 	</div>
@@ -50,7 +45,7 @@
 			<a href={`/blog`} class="text-xs ml-auto hover:underline">all posts ↗</a>
 		</div>
 		<div class="flex flex-col items-center px-4 py-3">
-			<p class="text-xs text-subtext1 leading-relaxed">
+			<p class="text-sm text-center text-subtext1 leading-relaxed">
 				{post.description}.
 			</p>
 			<a

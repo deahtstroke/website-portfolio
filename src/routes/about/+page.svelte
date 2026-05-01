@@ -74,7 +74,7 @@
 
 <!-- Interest block of markup -->
 {#snippet interest(title: string, interests: string[], color: string = "mauve")}
-	<div class="flex flex-col gap-2 items-start text-xs">
+	<div class="flex flex-col gap-2 items-start text-sm">
 		<h3 class="tracking-widest uppercase text-{color}">{title}</h3>
 		<div class="flex gap-2 items-center flex-wrap">
 			{#each interests as i}
@@ -91,7 +91,7 @@
 {#snippet skillsButton(label: string, state: string, fn: () => void)}
 	<button
 		onclick={fn}
-		class="px-4 py-2 text-text cursor-pointer whitespace-nowrap border-b-2 {current ===
+		class="px-4 py-2 text-text text-xs cursor-pointer whitespace-nowrap border-b-2 {current ===
 		state
 			? 'border-b-2 border-mauve bg-surface'
 			: 'border-transparent hover:bg-surface hover:border-mauve'}"
@@ -105,7 +105,7 @@
 >
 	<section class="flex flex-col gap-4 items-start mb-3">
 		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-tight">About Me</h1>
-		<p class="text-sm text-text">
+		<p class="text-base text-text">
 			My name is Daniel and I build the stuff underneath the stuff. I am into
 			container runtimes, low-level computer science stuff and recently I've
 			been contributing to open-source projects. A quote from a very good friend
@@ -115,7 +115,7 @@
 			my own personal projects and contribute to high-profile projects such as
 			Docker: I want to understand how they work.
 		</p>
-		<p class="text-sm text-text">
+		<p class="text-base text-text">
 			Also, I really like <span class="text-sky">manatees</span>.
 		</p>
 	</section>
@@ -123,11 +123,11 @@
 	<!-- Skills, tools, and frameworks -->
 	<article class="w-full">
 		<div class="w-full mb-2 flex items-center gap-2">
-			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h3 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Skills
 			</h3>
 			<div class="flex-1 bg-surface0 h-px"></div>
-			<p class="text-xs text-overlay0">stuff I use</p>
+			<p class="text-sm text-overlay0">stuff i use</p>
 		</div>
 		<section class="w-full border border-surface1 bg-mantle">
 			<div
@@ -178,11 +178,11 @@
 	<!-- Topics of interest -->
 	<article class="w-full">
 		<div class="w-full mb-5 flex items-center gap-2">
-			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h3 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Interests
 			</h3>
 			<div class="flex-1 bg-surface0 h-px"></div>
-			<p class="text-xs text-overlay0">stuff i like</p>
+			<p class="text-sm text-overlay0">stuff i like</p>
 		</div>
 		<section class="w-full flex flex-col gap-4">
 			<!-- Systems Programming -->
@@ -197,11 +197,11 @@
 	<!-- Where to find me -->
 	<article class="w-full">
 		<div class="w-full mb-5 flex items-center gap-2">
-			<h3 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h3 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Find me
 			</h3>
 			<div class="flex-1 bg-surface0 h-px"></div>
-			<p class="text-xs text-overlay0">my socials</p>
+			<p class="text-sm text-overlay0">my socials</p>
 		</div>
 		<section class="w-full flex gap-4">
 			<a

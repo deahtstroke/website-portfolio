@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckCircle2, Cloud, Code, Download, Server } from "lucide-svelte";
+	import { CheckCircle2 } from "@lucide/svelte";
 	import { onMount } from "svelte";
 	import type { ContactRequest, InquiryType } from "$lib/types/ContactRequest";
 	import Metadata from "$lib/components/Metadata.svelte";
@@ -208,7 +208,7 @@
 		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-light">
 			Get In Touch
 		</h1>
-		<p class="text-sm text-text">
+		<p class="text-base text-text">
 			Have a project in mind or want to collaborate? Send me an email and I'll
 			get back to you as soon as possible — I read everything
 		</p>
@@ -238,7 +238,7 @@
 						oninput={() => clearError("name")}
 						placeholder="John Doe"
 						class="w-full p-2 bg-mantle border
-					rounded text-sm text-text placeholder:text-text/50 focus:outline-none transition-colors
+					rounded text-base text-text placeholder:text-text/50 focus:outline-none transition-colors
 					{errors.name ? 'border-red' : 'border-surface0 '}"
 					/>
 					{#if errors.name}
@@ -258,7 +258,7 @@
 						oninput={() => clearError("email")}
 						autocomplete="email"
 						placeholder="johndoe@example.com"
-						class="w-full text-text text-sm p-2 bg-mantle border placeholder:text-text/50
+						class="w-full text-text text-base p-2 bg-mantle border placeholder:text-text/50
 							rounded text-bright focus:outline-none transition-colors
 							{errors.email ? 'border-red' : 'border-surface0 '}"
 					/>
@@ -277,7 +277,7 @@
 						name="inquiryType"
 						bind:value={formData.inquiryType}
 						oninput={() => clearError("inquiryType")}
-						class="w-full text-text text-sm p-2 bg-mantle border placeholder:text-text/50
+						class="w-full text-text text-base p-2 bg-mantle border placeholder:text-text/50
 					rounded focus:outline-none transition-colors
 					{errors.inquiryType ? 'border-red' : 'border-surface0 '}"
 					>
@@ -323,7 +323,7 @@
 						bind:value={formData.message}
 						oninput={() => clearError("message")}
 						rows="8"
-						class="w-full p-2 bg-mantle border text-text text-sm placeholder:text-text/50
+						class="w-full p-2 bg-mantle border text-text text-base placeholder:text-text/50
 					rounded focus:outline-none transition-colors
 					{errors.message ? 'border-red' : 'border-surface0'}"
 						placeholder="Tell me about your inquiry..."
@@ -377,7 +377,7 @@
 		</section>
 
 		<!-- Sidebar -->
-		<div class="flex flex-col items-center gap-4 my-auto">
+		<div class="flex flex-col items-center gap-4 mb-auto">
 			<!-- Availability -->
 			<section class="w-full">
 				<div class="flex items-center gap-2 pb-3">

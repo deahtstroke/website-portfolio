@@ -1,5 +1,5 @@
 ---
-title: "Using Mermaid Diagrams in Svelte 5"
+title: "Using Mermaid Diagrams in Svelte 5 - Part I"
 description: "My SvelteKit setup for markdown blog notes using Mdsvex and Mermaid for diagramming"
 date: '2025-12-16'
 thumbnailText: "Mermaid & Svelte"

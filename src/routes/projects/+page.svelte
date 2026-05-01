@@ -193,7 +193,7 @@
 <main class="flex flex-col items-center gap-10 max-w-3xl mx-auto px-4 py-8">
 	<section class="flex flex-col gap-4 items-start">
 		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-light">Projects</h1>
-		<p class="text-sm text-text">
+		<p class="text-base text-text">
 			A collection of projects spanning multiple domains and technologies — from
 			personal experiments to meaningful contributions. Always building, always
 			exploring.
@@ -208,11 +208,11 @@
 		>
 			<span class="text-mauve text-sm select-none">/</span>
 			<input
-				class="flex-1 bg-transparent border-0 text-sm text-text placeholder:text-overlay0 focus:outline-none"
+				class="flex-1 bg-transparent border-0 text-base text-text placeholder:text-overlay0 focus:outline-none"
 				placeholder="search projects"
 				bind:value={searchQuery}
 			/>
-			<span class="text-overlay0 text-xs select-none tabular-nums">
+			<span class="text-overlay0 text-sm select-none tabular-nums">
 				{filteredProjects.length} / {baseProjects.length}
 			</span>
 		</div>
@@ -226,7 +226,7 @@
 				<!-- Lanauge filters -->
 				<div class="flex flex-col gap-1 mb-3">
 					<h3
-						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
+						class="text-sm text-overlay0 font-medium tracking-widest uppercase"
 					>
 						Language
 					</h3>
@@ -253,7 +253,7 @@
 				<!-- Status filters -->
 				<div class="flex flex-col gap-1 mb-3">
 					<h3
-						class="text-[0.65rem] text-overlay0 font-medium tracking-widest uppercase"
+						class="text-sm text-overlay0 font-medium tracking-widest uppercase"
 					>
 						Status
 					</h3>
@@ -281,14 +281,14 @@
 				<!-- Language filters (Hiddden on large screens) -->
 				<div class="lg:hidden flex flex-col gap-2">
 					<h3
-						class="text-overlay0 text-xs font-medium tracking-widest uppercase"
+						class="text-overlay0 text-sm font-medium tracking-widest uppercase"
 					>
 						Language
 					</h3>
 					<div class="flex gap-2 flex-wrap">
 						<button
 							onclick={() => clearLanguage()}
-							class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {selectedLanguage ===
+							class="px-2 py-1 text-xs border rounded cursor-pointer {selectedLanguage ===
 							null
 								? 'text-mauve border-mauve bg-surface0'
 								: 'text-overlay0 border-overlay0'}">All</button
@@ -297,7 +297,7 @@
 							{@const active = selectedLanguage === language}
 							<button
 								onclick={() => setLanguage(language)}
-								class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
+								class="px-2 py-1 text-xs border rounded cursor-pointer {active
 									? 'text-mauve border-mauve bg-surface0'
 									: 'text-overlay0 border-overlay0'}">{language}</button
 							>
@@ -308,14 +308,14 @@
 				<!-- Status filters (Also hidden on large screens) -->
 				<div class="lg:hidden flex flex-col gap-2">
 					<h3
-						class="text-overlay0 text-xs font-medium tracking-widest uppercase"
+						class="text-overlay0 text-sm font-medium tracking-widest uppercase"
 					>
 						Status
 					</h3>
 					<div class="flex gap-2 flex-wrap">
 						<button
 							onclick={() => clearStatus()}
-							class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {selectedStatus ===
+							class="px-2 py-1 text-xs border rounded cursor-pointer {selectedStatus ===
 							null
 								? 'text-mauve border-mauve bg-surface0'
 								: 'text-overlay0 border-overlay0'}">Any</button
@@ -324,7 +324,7 @@
 							{@const active = selectedStatus == status}
 							<button
 								onclick={() => setStatus(status)}
-								class="px-2 py-1 text-[0.65rem] border border-mauve rounded cursor-pointer {active
+								class="px-2 py-1 text-xs border border-mauve rounded cursor-pointer {active
 									? 'text-mauve border-mauve bg-surface0'
 									: 'text-overlay0 border-overlay0'}">{status}</button
 							>
@@ -335,7 +335,7 @@
 				<!-- Sort by -->
 				<div class="flex flex-col gap-2">
 					<h3
-						class="text-overlay0 text-xs font-medium tracking-widest uppercase"
+						class="text-overlay0 text-sm font-medium tracking-widest uppercase"
 					>
 						Sort By
 					</h3>
@@ -347,7 +347,7 @@
 								{@const active = selectedSort === tag.value}
 								<button
 									onclick={() => setSort(tag)}
-									class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer {active
+									class="px-2 py-1 text-xs border rounded cursor-pointer {active
 										? 'border-mauve text-mauve bg-surface0'
 										: 'border-overlay0 text-overlay0'}"
 									>{tag.label}
@@ -372,10 +372,10 @@
 						</div>
 					{:else}
 						<div class="text-center space-y-2 py-16">
-							<h3 class="text-sm font-semibold text-surface2">
+							<h3 class="text-base font-semibold text-yellow">
 								Huh, couldn't find anything?
 							</h3>
-							<p class="text-xs text-surface1 text-center">
+							<p class="text-sm text-overlay2 text-center">
 								Try adjusting your search or filters to find what you're looking
 								for
 							</p>

@@ -73,11 +73,11 @@
 	name: string,
 	value: string,
 	fn: () => void,
-	defaultColor: string = "surface2",
+	defaultColor: string = "overlay0",
 )}
 	<button
 		onclick={fn}
-		class="px-2 py-1 text-[0.65rem] border rounded cursor-pointer
+		class="px-2 py-1 text-xs border rounded cursor-pointer
 		{selectedTag === value
 			? `text-mauve bg-surface0 border-mauve`
 			: `text-${defaultColor} border-${defaultColor} hover:bg-mantle hover:text-subtext0`}"
@@ -99,7 +99,7 @@
 	<!-- Hero section -->
 	<section class="flex flex-col gap-4 items-start">
 		<h1 class="text-3xl mb-2 text-mauve font-bold tracking-tight">Blog</h1>
-		<p class="text-sm text-text">
+		<p class="text-base text-text">
 			My own writing on systems programming, containers, programming languages
 			and whatever I'm obsessing over this month. You'll also find some rambles
 			here and there.
@@ -113,11 +113,11 @@
 		>
 			<span class="text-mauve text-sm select-none">/</span>
 			<input
-				class="flex-1 bg-transparent border-0 text-sm text-text placeholder:text-overlay0 focus:outline-none"
+				class="flex-1 bg-transparent border-0 text-base text-text placeholder:text-overlay0 focus:outline-none"
 				placeholder="search posts..."
 				bind:value={query}
 			/>
-			<span class="text-overlay0 text-xs select-none tabular-nums"
+			<span class="text-overlay0 text-sm select-none tabular-nums"
 				>{results.length} / {data.posts.filter((p) => p.published).length}</span
 			>
 		</div>

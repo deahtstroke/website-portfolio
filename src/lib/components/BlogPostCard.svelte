@@ -12,33 +12,33 @@
 		style="background: linear-gradient(180deg, hsl({post.colorStart}), hsl({post.colorEnd}))"
 	></div>
 	<div class="flex flex-col items-end gap-1 px-2 py-2 text-text">
-		<span class="text-xs text-text"
+		<span class="text-sm text-text"
 			>{new Date(post.date).toLocaleString("default", { month: "long" })}</span
 		>
-		<span class="text-xs text-overlay2"
+		<span class="text-sm text-overlay2"
 			>{new Date(post.date).getUTCFullYear()}</span
 		>
 	</div>
 	<div class="flex flex-col gap-3 px-2 py-2">
-		<h2 class="text-text text-sm">
+		<h2 class="text-text text-base">
 			<a href="/blog/{post.slug}">{post.title}</a>
 		</h2>
-		<p class="text-subtext0 text-xs">{post.description}</p>
-		<div class="flex gap-4 flex-wrap">
+		<p class="text-subtext0 text-sm">{post.description}</p>
+		<div class="flex gap-2 flex-wrap">
 			{#each post.categories.slice(0, 4) as category}
-				<span class="text-[0.65rem] sm:text-xs text-mauve"
-					>{category.toLowerCase()}</span
+				<span class="text-xs sm:text-xs text-mauve"
+					>@{category.replaceAll(" ", "_").toLowerCase()}</span
 				>
 			{/each}
 		</div>
 
-		<div class="text-[0.65rem] sm:text-xs text-surface2 flex gap-4 flex-nowrap">
+		<div class="text-xs text-surface2 flex items-center gap-4 flex-nowrap">
 			{post.timeToRead} read
 			<a
 				href="/blog/{post.slug}"
-				class="text-[0.65rem] sm:text-xs sm:self-end inline-flex items-center gap-2"
+				class="text-sm sm:self-end inline-flex items-center gap-2"
 			>
-				read<span>→</span>
+				Read<span>→</span>
 			</a>
 		</div>
 	</div>

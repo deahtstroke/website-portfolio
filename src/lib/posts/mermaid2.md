@@ -1,6 +1,6 @@
 ---
-title: "Using Mermaid Diagrams in Svelte 5 (continued)"
-description: "My SvelteKit setup for markdown-native Mermaid diagrams, no need for Svelte Components"
+title: "Using Mermaid Diagrams in Svelte 5 - Part II"
+description: "My SvelteKit setup for markdown-native Mermaid diagrams, and this time, there's no need for Svelte Components"
 date: '2026-02-14'
 thumbnailText: "Mermaid & Svelte 2"
 categories: ["Svelte", "Markdown", "Shiki", "Mermaid", "Mdsvex", "CloudFlare"]
@@ -29,25 +29,24 @@ non-native markdown elements and tags.
 
 What would look like this:
 
-``` markdown
-
-## My Blog Post
-
-Here's my very beautiful sequence Diagram!
-
-\`\`\`mermaid
-    SequenceDiagram
-       First -> Second
-       Second -> Third
-       # etc...
-\`\`\`
-
-```
+<!-- ``` markdown -->
+<!---->
+<!-- ## My Blog Post -->
+<!---->
+<!-- Here's my very beautiful sequence Diagram! -->
+<!---->
+<!-- \`\`\`mermaid -->
+<!--     SequenceDiagram -->
+<!--        First -> Second -->
+<!--        Second -> Third -->
+<!--        # etc... -->
+<!-- \`\`\` -->
+<!---->
+<!-- ``` -->
 
 Instead looks like this:
 
 ``` markdown
-
 ## My Blog Post
 
 <script>
@@ -112,68 +111,68 @@ returned wrapped around `<pre>` HTML elements with the correct class name.
 
 The resulting `svelte.config.js` file then looks like this:
 
-```javascript
-const highlighterPromise = createHighlighter({
-	themes: ['catppuccin-mocha'],
-	langs: ['go', 'json']
-})
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-	extensions: ['.svelte', '.svx', ".md"],
-	preprocess: [vitePreprocess(), mdsvex({
-		extensions: [".md", ".svx"],
-		highlight: {
-			highlighter: async (code, lang = 'text') => {
-				if (lang === 'mermaid') {
-					// Return a raw div that the client-side library will target
-					// We wrap in {@html} to ensure Svelte doesn't parse it
-					return `{@html \`<pre class="mermaid">${code}</pre>\`}`;
-				}
-				const highlighter = await highlighterPromise
-				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown');
-				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'catppuccin-mocha' }));
-				return `{@html \`${html}\`}`
-			}
-		},
-		rehypePlugins: [
-            // DO NOT use Rehype-Mermaid
-			rehypeSlug,
-			[rehypeAutolinkHeadings, {
-				behavior: "wrap",
-				properties: {
-					className: 'heading-anchor',
-				}
-			}]
-		]
-	})],
-};
-```
+<!-- ```javascript -->
+<!-- const highlighterPromise = createHighlighter({ -->
+<!-- 	themes: ['catppuccin-mocha'], -->
+<!-- 	langs: ['go', 'json'] -->
+<!-- }) -->
+<!---->
+<!-- /** @type {import('@sveltejs/kit').Config} */ -->
+<!-- const config = { -->
+<!-- 	extensions: ['.svelte', '.svx', ".md"], -->
+<!-- 	preprocess: [vitePreprocess(), mdsvex({ -->
+<!-- 		extensions: [".md", ".svx"], -->
+<!-- 		highlight: { -->
+<!-- 			highlighter: async (code, lang = 'text') => { -->
+<!-- 				if (lang === 'mermaid') { -->
+<!-- 					// Return a raw div that the client-side library will target -->
+<!-- 					// We wrap in {@html} to ensure Svelte doesn't parse it -->
+<!-- 					return `{@html \`<pre class="mermaid">${code}</pre>\`}`; -->
+<!-- 				} -->
+<!-- 				const highlighter = await highlighterPromise -->
+<!-- 				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown'); -->
+<!-- 				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'catppuccin-mocha' })); -->
+<!-- 				return `{@html \`${html}\`}` -->
+<!-- 			} -->
+<!-- 		}, -->
+<!-- 		rehypePlugins: [ -->
+<!--             // DO NOT use Rehype-Mermaid -->
+<!-- 			rehypeSlug, -->
+<!-- 			[rehypeAutolinkHeadings, { -->
+<!-- 				behavior: "wrap", -->
+<!-- 				properties: { -->
+<!-- 					className: 'heading-anchor', -->
+<!-- 				} -->
+<!-- 			}] -->
+<!-- 		] -->
+<!-- 	})], -->
+<!-- }; -->
+<!-- ``` -->
 
 Then after, inside the `routes/blog/[slug]/+layout.svelte` we
 would then initialize Mermaid when in the browser and let Mermaid
 render the diagrams for every blog post that's currently on focus.
 
-```javascript
-	import { onMount } from "svelte";
-	import { browser } from "$app/environment";
-
-    // Only execute on the browser and dynamically import mermaid,
-    // configure it and finally let it run asynchronously
-	onMount(async () => {
-		if (browser) {
-			const mermaid = (await import("mermaid")).default;
-
-			mermaid.initialize({
-				startOnLoad: true,
-				theme: "dark",
-				securityLevel: "loose",
-			});
-
-			await mermaid.run();
-		}
-	});
-```
+<!-- ```javascript -->
+<!-- 	import { onMount } from "svelte"; -->
+<!-- 	import { browser } from "$app/environment"; -->
+<!---->
+<!--     // Only execute on the browser and dynamically import mermaid, -->
+<!--     // configure it and finally let it run asynchronously -->
+<!-- 	onMount(async () => { -->
+<!-- 		if (browser) { -->
+<!-- 			const mermaid = (await import("mermaid")).default; -->
+<!---->
+<!-- 			mermaid.initialize({ -->
+<!-- 				startOnLoad: true, -->
+<!-- 				theme: "dark", -->
+<!-- 				securityLevel: "loose", -->
+<!-- 			}); -->
+<!---->
+<!-- 			await mermaid.run(); -->
+<!-- 		} -->
+<!-- 	}); -->
+<!-- ``` -->
 
 Now then, we can replace all the usage of the `<MermaidComponent>` with
 the original backticks used in Markdown and Mermaid will be able to

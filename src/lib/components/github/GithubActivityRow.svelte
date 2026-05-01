@@ -4,11 +4,12 @@
 	import GithubActivityDescription from "./GithubActivityDescription.svelte";
 	import type { LucideIcon } from "@lucide/svelte";
 
-	let { event, index }: { event: GithubEvent; index: number } = $props();
+	let { event: ghEvent, index }: { event: GithubEvent; index: number } =
+		$props();
 
 	let isExpanded: boolean = $state(false);
 
-	const Icon: LucideIcon = $derived(getEventIcon(event.type));
+	const Icon: LucideIcon = $derived(getEventIcon(ghEvent.type));
 
 	function getRelativeTime(time: string): string {
 		const now: Date = new Date();
@@ -42,28 +43,28 @@
 		: 'border-l-transparent hover:border-l-highlight hover:bg-surface'}"
 	onclick={() => (isExpanded = !isExpanded)}
 >
-	<p class="text-xs text-surface2 select-none">{index + 1}</p>
+	<p class="text-sm text-surface2 select-none">{index + 1}</p>
 	<div class="flex flex-1 items-center py-3">
 		<div class="flex flex-1 flex-col items-start">
 			<div class="flex items-center gap-2">
 				<Icon class="text-teal" size="12" />
 				<p class="text-[0.60rem] sm:text-xs text-teal">
-					{event.type}
+					{ghEvent.type}
 				</p>
 				<time
-					datetime={event.created_at}
+					datetime={ghEvent.created_at}
 					class="text-[0.60rem] sm:text-xs text-secondary ml-auto"
-					>{getRelativeTime(event.created_at)}</time
+					>{getRelativeTime(ghEvent.created_at)}</time
 				>
 			</div>
-			<GithubActivityDescription ghEvent={event} />
+			<GithubActivityDescription {ghEvent} />
 		</div>
 	</div>
 
-	<span class="text-surface2 text-xs">
+	<span class="text-surface2 text-sm">
 		{isExpanded ? "[-]" : "[+]"}
 	</span>
 </button>
 {#if isExpanded}
-	<GithubActivityExpanded ghEvent={event} />
+	<GithubActivityExpanded {ghEvent} />
 {/if}

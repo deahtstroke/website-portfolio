@@ -46,7 +46,6 @@
   /* Base */
   --color-crust: #11111b;
   --color-mantle: #181825;
-  --color-base: #1e1e2e;
 
   /* Surface */
   --color-surface0: #313244;
@@ -90,7 +89,7 @@
 
   html,
   body {
-    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono overflow-x-hidden;
+    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono;
   }
 
   h1 {
@@ -166,8 +165,8 @@
     display: none;
   }
 
-  blockquote {
-    @apply bg-mantle
+  blockquote, pre {
+    @apply overflow-x-auto max-w-full
   }
 
   blockquote p {
@@ -183,7 +182,7 @@
   }
 
   strong {
-    @apply text-base font-semibold
+    @apply text-text font-semibold
   }
 
   a:not(.heading-anchor) {

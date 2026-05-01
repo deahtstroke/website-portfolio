@@ -23,7 +23,7 @@
 	let { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
-<article class="max-w-3xl gap-4 mx-auto px-4 py-3 flex flex-col items-center">
+<article class="max-w-3xl mx-auto gap-4 px-4 py-3 flex flex-col items-center">
 	<header class="w-full flex flex-col gap-4 border-b border-neutral-800 pb-8">
 		<a
 			href="/blog"

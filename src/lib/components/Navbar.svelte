@@ -7,11 +7,6 @@
 
 	let menuOptions = [
 		{
-			name: "Home",
-			desc: "Go back to Homepage",
-			ref: "/",
-		},
-		{
 			name: "Projects",
 			desc: "View my work",
 			ref: "/projects",
@@ -44,7 +39,10 @@
 			: page.url.pathname
 					.split("/")
 					.filter(Boolean)
-					.map((a) => a.toLowerCase()),
+					.map((segment, index, array) => ({
+						label: segment.toLowerCase(),
+						href: "/" + array.slice(0, index + 1).join("/"),
+					})),
 	);
 
 	const closeTelescope = () => {
@@ -138,17 +136,19 @@
 	<div
 		class="max-w-3xl m-auto h-full px-4 py-3 flex flex-row align-middle items-center"
 	>
-		<a
-			class="font-bold mr-auto text-text text-sm hover:cursor-pointer"
-			href="/"
-		>
-			<span class="text-blue">~/dvillavicencio</span>
+		<div class="font-bold mr-auto text-text text-sm sm:text-base">
+			<a class="inline-block text-blue hover:cursor-pointer" href="/">
+				~/dvillavicencio</a
+			>
 			{#each segments as segment}
 				<span class="text-overlay0">/</span>
-				<span class="text-subtext1">{segment}</span>
+				<a
+					class="text-subtext1 hover:text-text hover:cursor-pointer"
+					href={segment.href}>{segment.label}</a
+				>
 				<span class="text-subtext1"></span>
 			{/each}
-		</a>
+		</div>
 
 		<!-- NavBar options desktop -->
 		<ul class="flex gap-4 mx-2 justify-center content-center">
@@ -156,7 +156,7 @@
 				<li>
 					<a
 						href={option.ref}
-						class="group text-xs relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
+						class="group text-sm relative hidden sm:inline-block content-center cursor-pointer {option.ref ===
 						page.url.pathname
 							? 'text-sky'
 							: 'text-blue hover:text-sky '}"
@@ -196,16 +196,16 @@
 	>
 		<!-- Telescope header -->
 		<div class="px-4 py-3.5 border-b border-surface1 shrink-0">
-			<div class="text-xs text-overlay0 mb-2">telescope.nvim</div>
+			<div class="text-sm text-overlay0 mb-2">telescope.nvim</div>
 			<div class="flex items-center text-base">
-				<span class="text-sm text-blue mr-2">Find &gt;</span>
+				<span class="text-base text-blue mr-2">Find &gt;</span>
 				<input
 					type="text"
 					bind:this={inputEl}
 					onkeydown={inputKeycaptures}
 					bind:value={query}
 					style="caret-shape: underscore;"
-					class="caret-mauve bg-crust border-none text-text text-xs focus:outline-none focus:ring-0"
+					class="caret-mauve bg-crust border-none text-text text-base focus:outline-none focus:ring-0"
 				/>
 			</div>
 		</div>
@@ -216,7 +216,7 @@
 				<a
 					href={result.href}
 					onclick={closeTelescope}
-					class="group flex items-center justify-between px-4 py-2.5 text-xs {active
+					class="group flex items-center justify-between px-4 py-2.5 text-sm {active
 						? 'bg-mauve'
 						: 'hover:bg-surface0'}"
 				>
@@ -241,13 +241,13 @@
 		</div>
 
 		<!-- Footer -->
-		<div class="px-4 py-3 flex gap-2 bg-crust border-t border-surface0">
+		<div class="p-2 flex gap-1 bg-crust border-t border-surface0">
 			<p class="text-xs text-overlay0">{filteredResults.length} results</p>
 			<div class="flex gap-2 ml-auto text-xs">
-				<p class="text-overlay0">↑|k Up</p>
-				<p class="text-overlay0">↓|j Down</p>
-				<p class="text-overlay0">↵ open</p>
-				<p class="text-overlay0">esc close</p>
+				<p class="text-overlay0">[↑ Up]</p>
+				<p class="text-overlay0">[↓ Down]</p>
+				<p class="text-overlay0">[↵ Open]</p>
+				<p class="text-overlay0">[Esc Close]</p>
 			</div>
 		</div>
 	</div>

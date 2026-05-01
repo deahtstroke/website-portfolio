@@ -9,7 +9,7 @@
 		$props();
 </script>
 
-<p class="text-xs text-left">
+<p class="text-sm text-left">
 	<span class="text-mauve">Daniel</span>
 	{#if ghEvent.payload.ref_type === "repository"}
 		<span class="text-text">created repository</span>

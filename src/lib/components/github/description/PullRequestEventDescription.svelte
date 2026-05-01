@@ -1,28 +1,7 @@
 <script lang="ts">
 	import type { GithubEvent } from "$lib/types/dto/GithubEvent";
 	import type { Snippet } from "svelte";
-	const prColor = (): string => {
-		switch (ghEvent.payload.action) {
-			case "opened":
-				return "text-green";
-			case "closed":
-				return "text-red";
-			case "merged":
-				return "text-mauve";
-			case "reopened":
-				return "text-yellow";
-			case "assigned":
-				return "text-blue";
-			case "unassigned":
-				return "text-subtext0";
-			case "labeled":
-				return "text-lavender";
-			case "unlabeled":
-				return "text-subtext1";
-			default:
-				return "text-body";
-		}
-	};
+
 	let {
 		ghEvent,
 		repoSnippet,
@@ -30,7 +9,7 @@
 		$props();
 </script>
 
-<p class="text-xs text-left">
+<p class="text-sm text-left">
 	<span class="text-mauve">Daniel</span>{" "}
 	<span class="text-text">{ghEvent.payload.action} PR</span>
 	<a

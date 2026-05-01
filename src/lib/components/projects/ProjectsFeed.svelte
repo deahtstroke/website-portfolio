@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Project } from "$lib/types/Project";
+	import CommandLine from "../CommandLine.svelte";
 	import ProjectRow from "./ProjectRow.svelte";
 
 	let { projects }: { projects: Project[] } = $props();
@@ -7,7 +8,7 @@
 
 <article class="border border-surface1 bg-mantle">
 	<!-- Tab bar -->
-	<div class="bg-crust border-b border-surface0 flex items-center px-3 text-xs">
+	<div class="bg-crust border-b border-surface0 flex items-center px-3 text-sm">
 		<h3
 			class="px-4 py-2 text-text border-b-2 border-mauve bg-surface cursor-default whitespace-nowrap"
 		>
@@ -21,15 +22,13 @@
 	</div>
 
 	<!-- Command line -->
-	<p
-		class="px-4 py-2 text-xs border-b border-border bg-surface overflow-hidden"
-	>
-		<span class="text-overlay0">$</span>
-		<span class="text-green">ls</span>
-		<span class="text-yellow">~/projects</span>
-		<span class="text-text/25">--sort=status</span>
-		<span class="text-text/25">--count=4</span>
-	</p>
+	<CommandLine
+		segments={[
+			{ label: "ls", color: "green" },
+			{ label: "~/projects", color: "yellow" },
+			{ label: "--sort=status --count=4", color: "overlay1" },
+		]}
+	/>
 
 	<!-- Content -->
 	{#each projects as project, i}
@@ -44,21 +43,14 @@
              text-overlay1 flex items-center transition-colors duration-150
              hover:bg-surface0 hover:text-mauve"
 	>
-		<span
-			class="select-none min-w-10 text-right pr-4 text-overlay0 text-xs shrink-0"
-			>→</span
-		>
-		<span class="ml-3 text-xs">
-			[→] view all posts
-			<span class="text-overlay0">-- /projects</span>
-		</span>
+		<span class="ml-3 text-sm"> [→] Click here to view all projects </span>
 	</a>
 
 	<div
-		class="px-4 py-2 text-xs flex items-center gap-4 bg-crust border-t border-surface0 text-overlay0"
+		class="px-4 py-2 text-sm flex items-center gap-4 bg-crust border-t border-surface0 text-overlay0"
 	>
 		<span><span class="text-mauve">NORMAL</span></span>
-		<span>{projects.length} projects loaded</span>
+		<span>{projects.length} projects</span>
 		<span class="ml-auto">click the '[+]' to expand</span>
 	</div>
 </article>

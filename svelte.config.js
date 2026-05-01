@@ -7,7 +7,7 @@ import adapter from '@sveltejs/adapter-cloudflare';
 import rehypeSlug from 'rehype-slug';
 
 const highlighterPromise = createHighlighter({
-	themes: ['github-dark-default'],
+	themes: ['nord'],
 	langs: ['go', 'json']
 })
 
@@ -27,7 +27,7 @@ const config = {
 				}
 				const highlighter = await highlighterPromise
 				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown', 'toml');
-				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'github-dark-default' }));
+				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'nord' }));
 				return `{@html \`${html}\`}`
 			}
 		},

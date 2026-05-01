@@ -49,7 +49,7 @@
 		</div>
 
 		<div class="pt-5">
-			<p class="text-sm text-ctp-subtext1 leading-relaxed max-w-3xl">
+			<p class="text-base text-ctp-subtext1 leading-relaxed max-w-3xl">
 				Systems software engineer focused on container runtimes, low-level
 				networking, and open-source infrastructure. Contributor to
 				<a
@@ -62,7 +62,7 @@
 			</p>
 			<a
 				href="/about"
-				class="inline-block mt-3 text-xs text-ctp-overlay1 hover:text-ctp-mauve transition-colors"
+				class="inline-block mt-3 text-sm text-ctp-overlay1 hover:text-ctp-mauve transition-colors"
 			>
 				Read more →
 			</a>
@@ -72,11 +72,11 @@
 	<!-- Github Activity -->
 	<section class="w-full">
 		<div class="w-full mb-2 flex items-center gap-2">
-			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h2 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Recent Activity
 			</h2>
 			<div class="flex-1 bg-surface0 h-px"></div>
-			<p class="text-overlay0 text-xs">my github activity</p>
+			<p class="text-overlay0 text-sm">my github activity</p>
 		</div>
 		<GithubFeed />
 	</section>
@@ -84,19 +84,15 @@
 	<!-- Blog Posts -->
 	<section class="w-full">
 		<div class="mb-2 flex items-center gap-2">
-			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h2 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Latest posts
 			</h2>
 			<div class="flex-1 bg-surface0 h-px"></div>
 			<a
 				href="/blog"
-				class="group text-xs text-mauve sm:text-overlay0 hover:text-mauve transition-all"
+				class="group text-sm text-mauve sm:text-overlay0 hover:text-mauve transition-all"
 			>
-				<span
-					class="inline-block transition-transform group-hover:translate-x-1"
-					>→</span
-				>
-				/blog</a
+				See all my posts ↗</a
 			>
 		</div>
 		<LatestPostsFeed posts={data.posts} />
@@ -105,19 +101,15 @@
 	<!-- Projects -->
 	<section class="w-full">
 		<div class="mb-2 flex items-center gap-2">
-			<h2 class="text-xs text-overlay0 font-medium tracking-widest uppercase">
+			<h2 class="text-sm text-overlay0 font-medium tracking-widest uppercase">
 				Projects
 			</h2>
 			<div class="flex-1 bg-surface0 h-px"></div>
 			<a
 				href="/projects"
-				class="group text-xs text-mauve sm:text-overlay0 hover:text-mauve transition-all"
+				class="group text-sm text-mauve sm:text-overlay0 hover:text-mauve transition-all"
 			>
-				<span
-					class="inline-block transition-transform group-hover:translate-x-1"
-					>→</span
-				>
-				/projects
+				Check out my projects ↗
 			</a>
 		</div>
 		<ProjectsFeed projects={getPinnedProjects()} />

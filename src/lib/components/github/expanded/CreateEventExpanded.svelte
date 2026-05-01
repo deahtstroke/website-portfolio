@@ -4,7 +4,7 @@
 	let { ghEvent }: { ghEvent: GithubEvent } = $props();
 </script>
 
-<div class="px-3 pt-1.5 text-xs text-body/50">
+<div class="px-3 pt-1.5 text-sm text-body/50">
 	<span class="text-warning pb-1">{ghEvent.type}</span>
 	<div class="grid grid-cols-[auto_1fr] gap-x-5">
 		<span class="text-body/50">├── id:</span>

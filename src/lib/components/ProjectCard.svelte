@@ -17,6 +17,10 @@
 			projectType: "project",
 		},
 	}: { project: Project } = $props();
+
+	function formatTag(tag: string): string {
+		return tag.replaceAll(" ", "_").toLowerCase();
+	}
 </script>
 
 <article class="group flex flex-col border border-border p-5">
@@ -24,14 +28,14 @@
 	<div class="flex flex-1 flex-col gap-2 pb-3 mb-3 border-b border-surface0">
 		<div class="flex gap-2 mb-3 uppercase tracking-widest font-bold">
 			<span
-				class="px-2 py-0.5 text-[0.65rem] border select-none rounded border-{LanguagesToColors[
+				class="px-2 py-0.5 text-xs border select-none rounded border-{LanguagesToColors[
 					project.primaryLanguage
 				]}
 				text-{LanguagesToColors[project.primaryLanguage]}"
 				>{project.primaryLanguage}</span
 			>
 			<span
-				class="px-2 py-0.5 text-[0.65rem] border select-none rounded border-{StatusToColors[
+				class="px-2 py-0.5 text-xs border select-none rounded border-{StatusToColors[
 					project.status
 				]}
 				text-{StatusToColors[project.status]}"
@@ -39,17 +43,17 @@
 				{project.status}
 			</span>
 		</div>
-		<h3 class="text-sm text-text">
+		<h3 class="text-base text-mauve">
 			{project.title}
 		</h3>
-		<p class="text-xs text-subtext0 leading-relaxed">
+		<p class="text-sm text-text leading-relaxed">
 			{project.description}
 		</p>
 
 		<div class="flex flex-wrap gap-2">
 			{#each project.technologies as tech}
-				<span class="text-[0.65rem] text-overlay0 tracking-wider">
-					#{tech}
+				<span class="text-xs text-overlay0 tracking-wider">
+					#{formatTag(tech)}
 				</span>
 			{/each}
 		</div>
@@ -61,10 +65,10 @@
 			href={project.githubUrl}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="group flex items-center gap-1 px-2 py-1 text-[0.65rem] text-surface2"
+			class="group flex items-center gap-1 px-2 py-1 text-sm text-surface2"
 		>
-			<span class="text-blue">↗</span>
-			<span class="hover:underline">{project.repoName}/{project.repoOwner}</span
+			<span class="text-blue hover:underline"
+				>{project.repoName}/{project.repoOwner} ↗</span
 			>
 		</a>
 		<!-- TODO: add a website link for projects with website links -->
