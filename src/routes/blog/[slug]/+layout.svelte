@@ -24,7 +24,7 @@
 </script>
 
 <article class="max-w-3xl mx-auto gap-4 px-4 py-3 flex flex-col items-center">
-	<header class="w-full flex flex-col gap-4 border-b border-neutral-800 pb-8">
+	<header class="flex flex-col gap-4 border-b border-neutral-800 pb-8">
 		<a
 			href="/blog"
 			aria-label="Go back to blog posts"
@@ -56,7 +56,7 @@
 	</header>
 
 	<!-- Content goes here -->
-	<div class="prose w-full">
+	<div class="prose">
 		{@render children()}
 	</div>
 

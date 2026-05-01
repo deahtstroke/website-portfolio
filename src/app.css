@@ -89,7 +89,7 @@
 
   html,
   body {
-    @apply p-0 m-0 flex flex-col min-h-screen bg-surface font-jetbrains-mono;
+    @apply p-0 m-0 min-h-screen bg-surface font-jetbrains-mono;
   }
 
   h1 {
@@ -163,10 +163,6 @@
   blockquote *:after,
   blockquote *:before {
     display: none;
-  }
-
-  blockquote, pre {
-    @apply overflow-x-auto max-w-full
   }
 
   blockquote p {
