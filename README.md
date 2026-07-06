@@ -4,7 +4,7 @@ This repo contains all the source code for my personal portfolio.
 
 ## Live Site
 
-[Visit my portfolio](https://danielvm.dev)
+Live website link: https://danielvm.dev
 
 ## Technology Stack
 
