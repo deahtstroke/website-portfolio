@@ -1,7 +1,7 @@
 ---
 title: "Using Mermaid Diagrams in Svelte 5 - Part II"
 description: "My SvelteKit setup for markdown-native Mermaid diagrams, and this time, there's no need for Svelte Components"
-date: '2026-02-14'
+date: "2026-02-14"
 thumbnailText: "Mermaid & Svelte 2"
 categories: ["Svelte", "Markdown", "Shiki", "Mermaid", "Mdsvex", "CloudFlare"]
 published: true
@@ -29,24 +29,21 @@ non-native markdown elements and tags.
 
 What would look like this:
 
-<!-- ``` markdown -->
-<!---->
-<!-- ## My Blog Post -->
-<!---->
-<!-- Here's my very beautiful sequence Diagram! -->
-<!---->
-<!-- \`\`\`mermaid -->
-<!--     SequenceDiagram -->
-<!--        First -> Second -->
-<!--        Second -> Third -->
-<!--        # etc... -->
-<!-- \`\`\` -->
-<!---->
-<!-- ``` -->
+```markdown
+## My Blog Post
+
+Here's my very beautiful sequence Diagram!
+
+\`\`\`mermaid
+SequenceDiagram
+First -> Second
+Second -> Third # etc...
+\`\`\`
+```
 
 Instead looks like this:
 
-``` markdown
+```markdown
 ## My Blog Post
 
 <script>
@@ -78,23 +75,23 @@ the "game of telephone" happening in my build process. Here’s the breakdown
 of the four players and where they clashed:
 
 1. **Mdsvex (The Boss)**: Converts Markdown to Svelte. It uses the
-Unified ecosystem to turn my text into an Abstract Syntax Tree (AST)—a
-map of every element in my post.
+   Unified ecosystem to turn my text into an Abstract Syntax Tree (AST)—a
+   map of every element in my post.
 
 2. **Shiki (The Greedy Highlighter)**: This is where the bug started.
-In the Mdsvex lifecycle, Shiki’s highlight function runs before the Rehype
-plugins. It "baked" my Mermaid code into a raw HTML string, effectively hiding
-the node from the rest of the pipeline.
+   In the Mdsvex lifecycle, Shiki’s highlight function runs before the Rehype
+   plugins. It "baked" my Mermaid code into a raw HTML string, effectively hiding
+   the node from the rest of the pipeline.
 
 3. **Rehype-Mermaid (The Blind Plugin)**: This plugin expects to find a "code node"
-in the AST to transform. Since Shiki already turned that node into a flat
-string, Rehype-Mermaid saw nothing to process and just skipped right over it.
+   in the AST to transform. Since Shiki already turned that node into a flat
+   string, Rehype-Mermaid saw nothing to process and just skipped right over it.
 
 4. **Cloudflare (New Issue)**: This is actually a new addition to the
-problem! Even if I fixed the pipeline, most Mermaid plugins render SVGs at
-build-time using a headless browser (Puppeteer).
-Cloudflare Workers/Pages can't run those binaries, making server-side rendering
-a non-starter.
+   problem! Even if I fixed the pipeline, most Mermaid plugins render SVGs at
+   build-time using a headless browser (Puppeteer).
+   Cloudflare Workers/Pages can't run those binaries, making server-side rendering
+   a non-starter.
 
 TLDR: Shiki was "over-processing" my code blocks before the diagram generator
 could see them, and even if the diagram generator was able to see them, the
@@ -111,68 +108,82 @@ returned wrapped around `<pre>` HTML elements with the correct class name.
 
 The resulting `svelte.config.js` file then looks like this:
 
-<!-- ```javascript -->
-<!-- const highlighterPromise = createHighlighter({ -->
-<!-- 	themes: ['catppuccin-mocha'], -->
-<!-- 	langs: ['go', 'json'] -->
-<!-- }) -->
-<!---->
-<!-- /** @type {import('@sveltejs/kit').Config} */ -->
-<!-- const config = { -->
-<!-- 	extensions: ['.svelte', '.svx', ".md"], -->
-<!-- 	preprocess: [vitePreprocess(), mdsvex({ -->
-<!-- 		extensions: [".md", ".svx"], -->
-<!-- 		highlight: { -->
-<!-- 			highlighter: async (code, lang = 'text') => { -->
-<!-- 				if (lang === 'mermaid') { -->
-<!-- 					// Return a raw div that the client-side library will target -->
-<!-- 					// We wrap in {@html} to ensure Svelte doesn't parse it -->
-<!-- 					return `{@html \`<pre class="mermaid">${code}</pre>\`}`; -->
-<!-- 				} -->
-<!-- 				const highlighter = await highlighterPromise -->
-<!-- 				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown'); -->
-<!-- 				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'catppuccin-mocha' })); -->
-<!-- 				return `{@html \`${html}\`}` -->
-<!-- 			} -->
-<!-- 		}, -->
-<!-- 		rehypePlugins: [ -->
-<!--             // DO NOT use Rehype-Mermaid -->
-<!-- 			rehypeSlug, -->
-<!-- 			[rehypeAutolinkHeadings, { -->
-<!-- 				behavior: "wrap", -->
-<!-- 				properties: { -->
-<!-- 					className: 'heading-anchor', -->
-<!-- 				} -->
-<!-- 			}] -->
-<!-- 		] -->
-<!-- 	})], -->
-<!-- }; -->
-<!-- ``` -->
+```javascript
+const highlighterPromise = createHighlighter({
+  themes: ["catppuccin-mocha"],
+  langs: ["go", "json"],
+});
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".svx", ".md"],
+  preprocess: [
+    vitePreprocess(),
+    mdsvex({
+      extensions: [".md", ".svx"],
+      highlight: {
+        highlighter: async (code, lang = "text") => {
+          if (lang === "mermaid") {
+            // Return a raw div that the client-side library will target
+            // We wrap in {@html} to ensure Svelte doesn't parse it
+            return `{@html \`<pre class="mermaid">${code}</pre>\`}`;
+          }
+          const highlighter = await highlighterPromise;
+          await highlighter.loadLanguage(
+            "go",
+            "json",
+            "svelte",
+            "mermaid",
+            "markdown",
+          );
+          const html = escapeSvelte(
+            highlighter.codeToHtml(code, { lang, theme: "catppuccin-mocha" }),
+          );
+          return `{@html \`${html}\`}`;
+        },
+      },
+      rehypePlugins: [
+        // DO NOT use Rehype-Mermaid
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "wrap",
+            properties: {
+              className: "heading-anchor",
+            },
+          },
+        ],
+      ],
+    }),
+  ],
+};
+```
 
 Then after, inside the `routes/blog/[slug]/+layout.svelte` we
 would then initialize Mermaid when in the browser and let Mermaid
 render the diagrams for every blog post that's currently on focus.
 
-<!-- ```javascript -->
-<!-- 	import { onMount } from "svelte"; -->
-<!-- 	import { browser } from "$app/environment"; -->
-<!---->
-<!--     // Only execute on the browser and dynamically import mermaid, -->
-<!--     // configure it and finally let it run asynchronously -->
-<!-- 	onMount(async () => { -->
-<!-- 		if (browser) { -->
-<!-- 			const mermaid = (await import("mermaid")).default; -->
-<!---->
-<!-- 			mermaid.initialize({ -->
-<!-- 				startOnLoad: true, -->
-<!-- 				theme: "dark", -->
-<!-- 				securityLevel: "loose", -->
-<!-- 			}); -->
-<!---->
-<!-- 			await mermaid.run(); -->
-<!-- 		} -->
-<!-- 	}); -->
-<!-- ``` -->
+```javascript
+import { onMount } from "svelte";
+import { browser } from "$app/environment";
+
+// Only execute on the browser and dynamically import mermaid,
+// configure it and finally let it run asynchronously
+onMount(async () => {
+  if (browser) {
+    const mermaid = (await import("mermaid")).default;
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "dark",
+      securityLevel: "loose",
+    });
+
+    await mermaid.run();
+  }
+});
+```
 
 Now then, we can replace all the usage of the `<MermaidComponent>` with
 the original backticks used in Markdown and Mermaid will be able to
@@ -184,13 +195,13 @@ But yet again, with a different solution there are always trade-offs that
 need to be considered.
 
 1. **Flash of Unstyled Content (FOUC)**: Since the custom component rendered
-a loader before Mermaid was able to
-finish rendering the diagram, this solution makes it so that we lose
-the loader in return of not using Svelte components in the Markdown.
+   a loader before Mermaid was able to
+   finish rendering the diagram, this solution makes it so that we lose
+   the loader in return of not using Svelte components in the Markdown.
 2. **Increased Bundle Size**: Adding Mermaid to the bundled website adds roughly
-300kb-1MB to the site's JavaScript payload.
+   300kb-1MB to the site's JavaScript payload.
 3. **No JS, No Diagrams**: Users that have JavaScript disabled for their browsers
-would only see the raw diagram text.3
+   would only see the raw diagram text.3
 
 While client-side rendering solves the Cloudflare and Shiki collision issues,
 it shifts the 'work' from the build server to the reader's browser. We
