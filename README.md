@@ -1,12 +1,6 @@
 # Verity Log
 
-This repo contains all the source code for my personal portfolio I dubbed
-`verity-log`. Why is it called 'verity'? According to the Merriam Webster dictionary
-the word [verity](https://www.merriam-webster.com/dictionary/verity) means
-the state of being true or real. This website-portfolio is a true expression of
-who I am and how I showcase myself to other people about my career and
-aspirations. And why 'log'? That's because I treat it as a ledger of
-all my achievements, projects, experiences, and blog notes (in the future).
+This repo contains all the source code for my personal portfolio.
 
 ## Live Site
 
@@ -20,6 +14,8 @@ all my achievements, projects, experiences, and blog notes (in the future).
 routing, server-side rendering, and data fetching
 - [TailwindCSS](https://tailwindcss.com) - CSS library for optimized inline styles
 - [Vite](http://vite.dev) - Build tool for frontend applications
+- [Mdsvex](https://mdsvex.pngwn.io/) - Svelte Plugin for parsing Markdown as Svelte Components
+- [Shiki](https://shiki.style/) - Syntax Highlighter for codeblocks on markdown
 
 ## Project Structure
 
@@ -48,9 +44,9 @@ static/
 
 ## Other Features
 
-The contact page is served through a custom-made web server in Go I to validate
+The contact page is served through a custom-made web server in Go I created to validate
 CloudFlare's Turnstile token sent through the `/contact` form. Additionally, I'm
-using Mailgun to send emails through my web server.
+using Mailgun to send emails through my VPS.
 
 ## License
 
