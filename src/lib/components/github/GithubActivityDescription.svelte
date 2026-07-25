@@ -30,6 +30,8 @@
 		DeleteEvent: DeleteEventDescription,
 	};
 
+	// Description component to render if key exists in `descriptions` for
+	// passed ghEvent prop
 	const Description: DescriptionComponent | undefined = $derived(
 		descriptions[ghEvent.type],
 	);

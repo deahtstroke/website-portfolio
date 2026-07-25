@@ -5,36 +5,54 @@
 	import CommandLine from "../CommandLine.svelte";
 
 	const GITHUB_USERNAME = "deahtstroke";
-	const INITIAL_AMOUNT = 5;
+	const FETCH_AMOUNT = 30;
+	const DISPLAY_AMOUNT = 5;
+	const EVENTS_URL = `https://api.github.com/users/deahtstroke/events?per_page=${FETCH_AMOUNT}&page=0`;
 
 	let events: GithubEvent[] = $state([]);
 	let isLoading: boolean = $state(true);
 
-	let { pageNumber = 0, count = 5 }: { pageNumber?: number; count?: number } =
-		$props();
+	let { pageNumber = 0 }: { pageNumber?: number; count?: number } = $props();
 
 	onMount(async () => {
-		let data: GithubEvent[] = await getGithubActivity();
+		let data: GithubEvent[] = await fetchGithubActivity();
 		isLoading = false;
-		events = data.map((item) => ({
-			id: item.id,
-			type: item.type,
-			repo: {
-				name: item.repo.name,
-				url: item.repo.url,
-			},
-			payload: item.payload,
-			created_at: item.created_at,
-		}));
+
+		const nonPushEvents = data.filter((gh) => gh.type !== "PushEvent");
+		const pushEvents = data.filter((gh) => gh.type === "PushEvent");
+
+		// group by day and repo
+		const grouped = Object.groupBy(pushEvents, (key) => {
+			return `${key.created_at.slice(0, 10)}|${key.repo.name}`;
+		});
+
+		const mergedPushEvents = Object.entries(grouped).map(([group, items]) => {
+			const groupItems = items!;
+			const latest = groupItems?.reduce((a, b) =>
+				a.created_at > b.created_at ? a : b,
+			);
+
+			return {
+				id: `push-${group}`,
+				type: "PushEvent",
+				repo: { name: latest.repo.name, url: latest.repo.url },
+				payload: latest.payload,
+				created_at: latest.created_at,
+				commitCount: groupItems.length,
+			};
+		});
+
+		events = [...mergedPushEvents, ...nonPushEvents].sort(
+			(a, b) =>
+				new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+		);
 	});
 
-	async function getGithubActivity(): Promise<GithubEvent[]> {
-		const res = await fetch(
-			`https://api.github.com/users/deahtstroke/events?per_page=${INITIAL_AMOUNT}&page=0`,
-		);
+	async function fetchGithubActivity(): Promise<GithubEvent[]> {
+		const res = await fetch(EVENTS_URL);
 
 		if (!res.ok) {
-			throw new Error("Github API failed");
+			throw new Error(`Github API failed: ${res}`);
 		}
 		return res.json();
 	}
@@ -77,17 +95,20 @@
 			{ label: "gh", color: "green" },
 			{ label: "api", color: "text" },
 			{ label: `users/${GITHUB_USERNAME}/events/public`, color: "yellow" },
-			{ label: `--page=${pageNumber} --limit=${count}`, color: "overlay1" },
+			{
+				label: `--page=${pageNumber} --limit=${DISPLAY_AMOUNT}`,
+				color: "overlay1",
+			},
 		]}
 	/>
 
 	<!-- Main content from GH API -->
 	{#if isLoading}
-		{#each { length: INITIAL_AMOUNT } as _, i}
+		{#each { length: FETCH_AMOUNT } as _, i}
 			{@render emptyActivity(i, skeletonWidth(i))}
 		{/each}
 	{:else}
-		{#each events as event, i}
+		{#each events.slice(0, DISPLAY_AMOUNT) as event, i}
 			<div class="border-b border-border">
 				<GithubActivityRow {event} index={i} />
 			</div>

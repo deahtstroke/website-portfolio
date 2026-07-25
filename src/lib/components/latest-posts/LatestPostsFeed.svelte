@@ -8,9 +8,11 @@
 
 <article class="border border-surface1 bg-mantle">
 	<!-- Tab bar -->
-	<div class="bg-crust border-b border-surface0 flex items-center px-3 text-sm">
+	<div
+		class="bg-crust border-b border-surface0 flex items-center px-3 text-sm"
+	>
 		<h3
-			class="px-4 py-2 text-text border-b-2 border-mauve cursor-default whitespace-nowrap"
+			class="px-4 py-2 text-text border-b-2 bg-surface border-mauve cursor-default whitespace-nowrap"
 		>
 			posts.md
 		</h3>
@@ -27,7 +29,10 @@
 		segments={[
 			{ label: "cat", color: "green" },
 			{ label: "~/posts.d", color: "yellow" },
-			{ label: "--latest={count}", color: "overlay0" },
+			{
+				label: `--latest=${posts.length}`,
+				color: "overlay0",
+			},
 		]}
 	/>
 
@@ -42,7 +47,9 @@
              text-overlay1 flex items-center transition-colors duration-150
              hover:bg-surface0 hover:text-mauve"
 	>
-		<span class="ml-3 text-sm"> [→] Click here to view all posts </span>
+		<span class="ml-3 text-sm">
+			[→] Click here to view all posts
+		</span>
 	</a>
 
 	<div

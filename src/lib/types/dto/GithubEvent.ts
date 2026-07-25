@@ -24,6 +24,7 @@ export interface GithubEvent {
 	repo: { name: string, url: string };
 	payload: any;
 	created_at: string;
+	commitCount?: number;
 }
 
 const eventIcons: Partial<Record<GithubEventType, LucideIcon>> = {

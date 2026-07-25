@@ -11,8 +11,15 @@
 
 <p class="text-sm text-left">
 	<span class="text-mauve">Daniel</span>{" "}
-	<span class="text-text">pushed commit</span>
-	<span class="text-peach">{ghEvent.payload.head.slice(0, 10)}</span>
+	<span class="text-text">pushed</span>
+	<span class="text-red"
+		>{ghEvent.commitCount}
+		{#if ghEvent.commitCount! > 1}
+			<span>commits</span>
+		{:else}
+			<span>commit</span>
+		{/if}
+	</span>
 	<span class="text-text">to</span>
 	{@render repoSnippet(ghEvent.repo.name)}
 </p>

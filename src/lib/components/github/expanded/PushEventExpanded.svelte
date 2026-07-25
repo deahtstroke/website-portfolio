@@ -4,20 +4,20 @@
 	let { ghEvent }: { ghEvent: GithubEvent } = $props();
 </script>
 
-<div class="px-3 pt-1.5 text-sm bg-mantle">
-	<span class="text-warning pb-1">{ghEvent.type}</span>
-	<div class="grid grid-cols-[auto_1fr] gap-x-5">
-		<span class="text-body/50">├── id:</span>
-		<span class="text-snippet">{ghEvent.id}</span>
-		<span class="text-body/50">├── repo:</span>
+<div class="px-15 pt-1.5 text-xs bg-mantle">
+	<div class="grid grid-cols-[auto_1fr] gap-x-5 gap-y-2">
+		<span class="text-warning col-span-2">{ghEvent.type}</span>
+		<span class="text-body/50">repo:</span>
 		<span class="text-link-hover">{ghEvent.repo.name}</span>
-		<span class="text-body/50">├── time:</span>
+		<span class="text-body/50">time:</span>
 		<span class="text-subheading"
 			>{new Date(ghEvent.created_at).toLocaleString()}</span
 		>
-		<span class="text-body/50">├── HEAD:</span>
+		<span class="text-body/50">refs:</span>
+		<span class="truncate text-highlight">{String(ghEvent.payload.ref)}</span>
+		<span class="text-body/50">HEAD:</span>
 		<span class="truncate text-highlight">{String(ghEvent.payload.head)}</span>
-		<span class="text-body/50">└── previous:</span>
+		<span class="text-body/50">previous:</span>
 		<span class="truncate text-highlight">{String(ghEvent.payload.before)}</span
 		>
 	</div>

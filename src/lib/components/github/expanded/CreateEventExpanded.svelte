@@ -4,25 +4,25 @@
 	let { ghEvent }: { ghEvent: GithubEvent } = $props();
 </script>
 
-<div class="px-3 pt-1.5 text-sm text-body/50">
-	<span class="text-warning pb-1">{ghEvent.type}</span>
+<div class="px-15 pt-1.5 text-sm text-body/50">
 	<div class="grid grid-cols-[auto_1fr] gap-x-5">
-		<span class="text-body/50">├── id:</span>
+		<span class="text-warning col-span-2">{ghEvent.type}</span>
+		<span class="text-body/50">id:</span>
 		<span class="text-snippet">{ghEvent.id}</span>
 		{#if ghEvent.payload.ref_type === "branch"}
-			<span class="text-body/50">├── repo:</span>
+			<span class="text-body/50">repo:</span>
 			<span class="text-link-hover">{ghEvent.repo.name}</span>}
-			<span class="text-body/50">├── branch:</span>
+			<span class="text-body/50">branch:</span>
 			<span class="text-link-hover">{ghEvent.payload.ref}</span>
 		{:else if ghEvent.payload.ref_type === "tag"}
-			<span class="text-body/50">├── repo:</span>
+			<span class="text-body/50">repo:</span>
 			<span class="text-link-hover">{ghEvent.repo.name}</span>}
-			<span class="text-body/50">├── tag:</span>
+			<span class="text-body/50">tag:</span>
 			<span class="text-link-hover">{ghEvent.payload.ref}</span>}
 		{/if}
-		<span class="text-body/50">├── repo:</span>
+		<span class="text-body/50">repo:</span>
 		<span class="text-link-hover">{ghEvent.repo.name}</span>}
-		<span class="text-body/50">├── time:</span>
+		<span class="text-body/50">time:</span>
 		<span class="text-subheading"
 			>{new Date(ghEvent.created_at).toLocaleString()}</span
 		>
