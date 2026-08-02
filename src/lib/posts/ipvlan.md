@@ -3,8 +3,8 @@ title: "Using the IPVlan Network Driver with Docker Swarm"
 description: "Some discoveries and insights on the IPvlan driver that replaced host networking in my Docker Swarm stack"
 date: "2026-07-27"
 thumbnailText: "IPvlan"
-categories: ["Docker", "Linux", "Networking", "IPvlan", "OSI"]
-published: false
+categories: ["Docker", "Docker Swarm", "Linux", "Networks", "IPvlan"]
+published: true
 colorStart: "180 100% 50%"
 colorEnd: "193 100% 50%"
 timeToRead: "12 mins"
@@ -175,3 +175,40 @@ the interface created by the ingress network for the routing mesh, and a
 user-made overlay network for service communication. This brings it to a
 grand-total of 3+ ethernet interfaces in my container. The question is: To which
 of these interfaces should I bind my IPs to and how do I do it?
+
+The answer is a little obvious once you realize that if my application previously
+chose the interface `eth0` one a whim, it can still choose the interface, however
+now it has to do so dynamically. To know which interface my proxy has to attach
+is pretty simple, given a subnet that was previously declared for the IPvlan
+network, find the interface that has an IP that belongs to that subnet.
+Remember that the IPvlan construct will assign a routable IP address to the
+container based on the gateway and the subnet given at creation time.
+
+In my proxy the code relevant to doing this dynamic discovery looks like this:
+
+```go
+  _, targetSubnet, err := net.ParseCIDR("2604:a880:4:1d0::/64")
+  if err != nil {
+      log.Fatalf("Unable to parse CIDR block: %v", err)
+  }
+
+  var ipv6interface string
+Outer:
+  for _, i := range interfaces {
+      addresses, err := i.Addrs()
+      if err != nil {
+          log.Fatalf("Error reading addresses for interface %s: %v", i.Name, err)
+      }
+      for _, a := range addresses {
+          ip, ok := a.(*net.IPNet)
+          if !ok {
+              log.Fatalf("Cannot assert type *net.IPNet from %T", ip)
+          }
+
+          if targetSubnet.Contains(ip.IP) {
+              ipv6interface = i.Name
+              break Outer
+          }
+      }
+  }
+```
