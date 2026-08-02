@@ -165,6 +165,10 @@
     display: none;
   }
 
+  .callout {
+    @apply bg-mantle
+  }
+
   blockquote p {
     @apply not-italic
   }

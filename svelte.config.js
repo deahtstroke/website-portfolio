@@ -7,8 +7,8 @@ import adapter from '@sveltejs/adapter-cloudflare';
 import rehypeSlug from 'rehype-slug';
 
 const highlighterPromise = createHighlighter({
-	themes: ['nord'],
-	langs: ['go', 'json']
+	themes: ['catppuccin-frappe', 'catppuccin-mocha', 'material-theme-ocean', 'material-theme', 'dracula'],
+	langs: ['go', 'json', 'yaml']
 })
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -18,21 +18,21 @@ const config = {
 	extensions: ['.svelte', '.svx', ".md"],
 	preprocess: [vitePreprocess(), mdsvex({
 		extensions: [".md", ".svx"],
-		// highlight: {
-		// 	highlighter: async (code, lang = 'text') => {
-		// 		if (lang === 'mermaid') {
-		// 			// Return a raw div that the client-side library will target
-		// 			// We wrap in {@html} to ensure Svelte doesn't parse it
-		// 			return `{@html \`<pre class="mermaid">${code}</pre>\`}`;
-		// 		}
-		// 		const highlighter = await highlighterPromise
-		// 		await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown', 'toml');
-		// 		const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'nord' }));
-		// 		return `{@html \`${html}\`}`
-		// 	}
-		// },
+		highlight: {
+			highlighter: async (code, lang = 'text') => {
+				if (lang === 'mermaid') {
+					// Return a raw div that the client-side library will target
+					// We wrap in {@html} to ensure Svelte doesn't parse it
+					return `{@html \`<pre class="mermaid">${code}</pre>\`}`;
+				}
+				const highlighter = await highlighterPromise
+				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown', 'toml');
+				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'catppuccin-frappe' }));
+				return `{@html \`${html}\`}`
+			}
+		},
 		rehypePlugins: [
-			callouts,
+			[callouts, { theme: 'github' }],
 			rehypeSlug,
 			[rehypeAutolinkHeadings, {
 				behavior: "wrap",

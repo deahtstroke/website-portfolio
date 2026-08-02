@@ -1,55 +1,177 @@
 ---
-title: "Why my Stats Crawler needed its own IP-rotating proxy (and why Host networking wasn't the answer)"
-description: "Giving containers real IPs: How the Ipvlan driver replaced host networking in my Docker Swarm stack"
+title: "Using the IPVlan Network Driver with Docker Swarm"
+description: "Some discoveries and insights on the IPvlan driver that replaced host networking in my Docker Swarm stack"
 date: "2026-07-27"
 thumbnailText: "IPvlan"
 categories: ["Docker", "Linux", "Networking", "IPvlan", "OSI"]
 published: false
 colorStart: "180 100% 50%"
 colorEnd: "193 100% 50%"
-timeToRead: "9 mins"
+timeToRead: "12 mins"
 ---
 
-## Setup Before IPVlan
+## Overview
 
-Whilst I went back to one of my projects called [Rivenbot](https://github.com/riven-of-a-thousand-sevrers)
-I tried revisiting one of the core modules I had created: The Rotating-Reverse Proxy.
-The way that it worked was simple, it attached to one of the interfaces in the host,
-given that the interface had the IPv6 addresses attached to it, then it just simply
-round-robins through the provided IPs as requests come in, in addition to rate-limiting
-based on the target URL path. All of this sounds pretty straight forward when deploying
-the proxy right on top of the host, however, the project itself runs all modules
-inside container on Docker Swarm.
+While revisiting my [Rivenbot](https://github.com/riven-of-a-thousand-sevrers) project
+I tried redeploying one of the services I had created a while ago: A Rotating-Reverse Proxy.
+There are two major reasons as to why I needed a RR-proxy: First, my project
+relied on having an up-to-date database of user activity, and my only
+source of real-time data came from a REST API exposed by Bungie itself, and
+second, Bungie's rate limits makes it impossible to stay in track with the
+influx of generated data for players using a single IP address. Therefore,
+using several IPv6 addresses would help me circumvent this issue, within the
+"legal" confines of bypassing rate-limits set by developers of course.
+Having talked and confirmed with the API developers that as long as
+bandwidth is not abuse we are allowed to scrape with multiple IPs lightens up
+worrying about legal issues!
 
-This puts some heavy constraints on the reverse-proxy in regards to networking.
+The proxy itself is very simple: It attaches to one of the network interfaces
+in the host, given that the interface has routable and valid IPs attached
+to it, then it just simply round-robins through the provided IPs as
+requests come in, whilst at the same time rate-limiting requests based
+on the target URL path and the domain provided.
 
-Swarm handles cross-node service discovery and load-balancing through user-defined
-overlay networks. Overlay networks are distributed networks that span every node in
-the cluster and let services find each other by name. It's genuinely one
-of Swarm's best features, and if you're running services that just need
-to talk to each other, you should lean on it as much as possible.
+This all sounds pretty straight forward and even more so if I were to deploy
+the proxy right on top of the host's network. However, I created Rivenbot using
+containerization for all its services with the help of Docker Swarm for managing
+machines across different locations. This puts complicates deploying the proxy
+as a standalone program in a host machine. However, to understand
+how IPvlan solved my issue, its good to understand the benefits of
+the Routing Mesh provided by Docker Swarm.
 
-The problem about the reverse-proxy however is that it relies on having discoverable and
-routable IPs that a normal docker [bridge network](https://docs.docker.com/engine/network/drivers/bridge/)
-would not have, since Docker's IPAM system gives containers private IPs.
-And as previously mentioned, the proxy itself needs to have a
-network interface that has addressable IPs attached to them.
+## Primer on Docker Swarm's Routing Mesh
 
-## The Problem with Host Networking
+Docker Swarm handles host/node service discovery and load-balancing through
+[overlay networks](https://docs.docker.com/engine/network/drivers/overlay/).
+Overlay networks are networks that allow communication between two hosts on
+different networks by using a technology called VXLan. This, combined with gateway
+bridges created by Swarm on each node creates a behavior called
+_Routing Mesh_. The routing mesh itself makes it easy for outside clients to
+access Swarm services through their published ports without knowing specific IP
+addresses and port combinations for any replicated services. It makes
+it easy to access, for example, a web-server container replicated
+three times across 3 different hosts without the client knowing
+a specific `[host:port]` combination. Additionally, Swarm offers embedded
+DNS resolutions for services running in the Swarm through their service name.
+Instead of referring to Nginx by their IP address, you could make a request to
+`http://nginx` and the DNS would resolve to the appropriate Nginx container.
 
-My first instinct was to use Docker's [host network driver](https://docs.docker.com/engine/network/drivers/host/)
-so my proxy would have direct access to the host computer's NIC.
-This way I could simply attach my IPv6 addresses using the `ip` utility.
-However, there was a small caveat to using this driver: Using host mode
-on Docker Swarm bypasses the routing mesh which gives me natural port publishing,
-load balancing and DNS resolution. To be super honest, the realest reason of
-the three that I did not want to give up was DNS resolution. I wanted to keep,
-the convenience of calling my Swarm proxy service by its name and have the cluster
-be able to resolve to the right container seamlessly. Therefore,
-neither a host network-driver or publishing the proxy's port using
-host mode solved my issue.
+> [!Note]
+> Docker services **are not** the same as containers.
+> Services are declarations made about the desired state of the cluster, usually
+> in the form of properties in a YAML file.
 
-## IPvlan Network?
+This is a big oversimpliciation of how the routing mesh works, but hopefully
+the point across is made that this behavior simplifies a lot of headaches when
+it comes to distributed networking and Docker containers. This same
+behavior is something that I still wanted to utilize in my project, which
+meant that my original approach for deploying my RR-proxy was wrong.
 
-Then after some thorough research and triple-checking the available network
-drivers that were available with Docker,
+## The Problem with Host networking and Docker Swarm
+
+My first instinct to solve my problem was to use Docker's [Host network driver](https://docs.docker.com/engine/network/drivers/host/)
+so my proxy would have direct access to the host network stack and avoid any
+container-networking shenaningans. However, there was a big
+caveat to using this driver with Docker Swarm: Using it alongside
+Docker Swarm bypasses the routing mesh that gives me natural port publishing,
+load balancing and DNS resolution across my services and my nodes.
+The biggest benefit of these three that I did not want to
+give up was **DNS resolution**. I wanted to have
+the convenience of calling my Swarm services by its service name and have
+the cluster be able to resolve to the right container seamlessly, including
+the proxy service. And even though I was able to configure it using
+Docker Stack:
+
+```yaml
+# docker-stack.yaml
+
+services:
+  proxy-service:
+    image: rivenbot/proxy-service:${PROXY_SERVICE_VERSION:-latest}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - outside
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.hostname==proxy-service-droplet
+          - node.role==worker
+
+# This is how you reference the host network
+# from within a compose file
+networks:
+  outside:
+    external:
+      name: "host"
+```
+
+I even opened a [pull request in Docker Docs](https://www.github.com/docker/docs/pulls/)
+to see if this super niche compose configuration should be added to the Docker docs
+(It was not approved by the way). This was my original setup from
+months before I came back to continue the project. Even though the PR was
+rejected it did highlight something that one of the maintainers said in
+response to this change: "This is not the intended use of Docker Swarm", which
+made me realize that this was not the right approach to the problem. It was
+the easy approach, but not the best one.
+
+## IPvlan Network to the rescue
+
+Months later, after some thorough research, very well-crafted prompts (not really),
+and reading the available network drivers that were available with Docker,
+I stumbled upon both the [IPVlan](https://docs.docker.com/engine/network/drivers/ipvlan)
+and [Macvlan](https://docs.docker.com/engine/network/drivers/macvlan) network drivers.
+They seemed like an intriguing idea for solving my issue, however,
+behind layers of Linux's abstractions and primitives I did not really understand
+how they worked and how they would solve my problem for my proxy. It was
+then that I sat and studied Linux IPvlan driver. As it
+turns out, I had to backtrack a little before I fully understood IPvlan, since
+there were a few gaps in my knowledge regarding networking in general. For this
+I reviewed topics that were related such as the Link Layer (Layer 2) and MAC
+addresses, Linux Namespaces, Linux bridges, and their parallel structure
+to Layer 2 packet switches + ethernet. These topics were in tangent with IPvlan
+and it led me to understand the exact problem that it was trying to solve, promptly
+realizing that this was the solution to my problem with the proxy.
+
+## What I discovered
+
+The IPvlan Linux driver acts itself as a very light-weight middle-man
+between the container, and the host network. In comparison to other networks drivers,
+IPvlan and Macvlan kind of push the boundaries of network isolation in general.
+Whereas the normal bridge driver completely isolates containers from the host,
+due to it acting as a network switch and ethernet cables, the cables being
+virtual ethernet pairs, and the switch being a Linux bridge,
+the host driver offers little-to-no isolation since the container would
+share the same network stack as the host. Both IPvlan and Macvlan are in
+a gray area in-between these two drivers, or at least that's how
+I like to think about them. IPvlan requires three things: a parent interface
+to attach to, the host's subnet, and the host's gateway IP. Given this three
+parameters, once you create and attach your container to the IPVlan network
+two interesting things will happen:
+
+1. When the container is spun up, it will have a routable IP address from within
+   the same CIDR block as the one you specified by both the `gateway` and
+   `subnet` parameters
+2. The IPvlan construct will create a network interface with the same MAC address
+   as the parent's interface MAC address, this is how you know which interface
+   inside the container belongs to your IPvlan network
+
+There were some quirks as well from how I configured my proxy to use this new
+network, the first one was that my very simple proxy relied on attaching to a
+well-known network interface. In my case, the proxy would attach to `eth0` by
+default since it had access to the host's network stack and the existance
+of this network interface was a given. Now however, not only does my container
+have the network interface created by the IPvlan driver, but also it contains
+the interface created by the ingress network for the routing mesh, and a
+user-made overlay network for service communication. This brings it to a
+grand-total of 3+ ethernet interfaces in my container. The question is: To which
+of these interfaces should I bind my IPs to and how do I do it?
