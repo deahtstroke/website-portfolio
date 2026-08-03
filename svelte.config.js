@@ -1,6 +1,7 @@
 import { mdsvex, escapeSvelte } from 'mdsvex';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { createHighlighter } from 'shiki';
+import { transformerCopyButton } from '@rehype-pretty/transformers'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import callouts from 'rehype-callouts';
 import adapter from '@sveltejs/adapter-cloudflare';
@@ -27,7 +28,15 @@ const config = {
 				}
 				const highlighter = await highlighterPromise
 				await highlighter.loadLanguage('go', 'json', 'svelte', 'mermaid', 'markdown', 'toml');
-				const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme: 'catppuccin-frappe' }));
+				let html = escapeSvelte(
+					highlighter.codeToHtml(code, {
+						lang,
+						theme: 'catppuccin-frappe',
+						transformers: [
+							transformerCopyButton({ visibility: 'always', feedbackDuration: 3_000 }),
+						]
+					}
+					));
 				return `{@html \`${html}\`}`
 			}
 		},

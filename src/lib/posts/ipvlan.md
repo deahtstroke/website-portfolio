@@ -4,7 +4,7 @@ description: "Some discoveries and insights on the IPvlan driver that replaced h
 date: "2026-07-27"
 thumbnailText: "IPvlan"
 categories: ["Docker", "Docker Swarm", "Linux", "Networks", "IPvlan"]
-published: true
+published: false
 colorStart: "180 100% 50%"
 colorEnd: "193 100% 50%"
 timeToRead: "12 mins"
@@ -12,7 +12,7 @@ timeToRead: "12 mins"
 
 ## Overview
 
-While revisiting my [Rivenbot](https://github.com/riven-of-a-thousand-sevrers) project
+While revisiting my [Rivenbot](https://github.com/riven-of-a-thousand-servers) project
 I tried redeploying one of the services I had created a while ago: A Rotating-Reverse Proxy.
 There are two major reasons as to why I needed a RR-proxy: First, my project
 relied on having an up-to-date database of user activity, and my only
@@ -184,7 +184,7 @@ network, find the interface that has an IP that belongs to that subnet.
 Remember that the IPvlan construct will assign a routable IP address to the
 container based on the gateway and the subnet given at creation time.
 
-In my proxy the code relevant to doing this dynamic discovery looks like this:
+In my proxy the code relevant to dynamic interface discovery is the following:
 
 ```go
   _, targetSubnet, err := net.ParseCIDR("2604:a880:4:1d0::/64")
